@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 15th Birthday Sumaiya!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f0ff 0%, #e8dbff 100%);
+            color: #4a3b63;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* --- LOADING SCREEN --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a0f2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s;
+            color: #e8dbff;
+        }
+
+        .loader-title {
+            font-size: 2rem;
+            color: #9d4edd;
+            margin-bottom: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .bar-container {
+            width: 250px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #9d4edd, #7b2cbf);
+            border-radius: 20px;
+            transition: width 0.1s linear;
+        }
+
+        .loader-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* --- FLOATING HEARTS --- */
+        .heart {
+            position: absolute;
+            color: rgba(186, 104, 200, 0.4);
+            font-size: 24px;
+            animation: float 6s linear infinite;
+            bottom: -50px;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(150, 120, 200, 0.15);
+            text-align: center;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: none; /* Revealed after load */
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #7b2cbf;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #9d4edd;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* --- INTERACTIVE CAKE --- */
+        .cake-box {
+            margin: 25px auto;
+            position: relative;
+            width: 180px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .cake-layer {
+            width: 160px;
+            height: 60px;
+            background: #f7aef8;
+            border-radius: 15px 15px 5px 5px;
+            position: relative;
+            box-shadow: inset 0 -10px 0 rgba(0,0,0,0.05);
+        }
+
+        .cake-layer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 15px;
+            background: #b388ff;
+            top: 15px;
+            left: 0;
+        }
+
+        .frosting {
+            width: 170px;
+            height: 25px;
+            background: #fff;
+            border-radius: 20px 20px 5px 5px;
+            position: absolute;
+            top: 50px;
+            z-index: 2;
+            box-shadow: 0 4px 5px rgba(0,0,0,0.05);
+        }
+
+        /* The Candle */
+        .candle {
+            width: 12px;
+            height: 45px;
+            background: linear-gradient(to right, #e0aaff, #c77dff);
+            border-radius: 3px;
+            position: absolute;
+            top: 10px;
+            z-index: 3;
+            cursor: pointer;
+        }
+
+        .flame {
+            width: 14px;
+            height: 22px;
+            background: #ffb703;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -24px;
+            left: -1px;
+            box-shadow: 0 0 10px #ffb703, 0 0 20px #fb8500;
+            animation: flicker 0.6s infinite alternate;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        .flame.blown-out {
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        .cake-instruction {
+            font-size: 0.9rem;
+            color: #7b2cbf;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* --- 3D FLIP GREETING CARD --- */
+        .card-container {
+            perspective: 1000px;
+            margin: 25px auto;
+            width: 100%;
+            max-width: 400px;
+            height: 220px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card-container.open .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(150, 120, 200, 0.15);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+            color: white;
+        }
+
+        .card-front .gift-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card-back {
+            background: #ffffff;
+            color: #4a3b63;
+            transform: rotateY(180deg);
+            border: 2px dashed #9d4edd;
+        }
+
+        .card-back p {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .footer-note {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #b3a2cc;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SURPRISE LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-title">✨ SYSTEM INITIALIZING ✨</div>
+        <div class="bar-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <div class="loader-text" id="loader-status">Decrypting birthday protocol...</div>
+    </div>
+
+    <!-- BACKGROUND FLOATING HEARTS -->
+    <div id="hearts-container"></div>
+
+    <!-- 2. MAIN CELEBRATION APP -->
+    <div class="container" id="main-content">
+        <h1>Happy 15th Birthday, Sumaiya! 🥳</h1>
+        <p class="subtitle">Welcome to Chapter 15 ✨</p>
+
+        <!-- INTERACTIVE CAKE SECTION -->
+        <div class="cake-box">
+            <div class="candle" onclick="blowCandle()">
+                <div class="flame" id="cake-flame"></div>
+            </div>
+            <div class="frosting"></div>
+            <div class="cake-layer"></div>
+        </div>
+        <p class="cake-instruction" id="cake-hint">Tap the flame to blow out your 15th candle! 🎂</p>
+
+        <!-- CLICKABLE SECRET CARD -->
+        <div class="card-container" onclick="toggleCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="gift-icon">🎁</div>
+                    <h3>You have a secret message!</h3>
+                    <p style="font-size: 0.8rem; margin-top: 8px; opacity: 0.8;">(Click to flip open)</p>
+                </div>
+                <div class="card-back">
+                    <p>"Happy 15th Birthday to my absolute favorite person, Sumaiya! You're officially stuck with me for another year of chaotic laughs, inside jokes, and sweet memories. May your day be filled with endless cake, lots of love, and zero responsibilities! ❤️✨"</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">Made with love just for you.</p>
+    </div>
+
+    <!-- Confetti Script Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // Loading Screen Animation Logic
+        window.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('progress');
+            const statusText = document.getElementById('loader-status');
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('main-content');
+            
+            let width = 0;
+            const statuses = [
+                "Locating the birthday girl...",
+                "Baking a virtual 15th cake...",
+                "Loading premium confetti supplies...",
+                "Unwrapping secret message...",
+                "Ready to celebrate!"
+            ];
+
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Fade out loader
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                    
+                    // Fade in main site smoothly
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                        triggerConfettiShower(); // Surprise burst right on load!
+                    }, 100);
+                } else {
+                    width += 2;
+                    progress.style.width = width + '%';
+                    
+                    // Rotate statuses realistically based on progress
+                    let statusIdx = Math.floor((width / 100) * statuses.length);
+                    if(statuses[statusIdx]) {
+                        statusText.innerText = statuses[statusIdx];
+                    }
+                }
+            }, 50); // Fast, fun loading feel
+        });
+
+        // Blow out the candle interaction
+        let candleLit = true;
+        function blowCandle() {
+            if (candleLit) {
+                document.getElementById('cake-flame').classList.add('blown-out');
+                document.getElementById('cake-hint').innerHTML = "🎉 Wish granted! Happy 15th! 🎉";
+                candleLit = false;
+                
+                // Massive celebration shower
+                triggerConfettiShower();
+            }
+        }
+
+        // Card flip logic
+        function toggleCard(card) {
+            card.classList.toggle('open');
+            if(card.classList.contains('open')) {
+                confetti({
+                    particleCount: 40,
+                    spread: 50,
+                    origin: { y: 0.7 }
+                });
+            }
+        }
+
+        // Full screen dual confetti stream
+        function triggerConfettiShower() {
+            var duration = 2.5 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 4,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#7b2cbf', '#9d4edd', '#e8dbff', '#ffb703']
+                });
+                confetti({
+                    particleCount: 4,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#7b2cbf', '#9d4edd', '#e8dbff', '#ffb703']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        // Dynamic soft floating background hearts
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            if(!container) return;
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 12 + 15) + 'px';
+            container.appendChild(heart);
+
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 450);
+    </script>
+</body>
+          </html>
+          
