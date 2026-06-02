@@ -2,215 +2,257 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy 15th Birthday Sumaiya!</title>
     <style>
+        /* Reset and Mobile Optimization */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Prevents awkward scrolling on mobile */
             background: linear-gradient(135deg, #f5f0ff 0%, #e8dbff 100%);
             color: #4a3b63;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 20px;
         }
 
-        /* --- LOADING SCREEN --- */
+        /* --- UPGRADED LOADING SCREEN --- */
         #loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1a0f2e;
+            background: linear-gradient(135deg, #110724 0%, #1c0d3a 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 1s ease, visibility 1s;
             color: #e8dbff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .loader-accent {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: floatGently 3s ease-in-out infinite;
         }
 
         .loader-title {
-            font-size: 2rem;
-            color: #9d4edd;
-            margin-bottom: 20px;
+            font-size: 1.6rem;
+            color: #b388ff;
+            margin-bottom: 25px;
             font-weight: bold;
-            letter-spacing: 2px;
-            animation: pulse 1.5s infinite;
+            letter-spacing: 1px;
         }
 
         .bar-container {
-            width: 250px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 80%;
+            max-width: 260px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 15px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
 
         .progress-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #9d4edd, #7b2cbf);
+            background: linear-gradient(90deg, #d4a5ff, #9d4edd);
             border-radius: 20px;
-            transition: width 0.1s linear;
+            transition: width 0.08s linear;
         }
 
         .loader-text {
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-size: 0.85rem;
+            opacity: 0.75;
+            font-style: italic;
+            min-height: 20px;
         }
 
-        /* --- FLOATING HEARTS --- */
+        /* --- MAIN APP INTERFACE --- */
+        .app-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Ambient Background Hearts */
         .heart {
             position: absolute;
-            color: rgba(186, 104, 200, 0.4);
-            font-size: 24px;
-            animation: float 6s linear infinite;
-            bottom: -50px;
-            z-index: 0;
+            color: rgba(186, 104, 200, 0.25);
+            font-size: 20px;
+            animation: floatUp 5s linear infinite;
+            bottom: -30px;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        @keyframes float {
+        @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- MAIN CONTAINER --- */
-        .container {
-            max-width: 600px;
+        @keyframes floatGently {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- SCREEN 1: INTERACTIVE CAKE AREA --- */
+        #cake-screen {
             width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(150, 120, 200, 0.15);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Makes whole screen tap-friendly */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            padding: 20px;
             text-align: center;
-            z-index: 10;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            display: none; /* Revealed after load */
-            opacity: 0;
-            transition: opacity 1s ease;
         }
 
-        h1 {
-            font-size: 2.5rem;
+        .main-heading {
+            font-size: 2rem;
             color: #7b2cbf;
             margin-bottom: 5px;
+            font-weight: 800;
         }
 
-        .subtitle {
-            font-size: 1.1rem;
+        .sub-heading {
+            font-size: 1rem;
             color: #9d4edd;
-            margin-bottom: 25px;
+            margin-bottom: 40px;
             font-weight: 600;
         }
 
-        /* --- INTERACTIVE CAKE --- */
+        /* Perfectly Proportioned Mobile Cake */
         .cake-box {
-            margin: 25px auto;
             position: relative;
-            width: 180px;
-            height: 140px;
+            width: 160px;
+            height: 120px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
+            margin-bottom: 40px;
         }
 
         .cake-layer {
-            width: 160px;
-            height: 60px;
+            width: 150px;
+            height: 55px;
             background: #f7aef8;
-            border-radius: 15px 15px 5px 5px;
+            border-radius: 12px 12px 4px 4px;
             position: relative;
-            box-shadow: inset 0 -10px 0 rgba(0,0,0,0.05);
+            box-shadow: inset 0 -8px 0 rgba(0,0,0,0.04);
         }
 
         .cake-layer::before {
             content: '';
             position: absolute;
             width: 100%;
-            height: 15px;
+            height: 12px;
             background: #b388ff;
             top: 15px;
             left: 0;
         }
 
         .frosting {
-            width: 170px;
-            height: 25px;
+            width: 158px;
+            height: 22px;
             background: #fff;
-            border-radius: 20px 20px 5px 5px;
+            border-radius: 15px 15px 4px 4px;
             position: absolute;
-            top: 50px;
+            top: 45px;
             z-index: 2;
-            box-shadow: 0 4px 5px rgba(0,0,0,0.05);
         }
 
-        /* The Candle */
         .candle {
-            width: 12px;
-            height: 45px;
+            width: 10px;
+            height: 40px;
             background: linear-gradient(to right, #e0aaff, #c77dff);
-            border-radius: 3px;
+            border-radius: 2px;
             position: absolute;
             top: 10px;
             z-index: 3;
-            cursor: pointer;
         }
 
         .flame {
-            width: 14px;
-            height: 22px;
+            width: 12px;
+            height: 20px;
             background: #ffb703;
             border-radius: 50% 50% 20% 20%;
             position: absolute;
-            top: -24px;
+            top: -22px;
             left: -1px;
-            box-shadow: 0 0 10px #ffb703, 0 0 20px #fb8500;
+            box-shadow: 0 0 8px #ffb703, 0 0 15px #fb8500;
             animation: flicker 0.6s infinite alternate;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         @keyframes flicker {
-            0% { transform: scale(1) rotate(-2deg); }
-            100% { transform: scale(1.1) rotate(2deg); }
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.08) rotate(1deg); }
         }
 
         .flame.blown-out {
             opacity: 0;
             transform: scale(0);
-            pointer-events: none;
         }
 
-        .cake-instruction {
-            font-size: 0.9rem;
+        .instruction-tap {
+            font-size: 0.95rem;
             color: #7b2cbf;
             font-weight: bold;
-            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px dashed #9d4edd;
+            animation: pulseBtn 1.8s infinite;
         }
 
-        /* --- 3D FLIP GREETING CARD --- */
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        /* --- SCREEN 2: CARD APP SCREEN --- */
+        #note-screen {
+            width: 100%;
+            max-width: 380px;
+            display: none; /* Hidden at start */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            text-align: center;
+        }
+
         .card-container {
             perspective: 1000px;
-            margin: 25px auto;
             width: 100%;
-            max-width: 400px;
-            height: 220px;
+            height: 230px;
             cursor: pointer;
+            margin-top: 15px;
         }
 
         .card-inner {
@@ -218,7 +260,7 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.8s;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
         }
 
@@ -232,29 +274,30 @@
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            box-shadow: 0 8px 25px rgba(150, 120, 200, 0.15);
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(130, 90, 180, 0.15);
         }
 
         .card-front {
             background: linear-gradient(135deg, #9d4edd, #7b2cbf);
             color: white;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .card-front .gift-icon {
-            font-size: 45px;
-            margin-bottom: 10px;
-            animation: bounce 1.5s infinite;
+            font-size: 3.2rem;
+            margin-bottom: 12px;
+            animation: bounceIcon 2s infinite;
         }
 
-        @keyframes bounce {
+        @keyframes bounceIcon {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
 
         .card-back {
@@ -262,144 +305,161 @@
             color: #4a3b63;
             transform: rotateY(180deg);
             border: 2px dashed #9d4edd;
+            overflow-y: auto; /* Fallback for exceptionally small device screens */
         }
 
         .card-back p {
-            font-size: 1.05rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            line-height: 1.55;
             font-style: italic;
+            font-weight: 500;
         }
 
-        .footer-note {
-            margin-top: 25px;
-            font-size: 0.85rem;
+        .hint-text {
+            font-size: 0.8rem;
             color: #b3a2cc;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. SURPRISE LOADING SCREEN -->
+    <!-- 1. LOADING SCREEN -->
     <div id="loader">
-        <div class="loader-title">✨ SYSTEM INITIALIZING ✨</div>
+        <div class="loader-accent">✨</div>
+        <div class="loader-title">INITIALIZING SURPRISE</div>
         <div class="bar-container">
             <div class="progress-bar" id="progress"></div>
         </div>
-        <div class="loader-text" id="loader-status">Decrypting birthday protocol...</div>
+        <div class="loader-text" id="loader-status">Preparing data packages...</div>
     </div>
 
-    <!-- BACKGROUND FLOATING HEARTS -->
-    <div id="hearts-container"></div>
+    <!-- MAIN APP WRAPPER -->
+    <div class="app-wrapper">
+        <div id="hearts-container"></div>
 
-    <!-- 2. MAIN CELEBRATION APP -->
-    <div class="container" id="main-content">
-        <h1>Happy 15th Birthday, Sumaiya! 🥳</h1>
-        <p class="subtitle">Welcome to Chapter 15 ✨</p>
-
-        <!-- INTERACTIVE CAKE SECTION -->
-        <div class="cake-box">
-            <div class="candle" onclick="blowCandle()">
-                <div class="flame" id="cake-flame"></div>
-            </div>
-            <div class="frosting"></div>
-            <div class="cake-layer"></div>
-        </div>
-        <p class="cake-instruction" id="cake-hint">Tap the flame to blow out your 15th candle! 🎂</p>
-
-        <!-- CLICKABLE SECRET CARD -->
-        <div class="card-container" onclick="toggleCard(this)">
-            <div class="card-inner">
-                <div class="card-front">
-                    <div class="gift-icon">🎁</div>
-                    <h3>You have a secret message!</h3>
-                    <p style="font-size: 0.8rem; margin-top: 8px; opacity: 0.8;">(Click to flip open)</p>
+        <!-- 2. SCREEN ONE: THE CAKE (Tapping anywhere blows candle) -->
+        <div id="cake-screen" onclick="handleScreenTap()">
+            <h1 class="main-heading">Happy 15th Birthday!</h1>
+            <p class="sub-heading">Sumaiya ✨</p>
+            
+            <div class="cake-box">
+                <div class="candle">
+                    <div class="flame" id="cake-flame"></div>
                 </div>
-                <div class="card-back">
-                    <p>"Happy 15th Birthday to my absolute favorite person, Sumaiya! You're officially stuck with me for another year of chaotic laughs, inside jokes, and sweet memories. May your day be filled with endless cake, lots of love, and zero responsibilities! ❤️✨"</p>
-                </div>
+                <div class="frosting"></div>
+                <div class="cake-layer"></div>
             </div>
+            
+            <div class="instruction-tap" id="instruction-prompt">Tap anywhere to blow the candle! 🎂</div>
         </div>
 
-        <p class="footer-note">Made with love just for you.</p>
+        <!-- 3. SCREEN TWO: THE ENVELOPE / CARD NOTE -->
+        <div id="note-screen">
+            <h2 style="color: #7b2cbf; font-size: 1.4rem; margin-bottom: 5px;">Make a Wish Granted! 🎉</h2>
+            <p style="color: #9d4edd; font-size: 0.9rem; margin-bottom: 15px;">You have one unopened item left:</p>
+
+            <div class="card-container" onclick="toggleCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="gift-icon">✉️</div>
+                        <h3 style="font-size: 1.2rem;">Tap to open your letter</h3>
+                        <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.8;">Specially packed for you</p>
+                    </div>
+                    <div class="card-back">
+                        <p>"Happy 15th Birthday to my absolute favorite person, Sumaiya! You're officially stuck with me for another year of chaotic laughs, inside jokes, and sweet memories. May your day be filled with endless cake, lots of love, and zero responsibilities! ❤️✨"</p>
+                    </div>
+                </div>
+            </div>
+            <p class="hint-text">Made with love just for you.</p>
+        </div>
     </div>
 
-    <!-- Confetti Script Integration -->
+    <!-- Confetti Logic -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // Loading Screen Animation Logic
+        // Smooth Simulated Loading Sequence
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
             const loader = document.getElementById('loader');
-            const mainContent = document.getElementById('main-content');
             
             let width = 0;
             const statuses = [
                 "Locating the birthday girl...",
-                "Baking a virtual 15th cake...",
-                "Loading premium confetti supplies...",
-                "Unwrapping secret message...",
-                "Ready to celebrate!"
+                "Configuring Chapter 15 parameters...",
+                "Baking virtual sweet layers...",
+                "Pressurizing confetti cannons...",
+                "System fully synchronized!"
             ];
 
             const interval = setInterval(() => {
                 if (width >= 100) {
                     clearInterval(interval);
-                    // Fade out loader
                     loader.style.opacity = '0';
-                    loader.style.visibility = 'hidden';
-                    
-                    // Fade in main site smoothly
-                    mainContent.style.display = 'block';
                     setTimeout(() => {
-                        mainContent.style.opacity = '1';
-                        triggerConfettiShower(); // Surprise burst right on load!
-                    }, 100);
+                        loader.style.visibility = 'hidden';
+                    }, 1000);
                 } else {
                     width += 2;
                     progress.style.width = width + '%';
-                    
-                    // Rotate statuses realistically based on progress
                     let statusIdx = Math.floor((width / 100) * statuses.length);
                     if(statuses[statusIdx]) {
                         statusText.innerText = statuses[statusIdx];
                     }
                 }
-            }, 50); // Fast, fun loading feel
+            }, 45); 
         });
 
-        // Blow out the candle interaction
+        // Tap Anywhere to Blow Candle System
         let candleLit = true;
-        function blowCandle() {
-            if (candleLit) {
-                document.getElementById('cake-flame').classList.add('blown-out');
-                document.getElementById('cake-hint').innerHTML = "🎉 Wish granted! Happy 15th! 🎉";
-                candleLit = false;
+        function handleScreenTap() {
+            if (!candleLit) return; // Stop accidental duplicate clicks
+            
+            candleLit = false;
+            
+            // 1. Extinguish Flame Graphic
+            document.getElementById('cake-flame').classList.add('blown-out');
+            document.getElementById('instruction-prompt').innerText = "🎉 HAPPY 15TH! 🎉";
+            
+            // 2. Launch Premium Dual-Side Confetti Spray
+            triggerConfettiExplosion();
+
+            // 3. Transition Screen Flow (Fade Cake out, Bring Card note in)
+            setTimeout(() => {
+                const cakeScreen = document.getElementById('cake-screen');
+                const noteScreen = document.getElementById('note-screen');
                 
-                // Massive celebration shower
-                triggerConfettiShower();
-            }
+                cakeScreen.style.opacity = '0';
+                cakeScreen.style.transform = 'scale(0.9)';
+                
+                setTimeout(() => {
+                    cakeScreen.style.display = 'none';
+                    noteScreen.style.display = 'block';
+                    
+                    // Smoothly fade in the letter section
+                    setTimeout(() => {
+                        noteScreen.style.opacity = '1';
+                        noteScreen.style.transform = 'translateY(0)';
+                    }, 50);
+                }, 800);
+            }, 1800); // 1.8 seconds celebration pause
         }
 
-        // Card flip logic
+        // Letter card open utility
         function toggleCard(card) {
             card.classList.toggle('open');
             if(card.classList.contains('open')) {
                 confetti({
-                    particleCount: 40,
-                    spread: 50,
-                    origin: { y: 0.7 }
+                    particleCount: 35,
+                    spread: 40,
+                    origin: { y: 0.65 }
                 });
             }
         }
 
-        // Full screen dual confetti stream
-        function triggerConfettiShower() {
+        // Full Screen Confetti engine
+        function triggerConfettiExplosion() {
             var duration = 2.5 * 1000;
             var end = Date.now() + duration;
 
@@ -408,15 +468,15 @@
                     particleCount: 4,
                     angle: 60,
                     spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#7b2cbf', '#9d4edd', '#e8dbff', '#ffb703']
+                    origin: { x: 0, y: 0.6 },
+                    colors: ['#7b2cbf', '#9d4edd', '#b388ff', '#ffb703']
                 });
                 confetti({
                     particleCount: 4,
                     angle: 120,
                     spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#7b2cbf', '#9d4edd', '#e8dbff', '#ffb703']
+                    origin: { x: 1, y: 0.6 },
+                    colors: ['#7b2cbf', '#9d4edd', '#b388ff', '#ffb703']
                 });
 
                 if (Date.now() < end) {
@@ -425,7 +485,7 @@
             }());
         }
 
-        // Dynamic soft floating background hearts
+        // Background Mobile-Safe Floating Hearts
         function createHeart() {
             const container = document.getElementById('hearts-container');
             if(!container) return;
@@ -433,14 +493,13 @@
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            heart.style.fontSize = (Math.random() * 12 + 15) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 10 + 14) + 'px';
             container.appendChild(heart);
 
-            setTimeout(() => { heart.remove(); }, 6000);
+            setTimeout(() => { heart.remove(); }, 5000);
         }
-        setInterval(createHeart, 450);
+        setInterval(createHeart, 600);
     </script>
 </body>
-          </html>
-          
+</html>
