@@ -37,6 +37,7 @@
             z-index: 9999;
             padding: 20px;
             text-align: center;
+            transition: opacity 0.5s ease;
         }
 
         .loader-heart {
@@ -76,7 +77,7 @@
             height: 100%;
             background: linear-gradient(90deg, #ff4081, #b388ff);
             border-radius: 20px;
-            transition: width 0.08s linear;
+            transition: width 0.1s ease;
             box-shadow: 0 0 8px #ff4081;
         }
 
@@ -87,7 +88,17 @@
             font-style: italic;
         }
 
-        /* --- BACKGROUND PARTICLES --- */
+        /* --- BACKGROUND PARTICLES & CONFETTI CANVAS --- */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 25;
+            pointer-events: none;
+        }
+
         .heart {
             position: absolute;
             color: rgba(255, 64, 129, 0.35);
@@ -178,7 +189,6 @@
             position: relative;
         }
 
-        /* Cake Base Plate */
         .cake-plate {
             width: 210px;
             height: 10px;
@@ -188,7 +198,6 @@
             z-index: 2;
         }
 
-        /* Tier 1 (Bottom Layer) */
         .tier-bottom {
             width: 170px;
             height: 50px;
@@ -199,7 +208,6 @@
             box-shadow: inset 0 -5px 0 rgba(0,0,0,0.1);
         }
 
-        /* Tier 2 (Top Layer) */
         .tier-top {
             width: 120px;
             height: 45px;
@@ -210,7 +218,6 @@
             box-shadow: inset 0 -5px 0 rgba(0,0,0,0.08);
         }
 
-        /* Cream/Drip Frosting Design */
         .drip-frosting {
             width: 100%;
             height: 14px;
@@ -219,10 +226,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        /* Cute Cake Hearts Decor */
         .cake-decor-heart {
             font-size: 12px;
             position: absolute;
@@ -230,7 +235,6 @@
             bottom: 12px;
         }
 
-        /* Premium Candle with Magic Flame */
         .candle-stick {
             width: 8px;
             height: 38px;
@@ -291,8 +295,8 @@
         }
 
         @keyframes pulseAction {
-            0%, 100% { transform: translateY(0); box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4); }
-            50% { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 64, 129, 0.6); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
 
         /* --- SCREEN 2: LOVE LETTER ARCHITECTURE --- */
@@ -350,21 +354,19 @@
             font-size: 4rem;
             margin-bottom: 10px;
             animation: envelopeHeartbeat 2s infinite ease-in-out;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
         }
 
         @keyframes envelopeHeartbeat {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.08) rotate(2deg); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
-        /* Immersive Letter Back Template */
         .card-back {
-            background: #fffdf9; /* Soft cream paper tone */
+            background: #fffdf9;
             color: #2b113a;
             transform: rotateY(180deg);
             border: 3px double #ff4081;
-            display: block; /* Allows natural layout parsing */
+            display: block;
             text-align: left;
             overflow-y: auto;
             padding: 22px 20px;
@@ -416,7 +418,7 @@
 
     <!-- MAIN CONTEXT WRAPPER -->
     <div class="app-wrapper">
-        <!-- Floating Elements Workspace -->
+        <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
         <!-- SCREEN ONE: INTERACTIVE MULTI-TIER CAKE -->
@@ -425,7 +427,6 @@
             <p class="sub-title">To My Ultimate Favorite Person, Sumaiya ❤️</p>
             
             <div class="cake-container">
-                <!-- Tier 2 (Top Layer) -->
                 <div class="tier-top">
                     <div class="candle-stick">
                         <div class="magic-flame" id="flame-core"></div>
@@ -434,34 +435,30 @@
                     <div class="cake-decor-heart" style="left: 20px;">❤️</div>
                     <div class="cake-decor-heart" style="right: 20px;">❤️</div>
                 </div>
-                <!-- Tier 1 (Bottom Layer) -->
                 <div class="tier-bottom">
                     <div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div>
                     <div class="cake-decor-heart" style="left: 35px; bottom: 15px; font-size: 14px;">✨</div>
                     <div class="cake-decor-heart" style="left: 78px; bottom: 10px; font-size: 16px;">💝</div>
                     <div class="cake-decor-heart" style="right: 35px; bottom: 15px; font-size: 14px;">✨</div>
                 </div>
-                <!-- Premium Plate Base -->
                 <div class="cake-plate"></div>
             </div>
             
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
-        <!-- SCREEN TWO: UNWRAPPING THE INNER GREETING -->
+        <!-- SCREEN TWO: GREETING LETTER -->
         <div id="note-screen">
-            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 2px; text-shadow: 0 0 10px rgba(255,64,129,0.3);">Wish Granted! ✨</h2>
+            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 2px;">Wish Granted! ✨</h2>
             <p style="color: #b388ff; font-size: 0.85rem; margin-bottom: 15px; font-weight: bold;">Tap below to unlock your real letter:</p>
 
-            <div class="card-container" onclick="openLetterCard(this)">
+            <div class="card-container" onclick="openLetterCard(elementThorne(this))">
                 <div class="card-inner">
-                    <!-- Envelope Side -->
                     <div class="card-front">
                         <div class="envelope-icon">✉️</div>
                         <h3 style="font-size: 1.15rem; letter-spacing: 0.5px;">For Sumaiya Only</h3>
                         <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.85;">(A secret inside...)</p>
                     </div>
-                    <!-- Personalized Letter Output Side -->
                     <div class="card-back">
                         <div class="letter-salutation">Dear Sumaiya, ❤️</div>
                         <p class="letter-body">
@@ -477,10 +474,72 @@
         </div>
     </div>
 
-    <!-- Canvas Confetti Engine Package -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // High-fidelity Simulated Loader
+        // Native Offline-Safe Confetti Engine Setup
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiActive = false;
+        let confettiParticles = [];
+        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffffff', '#ffb703'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createConfettiPiece(side) {
+            return {
+                x: side === 'left' ? -10 : canvas.width + 10,
+                y: canvas.height * 0.65,
+                size: Math.random() * 6 + 6,
+                color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+                speedX: side === 'left' ? Math.random() * 12 + 8 : -(Math.random() * 12 + 8),
+                speedY: -(Math.random() * 15 + 15),
+                gravity: 0.4,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 4 - 2
+            };
+        }
+
+        function triggerLoveConfettiBlast() {
+            confettiActive = true;
+            // Burst from left and right sides
+            for (let i = 0; i < 70; i++) {
+                confettiParticles.push(createConfettiPiece('left'));
+                confettiParticles.push(createConfettiPiece('right'));
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            if (confettiParticles.length === 0 && !confettiActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = confettiParticles.length - 1; i >= 0; i--) {
+                let p = confettiParticles[i];
+                p.x += p.speedX;
+                p.y += p.speedY;
+                p.speedY += p.gravity;
+                p.rotation += p.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+
+                // Remove fell-off particles
+                if (p.y > canvas.height + 20) {
+                    confettiParticles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animateConfetti);
+        }
+
+        // Smooth Auto Loading Sequence
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
@@ -499,35 +558,31 @@
                 if (width >= 100) {
                     clearInterval(loaderRunner);
                     loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 850);
+                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
                 } else {
-                    width += 2;
+                    width += 4; // Moves faster and smooth
                     progress.style.width = width + '%';
                     let statusIndex = Math.floor((width / 100) * statusTicks.length);
                     if(statusTicks[statusIndex]) {
                         statusText.innerText = statusTicks[statusIndex];
                     }
                 }
-            }, 40); 
+            }, 50); 
             
-            // Build permanent environment background matrix
             generateSparkleMatrix();
         });
 
-        // Tap Anywhere Candle Interaction Logic
+        // Candle Blowing Flow Control
         let structuralStateLit = true;
         function extinguishCandleSequence() {
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // 1. Extinguish candle flame graphic smoothly
             document.getElementById('flame-core').classList.add('extinguished');
             document.getElementById('banner-text').innerText = "💖 HAPPY 15TH BIRTHDAY SUMAIYA! 💖";
             
-            // 2. Trigger Premium Heavy Love Hearts & Confetti Blast
             triggerLoveConfettiBlast();
 
-            // 3. Scale Shift Transition to Love Letter Board
             setTimeout(() => {
                 const cakeView = document.getElementById('cake-screen');
                 const noteView = document.getElementById('note-screen');
@@ -541,46 +596,4 @@
                     
                     setTimeout(() => {
                         noteView.style.opacity = '1';
-                        noteView.style.transform = 'scale(1) translateY(0)';
-                    }, 50);
-                }, 900);
-            }, 2200); // Expanded celebration visual window
-        }
-
-        // Letter handling mechanics
-        function openLetterCard(element) {
-            element.classList.toggle('open');
-            if(element.classList.contains('open')) {
-                // Heart shaped or custom color mini puff
-                confetti({
-                    particleCount: 40,
-                    spread: 45,
-                    origin: { y: 0.65 },
-                    colors: ['#ff4081', '#ff80ab', '#ffffff']
-                });
-            }
-        }
-
-        // Heavy Heart-Tinted Confetti Engine configuration
-        function triggerLoveConfettiBlast() {
-            var timeframe = 2.8 * 1000;
-            var endPoint = Date.now() + timeframe;
-
-            (function animationFrameLoop() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 65,
-                    origin: { x: -0.05, y: 0.65 },
-                    colors: ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffffff']
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 65,
-                    origin: { x: 1.05, y: 0.65 },
-                    colors: ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffffff']
-                });
-
-                if (Date.now() < endPoint) {
-                    request
+                        noteView.style.tr
