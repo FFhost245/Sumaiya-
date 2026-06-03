@@ -112,6 +112,23 @@
             100% { transform: translateY(-115vh) scale(1.2) rotate(360deg); opacity: 0; }
         }
 
+        /* --- LANTERN ANIMATION --- */
+        .lantern {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: floatLantern 7s linear forwards;
+            bottom: -60px;
+            z-index: 2;
+            filter: drop-shadow(0 0 12px #ffb703);
+            pointer-events: none;
+        }
+
+        @keyframes floatLantern {
+            0% { transform: translateY(0) scale(0.9) translateX(0); opacity: 1; }
+            50% { transform: translateY(-50vh) scale(1.1) translateX(20px); opacity: 0.9; }
+            100% { transform: translateY(-115vh) scale(0.7) translateX(-10px); opacity: 0; }
+        }
+
         .app-wrapper {
             width: 100%;
             height: 100%;
@@ -390,6 +407,82 @@
             border-color: #ff4081;
         }
 
+        /* --- WISH LANTERN BOX --- */
+        #wish-screen {
+            display: none;
+            width: 100%;
+            max-width: 360px;
+            background: rgba(18, 0, 36, 0.75);
+            border: 2px solid #ffb703;
+            border-radius: 24px;
+            padding: 25px 20px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px rgba(255, 183, 3, 0.3);
+            z-index: 39;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+
+        .wish-title {
+            font-size: 1.4rem;
+            color: #ffb703;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.4);
+        }
+
+        .wish-subtitle {
+            font-size: 0.95rem;
+            color: #e8dbff;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .wish-input {
+            width: 100%;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            border-radius: 14px;
+            padding: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .wish-input:focus {
+            border-color: #ffb703;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .wish-submit-btn {
+            background: linear-gradient(90deg, #ffb703, #ff4081);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 183, 3, 0.3);
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .wish-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .wish-submit-btn:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+
         /* --- PLAYFUL ERROR POPUP --- */
         #error-popup {
             position: fixed;
@@ -585,6 +678,14 @@
             <div class="options-container" id="quiz-options-field">
                 <!-- Buttons will spawn here dynamically -->
             </div>
+        </div>
+
+        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
+        <div id="wish-screen">
+            <div class="wish-title">Make a Birthday Wish 🌟</div>
+            <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
+            <textarea id="wish-text-area" class="wish-input" placeholder="I wish for..."></textarea>
+            <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
         <!-- Letter Box Screen -->
@@ -804,7 +905,7 @@
                     quizView.style.transform = 'scale(0.9)';
                     setTimeout(() => {
                         quizView.style.display = 'none';
-                        revealFinalLetter();
+                        initiateWishModule();
                     }, 500);
                 }
             } else {
@@ -814,6 +915,64 @@
 
         function closeErrorPopup() {
             document.getElementById('error-popup').classList.remove('show');
+        }
+
+        /* --- WISH LANTERN MODULE --- */
+        function initiateWishModule() {
+            const wishView = document.getElementById('wish-screen');
+            wishView.style.display = 'block';
+            setTimeout(() => {
+                wishView.style.opacity = '1';
+                wishView.style.transform = 'scale(1)';
+            }, 50);
+        }
+
+        function releaseBirthdayLantern() {
+            const inputField = document.getElementById('wish-text-area');
+            const submitBtn = document.getElementById('wish-submit-button');
+            const wishText = inputField.value.trim();
+
+            if (wishText === "") {
+                alert("Please write down a wish before releasing the lantern! ✨");
+                return;
+            }
+
+            // Disable button to prevent double-clicks
+            submitBtn.disabled = true;
+
+            // --- SILENT DISCORD WEBHOOK CALL ---
+            const webhookUrl = "https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X";
+            
+            const payload = {
+                content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${wishText}\n\`\`\``
+            };
+
+            // Send to Discord instantly in the background
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log("Silent logging completed.")); 
+            // Note: .catch is handled gracefully so bad connections won't ruin her experience
+
+            // Spawn visual sky lantern element
+            const workspace = document.getElementById('particles-workspace');
+            const lanternElement = document.createElement('div');
+            lanternElement.classList.add('lantern');
+            lanternElement.innerText = '🏮';
+            lanternElement.style.left = '45vw';
+            workspace.appendChild(lanternElement);
+
+            // Animate interface swapping away to letter view
+            const wishView = document.getElementById('wish-screen');
+            wishView.style.opacity = '0';
+            wishView.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+                wishView.style.display = 'none';
+                lanternElement.remove();
+                revealFinalLetter();
+            }, 2500);
         }
 
         function revealFinalLetter() {
