@@ -138,7 +138,7 @@
             top: 0;
             left: 0;
             z-index: 20;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 20px;
             text-align: center;
         }
@@ -263,7 +263,7 @@
             max-width: 320px;
         }
 
-        /* --- NEW FULL-SCREEN CELEBRATION SCREEN --- */
+        /* --- SLOWER, SIDE-BY-SIDE CELEBRATION SCREEN --- */
         #celebration-screen {
             position: fixed;
             top: 0;
@@ -271,15 +271,14 @@
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 30;
-            background: rgba(12, 0, 24, 0.9);
+            background: rgba(12, 0, 24, 0.92);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.5s ease;
-            padding: 20px;
+            transition: opacity 1.2s ease, visibility 1.2s ease; /* Slowed down entry transition */
+            padding: 15px;
             text-align: center;
         }
 
@@ -289,30 +288,33 @@
         }
 
         .celeb-text-wrapper {
-            animation: superPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+            width: 100%;
+            overflow: hidden;
+            padding: 10px 0;
         }
 
+        /* side-by-side single line styling optimized for mobile */
         .celeb-main-title {
-            font-size: 3.5rem;
-            line-height: 1.1;
+            font-size: 1.85rem; /* Scaled down perfectly to fit side-by-side on mobile screens */
             font-weight: 900;
             color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #ff4081, 0 0 30px #ff4081, 0 0 60px #7b2cbf;
-            margin-bottom: 10px;
+            white-space: nowrap; /* Forces side-by-side layout */
+            letter-spacing: 0px;
+            text-shadow: 0 0 12px #ff4081, 0 0 25px #ff4081, 0 0 50px #7b2cbf;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth slide-up transition */
         }
 
-        .celeb-sub-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #ff80ab;
-            text-shadow: 0 0 15px rgba(255,128,171,0.6);
+        #celebration-screen.active .celeb-main-title {
+            opacity: 1;
+            transform: translateY(0);
+            animation: slowPulse 2s infinite alternate ease-in-out 1.2s; /* Gentle scale animation after it arrives */
         }
 
-        @keyframes superPop {
-            0% { transform: scale(0.95); filter: brightness(1); }
-            100% { transform: scale(1.05); filter: brightness(1.2); }
+        @keyframes slowPulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.04); filter: brightness(1.15); }
         }
 
         /* --- LETTER SCREEN --- */
@@ -322,7 +324,7 @@
             display: none;
             opacity: 0;
             transform: scale(0.9) translateY(30px);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth transition for the card */
             text-align: center;
             z-index: 40;
         }
@@ -442,11 +444,10 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
-        <!-- NEW FULL SCREEN CELEBRATION BLOCK -->
+        <!-- FULL SCREEN CELEBRATION BLOCK (SIDE-BY-SIDE DESIGN) -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
-                <h1 class="celeb-main-title">Happy<br>Birthday</h1>
-                <p class="celeb-sub-title">Sumaiya! 🎉❤️</p>
+                <h1 class="celeb-main-title">Happy Birthday Sumaiya! 🎉❤️</h1>
             </div>
         </div>
 
@@ -466,7 +467,7 @@
                             <br><br>
                             I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
                         </p>
-                        <div class="letter-signoff">Forever yours, blaize</div>
+                        <div class="letter-signoff">Forever yours, ya sin</div>
                     </div>
                 </div>
             </div>
@@ -494,9 +495,9 @@
                 size: Math.random() * 8 + 6,
                 color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
                 speedX: Math.random() * 6 - 3,
-                speedY: Math.random() * 6 + 5,
+                speedY: Math.random() * 5 + 3.5, // Slightly gentler fall speed
                 rotation: Math.random() * 360,
-                rotationSpeed: Math.random() * 6 - 3
+                rotationSpeed: Math.random() * 4 - 2
             };
         }
 
@@ -536,7 +537,7 @@
             requestAnimationFrame(animateConfetti);
         }
 
-        // Auto Loading setup
+        // Loading Screen Animation Loop
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
@@ -571,14 +572,14 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // 1. Instantly snuff out the candles
+            // 1. Snuff out the flames instantly
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
 
-            // 2. Trigger a massive full-blast confetti cascade
-            triggerLoveConfettiBlast(180);
+            // 2. Trigger high-volume confetti blast
+            triggerLoveConfettiBlast(160);
 
-            // 3. Bring up the full-screen neon celebration overlay
+            // 3. Initiate the slow celebration screen overlay transition
             setTimeout(() => {
                 const cakeView = document.getElementById('cake-screen');
                 const celebView = document.getElementById('celebration-screen');
@@ -587,17 +588,17 @@
                 
                 setTimeout(() => {
                     cakeView.style.display = 'none';
-                    celebView.classList.add('active');
+                    celebView.classList.add('active'); // Activates 1.2-second slow fade-in
                     
-                    // Keep spawning extra confetti while celebrating
+                    // Maintain a continuous stream of celebration confetti
                     const continuousConfetti = setInterval(() => {
-                        if(!structuralStateLit) triggerLoveConfettiBlast(10);
-                    }, 300);
+                        if(!structuralStateLit) triggerLoveConfettiBlast(8);
+                    }, 350);
 
-                    // 4. Leave celebration running for 3 seconds, then drop into the note card
+                    // 4. Leave celebration screen running longer (4.5 seconds) so it feels elegantly slow
                     setTimeout(() => {
                         clearInterval(continuousConfetti);
-                        confettiActive = false; // Stop auto-respawning pieces
+                        confettiActive = false;
                         
                         celebView.classList.remove('active');
                         celebView.style.opacity = '0';
@@ -610,11 +611,11 @@
                                 noteView.style.opacity = '1';
                                 noteView.style.transform = 'scale(1) translateY(0)';
                             }, 50);
-                        }, 500);
-                    }, 3000); // 3 seconds celebration length
+                        }, 1200); // Matching the slow entry timeline
+                    }, 4500); // 4.5 seconds celebration screen holding time
 
-                }, 400);
-            }, 600);
+                }, 600);
+            }, 500);
         }
 
         function openLetterCard(element) {
@@ -631,7 +632,7 @@
                 heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
                 container.appendChild(heart);
                 setTimeout(() => { heart.remove(); }, 4500);
-            }, 550);
+            }, 600);
         }
     </script>
 </body>
