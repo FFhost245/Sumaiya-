@@ -107,25 +107,11 @@
             filter: drop-shadow(0 0 5px rgba(255,64,129,0.3));
         }
 
-        .sparkle {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 2s infinite ease-in-out;
-            z-index: 1;
-            pointer-events: none;
-        }
-
         @keyframes floatUp {
             0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-115vh) scale(1.2) rotate(360deg); opacity: 0; }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1.2); }
         }
 
         .app-wrapper {
@@ -172,6 +158,7 @@
             margin-bottom: 35px;
         }
 
+        /* --- NEW ALPHABET CANDLE BUILD --- */
         .cake-container {
             width: 200px;
             height: 180px;
@@ -183,6 +170,52 @@
             position: relative;
         }
 
+        .candle-holder {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            top: -22px; /* Adjusted to fit the alphabet height */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .alphabet-candle {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(#b388ff, #e8dbff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            position: relative;
+            line-height: 1;
+        }
+
+        .magic-flame {
+            width: 10px;
+            height: 18px;
+            background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffb703 30%, #ff4081 70%);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
+            animation: flameWobble 0.5s infinite alternate ease-in-out;
+            transition: all 0.25s ease;
+        }
+
+        @keyframes flameWobble {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(3deg); }
+        }
+
+        .magic-flame.extinguished {
+            opacity: 0;
+            transform: translateX(-50%) scale(0) translateY(-10px);
+        }
+
+        /* --- CAKE LAYERS --- */
         .cake-plate {
             width: 210px;
             height: 10px;
@@ -220,54 +253,6 @@
             left: 0;
         }
 
-        .candle-stick {
-            width: 8px;
-            height: 38px;
-            background: linear-gradient(to right, #b388ff, #e8dbff);
-            border-radius: 2px;
-            position: absolute;
-            top: -34px;
-            left: calc(50% - 4px);
-            z-index: 5;
-        }
-
-        .candle-stick::before {
-            content: '15';
-            position: absolute;
-            top: 6px;
-            left: -5px;
-            font-size: 10px;
-            font-weight: 900;
-            color: #4a0e4e;
-            background: #fff;
-            padding: 1px 2px;
-            border-radius: 3px;
-            transform: scale(0.8);
-        }
-
-        .magic-flame {
-            width: 12px;
-            height: 22px;
-            background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffb703 30%, #ff4081 70%);
-            border-radius: 50% 50% 20% 20%;
-            position: absolute;
-            top: -24px;
-            left: -2px;
-            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
-            animation: flameWobble 0.5s infinite alternate ease-in-out;
-        }
-
-        @keyframes flameWobble {
-            0% { transform: scale(1) rotate(-2deg); }
-            100% { transform: scale(1.1) rotate(3deg); }
-        }
-
-        .magic-flame.extinguished {
-            opacity: 0;
-            transform: scale(0) translateY(-10px);
-            transition: all 0.25s ease;
-        }
-
         .action-banner {
             font-size: 0.95rem;
             color: #fff;
@@ -276,6 +261,8 @@
             padding: 12px 24px;
             border-radius: 50px;
             box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4);
+            width: 90%;
+            max-width: 320px;
         }
 
         /* --- LETTER SCREEN --- */
@@ -384,12 +371,15 @@
 
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
-            <p class="sub-title">To My Ultimate Favorite Person, Sumaiya ❤️</p>
+            <!-- 1. Removed "Ultimate" from subtitle -->
+            <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
             
             <div class="cake-container">
                 <div class="tier-top">
-                    <div class="candle-stick">
-                        <div class="magic-flame" id="flame-core"></div>
+                    <!-- 2. Clean Alphabet Candles with matching flames -->
+                    <div class="candle-holder">
+                        <div class="alphabet-candle">1<div class="magic-flame flame-node"></div></div>
+                        <div class="alphabet-candle">5<div class="magic-flame flame-node"></div></div>
                     </div>
                     <div class="drip-frosting"></div>
                 </div>
@@ -417,7 +407,7 @@
                             <br><br>
                             I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
                         </p>
-                        <div class="letter-signoff">Forever yours, blaize </div>
+                        <div class="letter-signoff">Forever yours, blaize</div>
                     </div>
                 </div>
             </div>
@@ -522,7 +512,10 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            document.getElementById('flame-core').classList.add('extinguished');
+            // Extinguishes both alphabet flames smoothly
+            const flames = document.querySelectorAll('.flame-node');
+            flames.forEach(flame => flame.classList.add('extinguished'));
+
             document.getElementById('banner-text').innerText = "💖 HAPPY 15TH BIRTHDAY SUMAIYA! 💖";
             
             triggerLoveConfettiBlast();
