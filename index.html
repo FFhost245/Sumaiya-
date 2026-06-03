@@ -323,8 +323,8 @@
             transform: translate3d(0, 0, 0);
         }
 
-        /* --- QUIZ SCREEN --- */
-        #quiz-screen {
+        /* --- SCREEN CARD COMMON BOILERPLATE --- */
+        .game-window-card {
             display: none;
             width: 100%;
             max-width: 360px;
@@ -338,7 +338,7 @@
             z-index: 38;
             opacity: 0;
             transform: scale(0.9);
-            transition: all 0.5s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .quiz-header {
@@ -357,6 +357,49 @@
             font-weight: 600;
         }
 
+        /* --- INTERACTIVE INSTRUCTION SUB-CARDS --- */
+        .instruction-highlight-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 128, 171, 0.4);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .instruction-line {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e8dbff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .instruction-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .instruction-btn {
+            background: linear-gradient(90deg, #ff4081, #7b2cbf);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .instruction-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* --- QUIZ SCREEN --- */
         .question-text {
             font-size: 1.15rem;
             color: #fff;
@@ -389,6 +432,78 @@
             transform: scale(0.97);
             background: rgba(255, 64, 129, 0.2);
             border-color: #ff4081;
+        }
+
+        /* --- GAME 1: CATCH THE HEARTS --- */
+        #catch-game-area {
+            width: 100%;
+            height: 220px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 1px dashed rgba(255, 64, 129, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .catcher-basket {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            width: 65px;
+            height: 30px;
+            background: linear-gradient(to top, #7b2cbf, #9d4edd);
+            border-radius: 0 0 15px 15px;
+            border-top: 4px solid #ff4081;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .falling-item {
+            position: absolute;
+            font-size: 24px;
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        /* --- GAME 2: MEMORY MATCH --- */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #4a148c, #311b92);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: transparent;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .memory-card.flipped {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: rgba(105, 240, 174, 0.2);
+            border-color: #69f0ae;
+            color: transparent;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         /* --- WISH LANTERN BOX & TRANSITIONS --- */
@@ -469,28 +584,7 @@
             cursor: not-allowed;
         }
 
-        .wish-submit-btn:active:not(:disabled) {
-            transform: scale(0.96);
-        }
-
         /* --- SWEETNESS SLIDER SCREEN --- */
-        #slider-screen {
-            display: none;
-            width: 100%;
-            max-width: 360px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 25px 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            z-index: 38;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.5s ease;
-        }
-
         .slider-title {
             font-size: 1.25rem;
             color: #fff;
@@ -512,7 +606,6 @@
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.15);
             outline: none;
-            transition: background 0.3s ease;
         }
 
         .love-slider::-webkit-slider-thumb {
@@ -524,17 +617,6 @@
             background: #ff4081;
             cursor: pointer;
             box-shadow: 0 0 15px #ff4081;
-            transition: transform 0.1s ease;
-        }
-
-        .love-slider::-moz-range-thumb {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #ff4081;
-            cursor: pointer;
-            box-shadow: 0 0 15px #ff4081;
-            border: none;
         }
 
         .slider-percentage {
@@ -551,7 +633,6 @@
             height: 24px;
             margin-top: 5px;
             color: #b388ff;
-            transition: color 0.3s ease;
         }
 
         .slider-feedback.error-msg-style {
@@ -587,7 +668,7 @@
             cursor: not-allowed;
         }
 
-        /* --- HARDWARE ACCELERATED PAPER LANTERN --- */
+        /* --- HARDWARE LANTERN --- */
         .center-lantern-container {
             position: fixed;
             top: 50%;
@@ -601,7 +682,6 @@
             flex-direction: column;
             align-items: center;
             pointer-events: none;
-            will-change: transform, opacity;
             transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
         }
 
@@ -610,7 +690,6 @@
             height: 8px;
             background: #4a0011;
             border-radius: 3px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
 
         .lantern-main-body {
@@ -618,68 +697,16 @@
             flex-grow: 1;
             background: linear-gradient(to bottom, #ff4081 0%, #ff80ab 40%, #ffb703 100%);
             border-radius: 25px / 40px;
-            box-shadow: 0 0 25px #ff4081, 0 0 45px #ffb703, inset 0 0 20px rgba(255,255,255,0.4);
+            box-shadow: 0 0 25px #ff4081, 0 0 45px #ffb703;
             position: relative;
-            margin: -2px 0;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .lantern-inner-fire {
-            width: 30px;
-            height: 45px;
-            background: radial-gradient(circle at 50% 100%, #ffffff 20%, #ffb703 60%, transparent 100%);
-            border-radius: 50% 50% 30% 30%;
-            position: absolute;
-            bottom: 12px;
-            will-change: transform, opacity;
-            animation: firePulse 0.5s infinite alternate ease-in-out;
-        }
-
-        @keyframes firePulse {
-            0% { transform: scale(0.92); opacity: 0.85; }
-            100% { transform: scale(1.08); opacity: 1; }
-        }
-
-        .lantern-tassel {
-            width: 4px;
-            height: 25px;
-            background: #ff4081;
-            box-shadow: 0 0 8px #ff4081;
-            transform-origin: top center;
-            will-change: transform;
-            animation: swingTassel 0.8s infinite alternate ease-in-out;
-        }
-
-        @keyframes swingTassel {
-            0% { transform: rotate(-4deg); }
-            100% { transform: rotate(4deg); }
-        }
-
-        .center-lantern-container.reveal {
-            opacity: 1;
-            transform: translate3d(-50%, -50%, 0) scale(1.1);
-        }
-
-        .center-lantern-container.fly-away {
-            animation: grandAscent 3.2s cubic-bezier(0.4, 0, 1, 1) forwards;
-        }
+        .center-lantern-container.reveal { opacity: 1; transform: translate3d(-50%, -50%, 0) scale(1.1); }
+        .center-lantern-container.fly-away { animation: grandAscent 3.2s cubic-bezier(0.4, 0, 1, 1) forwards; }
 
         @keyframes grandAscent {
-            0% {
-                transform: translate3d(-50%, -50%, 0) scale(1.1);
-                opacity: 1;
-            }
-            15% {
-                transform: translate3d(-50%, -45%, 0) scale(1.15);
-                opacity: 1;
-            }
-            100% {
-                transform: translate3d(-50%, -125vh, 0) scale(0.25);
-                opacity: 0;
-            }
+            0% { transform: translate3d(-50%, -50%, 0) scale(1.1); opacity: 1; }
+            100% { transform: translate3d(-50%, -125vh, 0) scale(0.25); opacity: 0; }
         }
 
         /* --- PLAYFUL ERROR POPUP --- */
@@ -699,34 +726,12 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.5);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
         }
 
-        #error-popup.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translate3d(-50%, -50%, 0) scale(1);
-        }
-
-        .error-msg {
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .error-close-btn {
-            background: #fff;
-            color: #8e24aa;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        #error-popup.show { opacity: 1; visibility: visible; transform: translate3d(-50%, -50%, 0) scale(1); }
+        .error-msg { color: #fff; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; }
+        .error-close-btn { background: #fff; color: #8e24aa; border: none; padding: 8px 20px; border-radius: 50px; font-weight: 800; }
 
         /* --- LETTER SCREEN --- */
         #note-screen {
@@ -734,88 +739,21 @@
             max-width: 360px;
             display: none;
             opacity: 0;
-            transform: scale(0.9) translate3d(0, 30px, 0);
+            transform: scale(0.9);
             transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
             z-index: 40;
         }
 
-        .card-container {
-            perspective: 1000px;
-            width: 100%;
-            height: 250px;
-            margin-top: 20px;
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .card-container.open .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
-
-        .card-front {
-            background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%);
-            color: white;
-        }
-
-        .envelope-icon {
-            font-size: 4rem;
-            margin-bottom: 10px;
-        }
-
-        .card-back {
-            background: #fffdf9;
-            color: #2b113a;
-            transform: rotateY(180deg);
-            border: 3px double #ff4081;
-            display: block;
-            text-align: left;
-            overflow-y: auto;
-            padding: 22px 20px;
-        }
-
-        .letter-salutation {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #ff4081;
-            margin-bottom: 8px;
-        }
-
-        .letter-body {
-            font-size: 0.92rem;
-            line-height: 1.6;
-            font-style: italic;
-            font-weight: 600;
-        }
-
-        .letter-signoff {
-            margin-top: 12px;
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #9c27b0;
-            text-align: right;
-        }
+        .card-container { perspective: 1000px; width: 100%; height: 250px; margin-top: 20px; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.85s ease; transform-style: preserve-3d; }
+        .card-container.open .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; }
+        .card-front { background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%); color: white; }
+        .card-back { background: #fffdf9; color: #2b113a; transform: rotateY(180deg); border: 3px double #ff4081; display: block; text-align: left; overflow-y: auto; }
+        .letter-salutation { font-size: 1.1rem; font-weight: 800; color: #ff4081; margin-bottom: 8px; }
+        .letter-body { font-size: 0.92rem; line-height: 1.6; font-style: italic; font-weight: 600; }
+        .letter-signoff { margin-top: 12px; font-size: 0.95rem; font-weight: 800; color: #9c27b0; text-align: right; }
     </style>
 </head>
 <body>
@@ -829,7 +767,6 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
-    <!-- Playful Error Modal -->
     <div id="error-popup">
         <div class="error-msg">You are wrong cute idiot 😜</div>
         <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
@@ -843,7 +780,6 @@
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
-            
             <div class="cake-container">
                 <div class="tier-top">
                     <div class="candle-holder">
@@ -852,13 +788,10 @@
                     </div>
                     <div class="drip-frosting"></div>
                 </div>
-                <div class="tier-bottom">
-                    <div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div>
-                </div>
+                <div class="tier-bottom"><div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div></div>
                 <div class="cake-plate"></div>
             </div>
-            
-            <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
+            <div class="action-banner">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
         <!-- Celebration Title -->
@@ -869,17 +802,56 @@
             </div>
         </div>
 
-        <!-- INTERACTIVE QUIZ WINDOW -->
-        <div id="quiz-screen">
+        <!-- STAGE 1: INTERACTIVE QUIZ WINDOW -->
+        <div id="quiz-screen" class="game-window-card">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
-            <div class="options-container" id="quiz-options-field">
-                <!-- Buttons will spawn here dynamically -->
-            </div>
+            <div class="options-container" id="quiz-options-field"></div>
         </div>
 
-        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
+        <!-- NEW: ARCADE 1 INSTRUCTIONS -->
+        <div id="catch-instruction-screen" class="game-window-card">
+            <div class="quiz-header">Mini-Game 1 unlocked! 🎮</div>
+            <div class="quiz-progress">Stage: Heart Catcher</div>
+            <div class="instruction-highlight-box">
+                <div class="instruction-line"><span>🧺</span> <span>Tap left or right inside the dark zone to shift your basket.</span></div>
+                <div class="instruction-line"><span>❤️</span> <span>Collect glowing pink hearts to gain points. Target score: 15.</span></div>
+                <div class="instruction-line"><span>💔</span> <span>Watch out! Broken hearts cost you <b>-2 points</b>!</span></div>
+            </div>
+            <button class="instruction-btn" onclick="hideScreenCard('catch-instruction-screen', startCatchGame)">Start Game 🚀</button>
+        </div>
+
+        <!-- STAGE 2: CATCH THE HEARTS MINI GAME -->
+        <div id="catch-screen" class="game-window-card">
+            <div class="quiz-header">Arcade Stage 1 🧺</div>
+            <div class="quiz-progress" id="catch-status-text">Catch 15 Hearts! Score: 0/15</div>
+            <div id="catch-game-area" onclick="moveBasketViaTap(event)">
+                <div id="basket-node" class="catcher-basket">🧺</div>
+            </div>
+            <p style="font-size: 0.8rem; color:#b388ff;">Tap inside the box to steer your basket!</p>
+        </div>
+
+        <!-- NEW: ARCADE 2 INSTRUCTIONS -->
+        <div id="memory-instruction-screen" class="game-window-card">
+            <div class="quiz-header">Mini-Game 2 unlocked! 🃏</div>
+            <div class="quiz-progress">Stage: Memory Match</div>
+            <div class="instruction-highlight-box">
+                <div class="instruction-line"><span>🎴</span> <span>Tap tiles to flip them around and look at the birthday symbols hidden underneath.</span></div>
+                <div class="instruction-line"><span>🎁</span> <span>Find two identical icons consecutively to pair them up successfully.</span></div>
+                <div class="instruction-line"><span>👑</span> <span>Clear all 6 hidden pairs to fully lift the locks.</span></div>
+            </div>
+            <button class="instruction-btn" onclick="hideScreenCard('memory-instruction-screen', startMemoryGame)">Start Matching ✨</button>
+        </div>
+
+        <!-- STAGE 3: MEMORY MATCH FLIP GAME -->
+        <div id="memory-screen" class="game-window-card">
+            <div class="quiz-header">Arcade Stage 2 🃏</div>
+            <div class="quiz-progress" id="memory-status-text">Match all pairs! Pairs: 0/6</div>
+            <div class="memory-grid" id="memory-grid-container"></div>
+        </div>
+
+        <!-- STAGE 4: BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -887,37 +859,32 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
-        <!-- INTERACTIVE SWEETNESS SLIDER -->
-        <div id="slider-screen">
+        <!-- STAGE 5: INTERACTIVE SWEETNESS SLIDER -->
+        <div id="slider-screen" class="game-window-card">
             <div class="quiz-header">Affection Level Check 💓</div>
-            <div class="slider-title" id="slider-prompt">How much do you love blaize today? 😏</div>
-            
+            <div class="slider-title">How much do you love blaize today? 😏</div>
             <div class="love-gauge-container">
                 <input type="range" min="0" max="100" value="50" class="love-slider" id="loveSliderGauge" oninput="updateLoveGaugeValue(this.value)">
                 <div class="slider-percentage" id="sliderPercentageDisplay">50%</div>
             </div>
-            
             <div class="slider-feedback" id="sliderFeedbackText">Move slider to state your answer!</div>
             <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
         </div>
 
-        <!-- Custom Handcrafted Glowing Paper Lantern Structure -->
+        <!-- Glowing Paper Lantern -->
         <div id="grand-sky-lantern" class="center-lantern-container">
             <div class="lantern-top-cap"></div>
-            <div class="lantern-main-body">
-                <div class="lantern-inner-fire"></div>
-            </div>
+            <div class="lantern-main-body"></div>
             <div class="lantern-bottom-cap"></div>
-            <div class="lantern-tassel"></div>
         </div>
 
-        <!-- Letter Box Screen -->
+        <!-- FINAL STAGE: THE LETTER -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
                 <div class="card-inner">
                     <div class="card-front">
-                        <div class="envelope-icon">✉️</div>
+                        <div style="font-size:4rem; margin-bottom:10px;">✉️</div>
                         <h3>For Sumaiya Only</h3>
                     </div>
                     <div class="card-back">
@@ -935,57 +902,32 @@
     </div>
 
     <script>
-        // Quiz Data
+        // Global Trackers
+        let currentQuestionIndex = 0;
         const quizQuestions = [
-            {
-                q: "Who is officially the most favorite person on earth today?",
-                options: ["Someone else...", "Sumaiya ❤️", "Nobody"],
-                correct: 1
-            },
-            {
-                q: "What is Sumaiya's actual secret superpower?",
-                options: ["Being secretly super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"],
-                correct: 1
-            },
-            {
-                q: "Are you officially stuck with 'blaize' for another whole year?",
-                options: ["Yes, completely stuck! 🥳", "No way", "Maybe"],
-                correct: 0
-            }
+            { q: "Who is officially the most favorite person on earth today?", options: ["Someone else...", "Sumaiya ❤️", "Nobody"], correct: 1 },
+            { q: "What is Sumaiya's actual secret superpower?", options: ["Being super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"], correct: 1 },
+            { q: "Are you officially stuck with 'blaize' for another whole year?", options: ["Yes, completely stuck! 🥳", "No way", "Maybe"], correct: 0 }
         ];
 
-        let currentQuestionIndex = 0;
-
+        // Confetti Engine
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
         let confettiParticles = [];
-        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function createConfettiPiece() {
-            return {
-                x: Math.random() * canvas.width,
-                y: -20,
-                size: Math.random() * 8 + 6,
-                color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
-                speedX: Math.random() * 6 - 3,
-                speedY: Math.random() * 5 + 3.5,
-                rotation: Math.random() * 360,
-                rotationSpeed: Math.random() * 4 - 2
-            };
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
         function triggerLoveConfettiBlast(amount) {
             confettiActive = true;
             for (let i = 0; i < amount; i++) {
-                confettiParticles.push(createConfettiPiece());
+                confettiParticles.push({
+                    x: Math.random() * canvas.width, y: -20,
+                    size: Math.random() * 8 + 6,
+                    color: ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00'][Math.floor(Math.random() * 5)],
+                    speedX: Math.random() * 6 - 3, speedY: Math.random() * 5 + 3.5,
+                    rotation: Math.random() * 360, rotationSpeed: Math.random() * 4 - 2
+                });
             }
             animateConfetti();
         }
@@ -993,275 +935,237 @@
         function animateConfetti() {
             if (confettiParticles.length === 0 && !confettiActive) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             for (let i = confettiParticles.length - 1; i >= 0; i--) {
-                let p = confettiParticles[i];
-                p.y += p.speedY;
-                p.x += p.speedX;
-                p.rotation += p.rotationSpeed;
-
-                ctx.save();
-                ctx.translate(p.x, p.y);
-                ctx.rotate((p.rotation * Math.PI) / 180);
-                ctx.fillStyle = p.color;
-                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-                ctx.restore();
-
+                let p = confettiParticles[i]; p.y += p.speedY; p.x += p.speedX; p.rotation += p.rotationSpeed;
+                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
                 if (p.y > canvas.height) {
                     if (confettiActive) {
-                        confettiParticles[i] = createConfettiPiece();
-                    } else {
-                        confettiParticles.splice(i, 1);
-                    }
+                        confettiParticles[i] = { x: Math.random() * canvas.width, y: -20, size: Math.random() * 8 + 6, color: p.color, speedX: Math.random() * 6 - 3, speedY: Math.random() * 5 + 3.5, rotation: 0, rotationSpeed: Math.random() * 4 - 2 };
+                    } else { confettiParticles.splice(i, 1); }
                 }
             }
             requestAnimationFrame(animateConfetti);
         }
 
+        // Loader Screen Setup
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
-            const statusText = document.getElementById('loader-status');
-            const loader = document.getElementById('loader');
-            
             let width = 0;
-            const statusTicks = [
-                "Locating the birthday girl...",
-                "Baking premium twin layers...",
-                "Overloading confetti cartridges...",
-                "System fully loaded with affection! ❤️"
-            ];
-
             const loaderRunner = setInterval(() => {
                 if (width >= 100) {
                     clearInterval(loaderRunner);
-                    loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
-                } else {
-                    width += 5;
-                    progress.style.width = width + '%';
-                    let statusIndex = Math.floor((width / 100) * statusTicks.length);
-                    if(statusTicks[statusIndex]) statusText.innerText = statusTicks[statusIndex];
-                }
-            }, 50); 
-            
+                    document.getElementById('loader').style.opacity = '0';
+                    setTimeout(() => { document.getElementById('loader').style.visibility = 'hidden'; }, 500);
+                } else { width += 5; progress.style.width = width + '%'; }
+            }, 40);
             generateSparkleMatrix();
         });
 
+        // Universal Transitions
+        function showScreenCard(id) {
+            const el = document.getElementById(id);
+            el.style.display = 'block';
+            setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'scale(1)'; }, 50);
+        }
+        function hideScreenCard(id, callback) {
+            const el = document.getElementById(id);
+            el.style.opacity = '0'; el.style.transform = 'scale(0.9)';
+            setTimeout(() => { el.style.display = 'none'; if(callback) callback(); }, 500);
+        }
+
+        // Candle Blowout Trigger
         let structuralStateLit = true;
         function extinguishCandleSequence() {
-            if (!structuralStateLit) return;
-            structuralStateLit = false;
-
-            const flames = document.querySelectorAll('.flame-node');
-            flames.forEach(flame => flame.classList.add('extinguished'));
-
-            triggerLoveConfettiBlast(160);
-
+            if (!structuralStateLit) return; structuralStateLit = false;
+            document.querySelectorAll('.flame-node').forEach(f => f.classList.add('extinguished'));
+            triggerLoveConfettiBlast(140);
             setTimeout(() => {
-                const cakeView = document.getElementById('cake-screen');
-                const celebView = document.getElementById('celebration-screen');
-                
-                cakeView.style.opacity = '0';
-                
+                document.getElementById('cake-screen').style.opacity = '0';
                 setTimeout(() => {
-                    cakeView.style.display = 'none';
-                    celebView.classList.add('active');
-                    
-                    const continuousConfetti = setInterval(() => {
-                        if(confettiActive) triggerLoveConfettiBlast(6);
-                    }, 350);
-
+                    document.getElementById('cake-screen').style.display = 'none';
+                    document.getElementById('celebration-screen').classList.add('active');
                     setTimeout(() => {
-                        clearInterval(continuousConfetti);
                         confettiActive = false;
-                        
-                        celebView.classList.remove('active');
-                        celebView.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            celebView.style.display = 'none';
-                            initiateQuizModule();
-                        }, 1200);
-                    }, 4000);
-
+                        document.getElementById('celebration-screen').classList.remove('active');
+                        setTimeout(() => { showScreenCard('quiz-screen'); loadQuizQuestion(); }, 1000);
+                    }, 3500);
                 }, 600);
             }, 500);
         }
 
-        /* --- QUIZ LOGIC SYSTEM --- */
-        function initiateQuizModule() {
-            const quizView = document.getElementById('quiz-screen');
-            quizView.style.display = 'block';
-            setTimeout(() => {
-                quizView.style.opacity = '1';
-                quizView.style.transform = 'scale(1)';
-                loadQuizQuestion();
-            }, 50);
-        }
-
+        // Quiz Module
         function loadQuizQuestion() {
             const currentData = quizQuestions[currentQuestionIndex];
             document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
             document.getElementById('quiz-question-field').innerText = currentData.q;
-            
-            const optionsContainer = document.getElementById('quiz-options-field');
-            optionsContainer.innerHTML = '';
+            const container = document.getElementById('quiz-options-field'); container.innerHTML = '';
+            currentData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button'); btn.classList.add('option-btn'); btn.innerText = opt;
+                btn.onclick = () => {
+                    if (idx === currentData.correct) {
+                        currentQuestionIndex++;
+                        if (currentQuestionIndex < quizQuestions.length) { loadQuizQuestion(); } 
+                        else { hideScreenCard('quiz-screen', () => showScreenCard('catch-instruction-screen')); }
+                    } else { document.getElementById('error-popup').classList.add('show'); }
+                };
+                container.appendChild(btn);
+            });
+        }
+        function closeErrorPopup() { document.getElementById('error-popup').classList.remove('show'); }
 
-            currentData.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.classList.add('option-btn');
-                button.innerText = option;
-                button.onclick = () => checkSelectedAnswer(index);
-                optionsContainer.appendChild(button);
+        // ARCADE 1: CATCH THE HEARTS
+        let catchScore = 0;
+        let catchGameLoop, spawnInterval;
+        function startCatchGame() {
+            showScreenCard('catch-screen');
+            catchScore = 0;
+            updateCatchScoreboard();
+            spawnInterval = setInterval(spawnFallingObject, 700);
+            catchGameLoop = setInterval(updateFallingObjects, 30);
+        }
+        function updateCatchScoreboard() {
+            document.getElementById('catch-status-text').innerText = `Catch 15 Hearts! Score: ${catchScore}/15`;
+        }
+        function moveBasketViaTap(event) {
+            const area = document.getElementById('catch-game-area');
+            const rect = area.getBoundingClientRect();
+            const tapX = event.clientX - rect.left;
+            const basket = document.getElementById('basket-node');
+            let targetLeft = Math.max(35, Math.min(rect.width - 35, tapX));
+            basket.style.left = `${targetLeft}px`;
+        }
+        function spawnFallingObject() {
+            const area = document.getElementById('catch-game-area');
+            if(!area) return;
+            const item = document.createElement('div');
+            item.classList.add('falling-item');
+            const isBomb = Math.random() < 0.25; 
+            item.innerText = isBomb ? '💔' : '❤️';
+            item.dataset.type = isBomb ? 'bomb' : 'heart';
+            item.style.left = `${Math.random() * (area.clientWidth - 30)}px`;
+            item.style.top = '-30px';
+            area.appendChild(item);
+        }
+        function updateFallingObjects() {
+            const area = document.getElementById('catch-game-area');
+            const basket = document.getElementById('basket-node');
+            if (!area || !basket) return;
+            const items = area.querySelectorAll('.falling-item');
+            const bRect = basket.getBoundingClientRect();
+
+            items.forEach(item => {
+                let currentTop = parseFloat(item.style.top);
+                currentTop += 4.5;
+                item.style.top = `${currentTop}px`;
+
+                let iRect = item.getBoundingClientRect();
+                if (iRect.bottom >= bRect.top && iRect.top <= bRect.bottom && iRect.right >= bRect.left && iRect.left <= bRect.right) {
+                    if (item.dataset.type === 'heart') {
+                        catchScore++;
+                        triggerLoveConfettiBlast(5);
+                    } else {
+                        catchScore = Math.max(0, catchScore - 2); 
+                    }
+                    updateCatchScoreboard();
+                    item.remove();
+
+                    if (catchScore >= 15) {
+                        clearInterval(catchGameLoop); clearInterval(spawnInterval);
+                        // Safely clear left-over falling nodes out of DOM
+                        area.querySelectorAll('.falling-item').forEach(n => n.remove());
+                        setTimeout(() => { hideScreenCard('catch-screen', () => showScreenCard('memory-instruction-screen')); }, 400);
+                    }
+                } else if (currentTop > area.clientHeight) { item.remove(); }
             });
         }
 
-        function checkSelectedAnswer(selectedIndex) {
-            const currentData = quizQuestions[currentQuestionIndex];
-            if (selectedIndex === currentData.correct) {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < quizQuestions.length) {
-                    loadQuizQuestion();
-                } else {
-                    const quizView = document.getElementById('quiz-screen');
-                    quizView.style.opacity = '0';
-                    quizView.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        quizView.style.display = 'none';
-                        initiateWishModule(); // Correct Flow: Quiz -> Wish screen!
-                    }, 500);
-                }
-            } else {
-                document.getElementById('error-popup').classList.add('show');
-            }
+        // ARCADE 2: MEMORY MATCH CARDS
+        let firstCard = null, secondCard = null, lockBoard = false, matchedPairs = 0;
+        function startMemoryGame() {
+            showScreenCard('memory-screen');
+            const icons = ['🍰','🍰','💖','💖','🎁','🎁','🐱','🐱','👑','👑','🌟','🌟'].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('memory-grid-container');
+            grid.innerHTML = '';
+            icons.forEach(icon => {
+                const card = document.createElement('div');
+                card.classList.add('memory-card');
+                card.innerText = icon;
+                card.onclick = () => {
+                    if (lockBoard || card === firstCard || card.classList.contains('matched')) return;
+                    card.classList.add('flipped');
+                    if (!firstCard) { firstCard = card; return; }
+                    secondCard = card; lockBoard = true;
+                    if (firstCard.innerText === secondCard.innerText) {
+                        setTimeout(() => {
+                            firstCard.classList.add('matched'); secondCard.classList.add('matched');
+                            matchedPairs++;
+                            document.getElementById('memory-status-text').innerText = `Match all pairs! Pairs: ${matchedPairs}/6`;
+                            resetCardPointers();
+                            if (matchedPairs === 6) { setTimeout(() => { hideScreenCard('memory-screen', initiateWishModule); }, 800); }
+                        }, 400);
+                    } else {
+                        setTimeout(() => {
+                            firstCard.classList.remove('flipped'); secondCard.classList.remove('flipped');
+                            resetCardPointers();
+                        }, 800);
+                    }
+                };
+                grid.appendChild(card);
+            });
         }
+        function resetCardPointers() { [firstCard, secondCard, lockBoard] = [null, null, false]; }
 
-        function closeErrorPopup() {
-            document.getElementById('error-popup').classList.remove('show');
-        }
-
-        /* --- WISH LANTERN MODULE --- */
+        // Lantern Module
         function initiateWishModule() {
             const wishView = document.getElementById('wish-screen');
             wishView.style.display = 'block';
-            setTimeout(() => {
-                wishView.style.opacity = '1';
-                wishView.style.transform = 'scale(1)';
-            }, 50);
+            setTimeout(() => { wishView.style.opacity = '1'; wishView.style.transform = 'scale(1)'; }, 50);
         }
-
         function releaseBirthdayLantern() {
-            const inputField = document.getElementById('wish-text-area');
-            const submitBtn = document.getElementById('wish-submit-button');
-            const wishScreen = document.getElementById('wish-screen');
-            const grandLantern = document.getElementById('grand-sky-lantern');
-            const wishText = inputField.value.trim();
+            const txt = document.getElementById('wish-text-area').value.trim();
+            if (!txt) { alert("Please write down a wish before releasing the lantern! ✨"); return; }
+            document.getElementById('wish-submit-button').disabled = true;
 
-            if (wishText === "") {
-                alert("Please write down a wish before releasing the lantern! ✨");
-                return;
-            }
+            fetch("https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${txt}\n\`\`\`` })
+            }).catch(e => {});
 
-            submitBtn.disabled = true;
-
-            const webhookUrl = "https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X";
-            
-            const payload = {
-                content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${wishText}\n\`\`\``
-            };
-
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.log("Logged safely.")); 
-
-            wishScreen.classList.add('absorb-wish');
-
+            document.getElementById('wish-screen').classList.add('absorb-wish');
             setTimeout(() => {
-                grandLantern.classList.add('reveal');
-                
+                document.getElementById('grand-sky-lantern').classList.add('reveal');
                 setTimeout(() => {
-                    grandLantern.classList.add('fly-away');
-                    
-                    setTimeout(() => {
-                        wishScreen.style.display = 'none';
-                    }, 600);
-
-                    setTimeout(() => {
-                        grandLantern.remove();
-                        initiateSliderModule(); // Lantern gone! Now show the Cheeky Sweetness Gauge
-                    }, 3000);
-
-                }, 1000); 
+                    document.getElementById('grand-sky-lantern').classList.add('fly-away');
+                    setTimeout(() => { document.getElementById('wish-screen').style.display = 'none'; }, 600);
+                    setTimeout(() => { document.getElementById('grand-sky-lantern').remove(); showScreenCard('slider-screen'); }, 3000);
+                }, 1000);
             }, 300);
         }
 
-        /* --- SWEETNESS SLIDER LOGIC --- */
-        function initiateSliderModule() {
-            const sliderView = document.getElementById('slider-screen');
-            sliderView.style.display = 'block';
-            setTimeout(() => {
-                sliderView.style.opacity = '1';
-                sliderView.style.transform = 'scale(1)';
-            }, 50);
-        }
-
+        // Slider Mechanics
         function updateLoveGaugeValue(val) {
-            const display = document.getElementById('sliderPercentageDisplay');
-            const feedback = document.getElementById('sliderFeedbackText');
-            const nextBtn = document.getElementById('sliderContinueButton');
-            
-            display.innerText = val + "%";
-            
-            if (val < 80) {
-                feedback.innerText = "Error: Input value dangerously low! 😜";
-                feedback.classList.add('error-msg-style');
-                nextBtn.disabled = true;
-            } else if (val >= 80 && val < 100) {
-                feedback.innerText = "Hmm, getting closer... keep sliding! 😉";
-                feedback.classList.remove('error-msg-style');
-                nextBtn.disabled = true;
-            } else if (parseInt(val) === 100) {
-                feedback.innerText = "Perfect! Correct answer! ❤️";
-                feedback.classList.remove('error-msg-style');
-                nextBtn.disabled = false;
-            }
+            const d = document.getElementById('sliderPercentageDisplay');
+            const f = document.getElementById('sliderFeedbackText');
+            const b = document.getElementById('sliderContinueButton');
+            d.innerText = val + "%";
+            if (val < 80) { f.innerText = "Error: Input value dangerously low! 😜"; f.classList.add('error-msg-style'); b.disabled = true; } 
+            else if (val >= 80 && val < 100) { f.innerText = "Hmm, getting closer... keep sliding! 😉"; f.classList.remove('error-msg-style'); b.disabled = true; } 
+            else { f.innerText = "Perfect! Correct answer! ❤️"; f.classList.remove('error-msg-style'); b.disabled = false; }
         }
-
         function transitionFromSliderToLetter() {
-            const sliderView = document.getElementById('slider-screen');
-            sliderView.style.opacity = '0';
-            sliderView.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                sliderView.style.display = 'none';
-                revealFinalLetter(); // 100% unlocked! Open the real letter
-            }, 500);
+            hideScreenCard('slider-screen', () => {
+                document.getElementById('note-screen').style.display = 'block';
+                setTimeout(() => { document.getElementById('note-screen').style.opacity = '1'; document.getElementById('note-screen').style.transform = 'scale(1)'; }, 50);
+            });
         }
-
-        function revealFinalLetter() {
-            const noteView = document.getElementById('note-screen');
-            noteView.style.display = 'block';
-            setTimeout(() => {
-                noteView.style.opacity = '1';
-                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
-            }, 50);
-        }
-
-        function openLetterCard(element) {
-            element.classList.toggle('open');
-        }
-
+        function openLetterCard(el) { el.classList.toggle('open'); }
         function generateSparkleMatrix() {
-            const container = document.getElementById('particles-workspace');
             setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                container.appendChild(heart);
-                setTimeout(() => { heart.remove(); }, 4500);
+                const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️';
+                h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                document.getElementById('particles-workspace').appendChild(h);
+                setTimeout(() => { h.remove(); }, 4500);
             }, 600);
         }
     </script>
