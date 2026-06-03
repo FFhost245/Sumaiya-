@@ -11,13 +11,15 @@
             padding: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: linear-gradient(135deg, #120024 0%, #2a0845 50%, #4a0e4e 100%);
+            background: linear-gradient(135deg, #0d001a 0%, #1a052e 50%, #310a36 100%);
             color: #f3e5f5;
         }
 
@@ -28,7 +30,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #090014;
+            background: #05000a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -78,13 +80,6 @@
             box-shadow: 0 0 8px #ff4081;
         }
 
-        .loader-text {
-            font-size: 0.8rem;
-            color: #b388ff;
-            opacity: 0.8;
-            font-style: italic;
-        }
-
         /* --- PARTICLES & CANVASES --- */
         #confetti-canvas {
             position: absolute;
@@ -98,7 +93,7 @@
 
         .heart {
             position: absolute;
-            color: rgba(255, 64, 129, 0.35);
+            color: rgba(255, 64, 129, 0.3);
             animation: floatUp 4.5s linear infinite;
             bottom: -40px;
             z-index: 1;
@@ -280,10 +275,7 @@
             text-align: center;
         }
 
-        #celebration-screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        #celebration-screen.active { opacity: 1; visibility: visible; }
 
         .celeb-text-wrapper {
             width: 100%;
@@ -318,23 +310,20 @@
         }
 
         #celebration-screen.active .celeb-main-title,
-        #celebration-screen.active .celeb-sub-title {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-        }
+        #celebration-screen.active .celeb-sub-title { opacity: 1; transform: translate3d(0, 0, 0); }
 
         /* --- SCREEN CARD COMMON BOILERPLATE --- */
         .game-window-card {
             display: none;
             width: 100%;
             max-width: 360px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             padding: 25px 20px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             z-index: 38;
             opacity: 0;
             transform: scale(0.9);
@@ -345,7 +334,7 @@
             font-size: 1.3rem;
             color: #ff80ab;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -374,9 +363,9 @@
         }
 
         .option-btn {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
             color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             padding: 14px 20px;
             border-radius: 14px;
             font-size: 0.95rem;
@@ -392,158 +381,81 @@
             border-color: #ff4081;
         }
 
-        /* --- ACTIVITY 1: MEMORIES TIMELINE PLAYER --- */
-        .vibe-player-container {
-            margin: 20px auto;
+        /* --- CENTER STAGE: HEARTSTRINGS NEON ENGINE --- */
+        .heartstrings-canvas-area {
             position: relative;
-            width: 140px;
-            height: 140px;
+            width: 100%;
+            height: 220px;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            border: 1px dashed rgba(255, 64, 129, 0.3);
+            overflow: hidden;
+            touch-action: none;
         }
 
-        .vinyl-record {
+        #heart-svg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, #111 20%, #222 21%, #000 30%, #333 40%, #111 60%, #000 70%);
-            border-radius: 50%;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            pointer-events: none;
         }
 
-        .vinyl-record.spinning {
-            animation: spinRecord 4s linear infinite;
-        }
-
-        @keyframes spinRecord {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .vinyl-center {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #ff4081, #7b2cbf);
+        .neon-node {
+            position: absolute;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 900;
             font-size: 1.2rem;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
-        }
-
-        .timeline-card-display {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 128, 171, 0.2);
-            border-radius: 16px;
-            padding: 15px;
-            margin: 20px 0;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .timeline-date {
-            font-size: 0.85rem;
-            color: #ff80ab;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .timeline-text {
-            font-size: 0.95rem;
-            color: #fff;
-            font-weight: 600;
-            line-height: 1.4;
-            font-style: italic;
-        }
-
-        .player-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .player-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+            z-index: 10;
         }
 
-        .player-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 64, 129, 0.3);
+        #node-blaize {
+            left: 25px;
+            top: 85px;
+            background: linear-gradient(135deg, #7b2cbf, #4a0e4e);
+            border: 2px solid #b388ff;
+            box-shadow: 0 0 15px rgba(179, 136, 255, 0.6);
         }
 
-        /* --- ACTIVITY 2: COMPLIMENT UNWRAPPER --- */
-        .gift-box-wrapper {
-            margin: 25px auto;
-            width: 120px;
-            height: 120px;
-            position: relative;
-            cursor: pointer;
+        #node-sumaiya {
+            right: 25px;
+            top: 85px;
+            background: linear-gradient(135deg, #ff4081, #c2185b);
+            border: 2px solid #ff80ab;
+            box-shadow: 0 0 15px rgba(255, 128, 171, 0.6);
         }
 
-        .gift-box-visual {
-            font-size: 5rem;
-            line-height: 1;
-            animation: floatGift 2s ease-in-out infinite alternate;
-            transition: transform 0.2s ease;
+        .interactive-spark {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border: 3px solid #ff4081;
+            border-radius: 50%;
+            left: 38px;
+            top: 98px;
+            z-index: 15;
+            cursor: grab;
+            box-shadow: 0 0 15px #ff4081, 0 0 25px #ff4081;
+            transform: translate(-50%, -50%);
         }
 
-        @keyframes floatGift {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-10px) scale(1.03); }
-        }
-
-        .gift-box-wrapper:active .gift-box-visual {
-            transform: scale(0.9);
-        }
-
-        .unwrapped-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
-            border-left: 4px solid #ff4081;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 15px;
-            text-align: left;
-            min-height: 70px;
-            display: flex;
-            align-items: center;
-            color: #e8dbff;
-            font-size: 0.95rem;
-            font-weight: 600;
-            line-height: 1.4;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .unwrapped-card.reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .interactive-spark:active { cursor: grabbing; }
 
         /* --- WISH LANTERN BOX & TRANSITIONS --- */
         #wish-screen {
             display: none;
             width: 100%;
             max-width: 360px;
-            background: rgba(18, 0, 36, 0.75);
+            background: rgba(18, 0, 36, 0.8);
             border: 2px solid #ffb703;
             border-radius: 24px;
             padding: 25px 20px;
@@ -592,10 +504,7 @@
             transition: border-color 0.3s ease;
         }
 
-        .wish-input:focus {
-            border-color: #ffb703;
-            background: rgba(255, 255, 255, 0.12);
-        }
+        .wish-input:focus { border-color: #ffb703; background: rgba(255, 255, 255, 0.12); }
 
         .wish-submit-btn {
             background: linear-gradient(90deg, #ffb703, #ff4081);
@@ -609,11 +518,6 @@
             box-shadow: 0 5px 15px rgba(255, 183, 3, 0.3);
             width: 100%;
             transition: transform 0.2s ease;
-        }
-
-        .wish-submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         /* --- SWEETNESS SLIDER SCREEN --- */
@@ -796,7 +700,6 @@
         <div class="bar-container">
             <div class="progress-bar" id="progress"></div>
         </div>
-        <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
     <div id="error-popup">
@@ -834,7 +737,7 @@
             </div>
         </div>
 
-        <!-- STAGE 1: INTERACTIVE QUIZ WINDOW -->
+        <!-- STAGE 1: VERIFICATION QUIZ -->
         <div id="quiz-screen" class="game-window-card">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
@@ -842,44 +745,26 @@
             <div class="options-container" id="quiz-options-field"></div>
         </div>
 
-        <!-- STAGE 2: MEMORIES TIMELINE PLAYER -->
-        <div id="timeline-screen" class="game-window-card">
-            <div class="quiz-header">Our Tracklist 🎵</div>
-            <div class="quiz-progress" id="timeline-progress-text">Memory 1 of 4</div>
-            <p style="font-size: 0.9rem; color: #e8dbff;">Tap the vinyl record to listen through our favorite shared moments!</p>
+        <!-- STAGE 2: HEARTSTRINGS NEON CONNECTION -->
+        <div id="heartstrings-screen" class="game-window-card">
+            <div class="quiz-header">Heartstrings ⚡</div>
+            <div class="quiz-progress" id="heartstrings-status">Status: Disconnected</div>
+            <p style="font-size: 0.9rem; color: #e8dbff; margin-bottom: 10px;">Drag the pulsing neon spark from **B** across to **S** to synchronize your frequencies!</p>
             
-            <div class="vibe-player-container">
-                <div id="vinyl-node" class="vinyl-record" onclick="playNextTimelineMemory()">
-                    <div class="vinyl-center">❤️</div>
-                </div>
-            </div>
+            <div class="heartstrings-canvas-area" id="canvas-area-node">
+                <svg id="heart-svg-canvas">
+                    <!-- Dynamic glowing path rendered via JS -->
+                    <path id="glowing-wire" d="" fill="none" stroke="rgba(255, 64, 129, 0.2)" stroke-width="4" stroke-dasharray="6,4" />
+                    <path id="completed-wire" d="" fill="none" stroke="#ff4081" stroke-width="5" style="display:none; filter: drop-shadow(0 0 8px #ff4081);" />
+                </svg>
 
-            <div class="timeline-card-display">
-                <div class="timeline-date" id="timeline-date-field">LOADING...</div>
-                <div class="timeline-text" id="timeline-text-field">Tap play to start spinning memories.</div>
-            </div>
-
-            <div class="player-controls">
-                <button id="timeline-action-btn" class="player-btn" onclick="playNextTimelineMemory()">Start Player ▶️</button>
+                <div class="neon-node" id="node-blaize">B</div>
+                <div class="neon-node" id="node-sumaiya">S</div>
+                <div class="interactive-spark" id="spark-node"></div>
             </div>
         </div>
 
-        <!-- STAGE 3: COMPLIMENT UNWRAPPER -->
-        <div id="gift-screen" class="game-window-card">
-            <div class="quiz-header">Unwrap Happiness 🎁</div>
-            <div class="quiz-progress" id="gift-progress-text">Layers Left: 4</div>
-            <p style="font-size: 0.9rem; color: #e8dbff;">You have a special delivery! Tap the box to unwrap each delicate layer.</p>
-
-            <div class="gift-box-wrapper" onclick="unwrapGiftLayer()">
-                <div id="gift-emoji-node" class="gift-box-visual">🎁</div>
-            </div>
-
-            <div id="gift-reveal-card" class="unwrapped-card">
-                Tap the present above to look inside...
-            </div>
-        </div>
-
-        <!-- STAGE 4: BIRTHDAY WISH LANTERN OVERLAY -->
+        <!-- STAGE 3: BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -887,7 +772,7 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
-        <!-- STAGE 5: INTERACTIVE SWEETNESS SLIDER -->
+        <!-- STAGE 4: INTERACTIVE SWEETNESS SLIDER -->
         <div id="slider-screen" class="game-window-card">
             <div class="quiz-header">Affection Level Check 💓</div>
             <div class="slider-title">How much do you love blaize today? 😏</div>
@@ -938,24 +823,6 @@
             { q: "Are you officially stuck with 'blaize' for another whole year?", options: ["Yes, completely stuck! 🥳", "No way", "Maybe"], correct: 0 }
         ];
 
-        // Activity 1 Data: Timeline Playlist
-        let currentTimelineIndex = -1;
-        const timelineMemories = [
-            { date: "Track 01: The Spark", text: "When we first started talking and instantly realized our vibes synced up perfectly. ✨" },
-            { date: "Track 02: Late Night Chaos", text: "All those random inside jokes, teasing, and late nights where hours felt like minutes. 💬" },
-            { date: "Track 03: The Comfort", text: "How safe it feels knowing we can talk about absolutely anything without being judged. 💜" },
-            { date: "Track 04: Today & Beyond", text: "Celebrating your 15th birthday together and locking you in for another awesome year! 🔒" }
-        ];
-
-        // Activity 2 Data: Gift Boxes
-        let remainingGiftLayers = 4;
-        const compliments = [
-            "🎀 Layer 1 Melted: Your shy, cute smile that brightens up my whole mood instantly.",
-            "🌸 Layer 2 Melted: The sweet, incredibly thoughtful way you look after me.",
-            "🔮 Layer 3 Melted: Your amazing patience even when I am being complete chaotic trouble.",
-            "👑 Final Layer Unlocked: Simply being you. You are unmatched and precious to me!"
-        ];
-
         // Confetti Engine
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
@@ -994,7 +861,7 @@
             requestAnimationFrame(animateConfetti);
         }
 
-        // Loader Screen Setup
+        // Loader Automation
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             let width = 0;
@@ -1008,19 +875,17 @@
             generateSparkleMatrix();
         });
 
-        // Universal Transitions
+        // Window Card Handlers
         function showScreenCard(id) {
-            const el = document.getElementById(id);
-            el.style.display = 'block';
+            const el = document.getElementById(id); el.style.display = 'block';
             setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'scale(1)'; }, 50);
         }
         function hideScreenCard(id, callback) {
-            const el = document.getElementById(id);
-            el.style.opacity = '0'; el.style.transform = 'scale(0.9)';
+            const el = document.getElementById(id); el.style.opacity = '0'; el.style.transform = 'scale(0.9)';
             setTimeout(() => { el.style.display = 'none'; if(callback) callback(); }, 500);
         }
 
-        // Candle Blowout Trigger
+        // Candle System
         let structuralStateLit = true;
         function extinguishCandleSequence() {
             if (!structuralStateLit) return; structuralStateLit = false;
@@ -1040,7 +905,7 @@
             }, 500);
         }
 
-        // Quiz Module
+        // Quiz Mechanics
         function loadQuizQuestion() {
             const currentData = quizQuestions[currentQuestionIndex];
             document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
@@ -1052,7 +917,7 @@
                     if (idx === currentData.correct) {
                         currentQuestionIndex++;
                         if (currentQuestionIndex < quizQuestions.length) { loadQuizQuestion(); } 
-                        else { hideScreenCard('quiz-screen', () => showScreenCard('timeline-screen')); }
+                        else { hideScreenCard('quiz-screen', () => { showScreenCard('heartstrings-screen'); initHeartstringsEngine(); }); }
                     } else { document.getElementById('error-popup').classList.add('show'); }
                 };
                 container.appendChild(btn);
@@ -1060,68 +925,97 @@
         }
         function closeErrorPopup() { document.getElementById('error-popup').classList.remove('show'); }
 
-        // VIBE PLAYER TIMELINE MODULE
-        function playNextTimelineMemory() {
-            const vinyl = document.getElementById('vinyl-node');
-            const btn = document.getElementById('timeline-action-btn');
-            
-            currentTimelineIndex++;
-            
-            if (currentTimelineIndex < timelineMemories.length) {
-                // Spin and display card details
-                vinyl.classList.add('spinning');
-                triggerLoveConfettiBlast(10);
+        // CONCEPT 1: HEARTSTRINGS INTEGRATION MECHANICS
+        let isDraggingSpark = false;
+        let heartstringsCompleted = false;
+
+        function initHeartstringsEngine() {
+            const area = document.getElementById('canvas-area-node');
+            const spark = document.getElementById('spark-node');
+            const bNode = document.getElementById('node-blaize');
+            const sNode = document.getElementById('node-sumaiya');
+            const glowWire = document.getElementById('glowing-wire');
+            const compWire = document.getElementById('completed-wire');
+            const statusText = document.getElementById('heartstrings-status');
+
+            // Find matching coordinates relative to the panel container box
+            const rect = area.getBoundingClientRect();
+            const xB = bNode.offsetLeft + 25;
+            const yB = bNode.offsetTop + 25;
+            const xS = sNode.offsetLeft + 25;
+            const yS = sNode.offsetTop + 25;
+
+            // Generate a natural curving path down across the middle coordinates
+            const controlX1 = xB + (xS - xB) * 0.25;
+            const controlY1 = yB + 90; 
+            const controlX2 = xB + (xS - xB) * 0.75;
+            const controlY2 = yS - 90; 
+
+            const pathString = `M ${xB} ${yB} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${xS} ${yS}`;
+            glowWire.setAttribute('d', pathString);
+            compWire.setAttribute('d', pathString);
+
+            // Reusable positional tracking calculation logic
+            function handlePointerMove(e) {
+                if (!isDraggingSpark || heartstringsCompleted) return;
                 
-                document.getElementById('timeline-progress-text').innerText = `Memory ${currentTimelineIndex + 1} of ${timelineMemories.length}`;
-                document.getElementById('timeline-date-field').innerText = timelineMemories[currentTimelineIndex].date;
-                document.getElementById('timeline-text-field').innerText = timelineMemories[currentTimelineIndex].text;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 
-                btn.innerText = currentTimelineIndex === timelineMemories.length - 1 ? "Finish Playlist 🎧" : "Next Track ▶️";
-            } else {
-                // Playlist Complete, Transition
-                vinyl.classList.remove('spinning');
-                hideScreenCard('timeline-screen', () => showScreenCard('gift-screen'));
+                const currentRect = area.getBoundingClientRect();
+                let posX = clientX - currentRect.left;
+                let posY = clientY - currentRect.top;
+
+                // Lock down boundaries securely
+                if(posX < 0) posX = 0; if(posX > currentRect.width) posX = currentRect.width;
+                if(posY < 0) posY = 0; if(posY > currentRect.height) posY = currentRect.height;
+
+                spark.style.left = posX + 'px';
+                spark.style.top = posY + 'px';
+
+                // Monitor how close she is to hitting Sumaiya's node target destination
+                const deltaX = posX - xS;
+                const deltaY = posY - yS;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                if (distance < 30) {
+                    heartstringsCompleted = true;
+                    isDraggingSpark = false;
+                    
+                    // Snap safely in place
+                    spark.style.left = xS + 'px';
+                    spark.style.top = yS + 'px';
+                    
+                    statusText.innerText = "Status: Connected! ❤️";
+                    statusText.style.color = "#ff4081";
+                    
+                    glowWire.style.display = 'none';
+                    compWire.style.display = 'block';
+                    
+                    triggerLoveConfettiBlast(50);
+                    
+                    setTimeout(() => {
+                        hideScreenCard('heartstrings-screen', initiateWishModule);
+                    }, 1500);
+                }
             }
+
+            // Target event mappings handling mouse and tactile input
+            spark.addEventListener('mousedown', () => isDraggingSpark = true);
+            spark.addEventListener('touchstart', () => isDraggingSpark = true);
+            window.addEventListener('mousemove', handlePointerMove);
+            window.addEventListener('touchmove', handlePointerMove, { passive: false });
+            window.addEventListener('mouseup', () => isDraggingSpark = false);
+            window.addEventListener('touchend', () => isDraggingSpark = false);
         }
 
-        // COMPLIMENT UNWRAPPER MODULE
-        function unwrapGiftLayer() {
-            if (remainingGiftLayers <= 0) return;
-            
-            const currentLayerIndex = 4 - remainingGiftLayers;
-            const card = document.getElementById('gift-reveal-card');
-            const status = document.getElementById('gift-progress-text');
-            const emojiNode = document.getElementById('gift-emoji-node');
-            
-            remainingGiftLayers--;
-            triggerLoveConfettiBlast(15);
-            
-            // Render text updates safely
-            card.classList.remove('reveal');
-            setTimeout(() => {
-                card.innerText = compliments[currentLayerIndex];
-                card.classList.add('reveal');
-            }, 150);
-
-            if (remainingGiftLayers > 0) {
-                status.innerText = `Layers Left: ${remainingGiftLayers}`;
-                if (remainingGiftLayers === 1) emojiNode.innerText = "💝";
-            } else {
-                status.innerText = "Package Fully Opened! ✨";
-                emojiNode.innerText = "👑";
-                // Transition smoothly into Wish Screen after a gentle reading window
-                setTimeout(() => {
-                    hideScreenCard('gift-screen', initiateWishModule);
-                }, 2800);
-            }
-        }
-
-        // Lantern Module
+        // Lantern Framework 
         function initiateWishModule() {
             const wishView = document.getElementById('wish-screen');
             wishView.style.display = 'block';
             setTimeout(() => { wishView.style.opacity = '1'; wishView.style.transform = 'scale(1)'; }, 50);
         }
+
         function releaseBirthdayLantern() {
             const txt = document.getElementById('wish-text-area').value.trim();
             if (!txt) { alert("Please write down a wish before releasing the lantern! ✨"); return; }
@@ -1160,6 +1054,7 @@
             });
         }
         function openLetterCard(el) { el.classList.toggle('open'); }
+        
         function generateSparkleMatrix() {
             setInterval(() => {
                 const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️';
