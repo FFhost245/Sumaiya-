@@ -390,7 +390,7 @@
             border-color: #ff4081;
         }
 
-        /* --- UPDATED WISH LANTERN BOX & TRANSITIONS --- */
+        /* --- WISH LANTERN BOX & TRANSITIONS --- */
         #wish-screen {
             display: none;
             width: 100%;
@@ -472,40 +472,99 @@
             transform: scale(0.96);
         }
 
-        /* --- THE GRAND LANTERN --- */
-        .center-lantern {
+        /* --- CUSTOM BEAUTIFUL PAPER LANTERN --- */
+        .center-lantern-container {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            font-size: 6.5rem;
             z-index: 50;
             opacity: 0;
-            filter: drop-shadow(0 0 20px #ffb703) drop-shadow(0 0 40px #ff4081);
-            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100px;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             pointer-events: none;
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .center-lantern.reveal {
+        /* Custom Handcrafted Paper Lantern Shapes */
+        .lantern-top-cap, .lantern-bottom-cap {
+            width: 60px;
+            height: 8px;
+            background: #4a0011;
+            border-radius: 3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .lantern-main-body {
+            width: 85px;
+            flex-grow: 1;
+            background: linear-gradient(to bottom, #ff4081 0%, #ff80ab 40%, #ffb703 100%);
+            border-radius: 25px / 40px;
+            box-shadow: 0 0 25px #ff4081, 0 0 45px #ffb703, inset 0 0 20px rgba(255,255,255,0.4);
+            position: relative;
+            margin: -2px 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Glowing inner fire core */
+        .lantern-inner-fire {
+            width: 30px;
+            height: 45px;
+            background: radial-gradient(circle at 50% 100%, #ffffff 20%, #ffb703 60%, transparent 100%);
+            border-radius: 50% 50% 30% 30%;
+            position: absolute;
+            bottom: 12px;
+            animation: firePulse 0.6s infinite alternate ease-in-out;
+        }
+
+        @keyframes firePulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 8px #ffb703); }
+        }
+
+        /* Tassels hanging below */
+        .lantern-tassel {
+            width: 4px;
+            height: 25px;
+            background: #ff4081;
+            box-shadow: 0 0 8px #ff4081;
+            animation: swingTassel 1s infinite alternate ease-in-out;
+            transform-origin: top center;
+        }
+
+        @keyframes swingTassel {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        /* Animation trigger classes */
+        .center-lantern-container.reveal {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1.1);
         }
 
-        .center-lantern.fly-away {
+        .center-lantern-container.fly-away {
             animation: grandAscent 3.5s cubic-bezier(0.4, 0, 1, 1) forwards;
         }
 
         @keyframes grandAscent {
             0% {
-                transform: translate(-50%, -50%) scale(1);
-                filter: drop-shadow(0 0 20px #ffb703) drop-shadow(0 0 40px #ff4081);
+                transform: translate(-50%, -50%) scale(1.1);
             }
-            30% {
-                filter: drop-shadow(0 0 35px #ffb703) drop-shadow(0 0 60px #ffb703);
+            25% {
+                /* Extra high intense blast illumination right as it prepares to ascend */
+                filter: drop-shadow(0 0 40px #ffb703) brightness(1.2);
             }
             100% {
-                transform: translate(-50%, -120vh) scale(0.4);
+                transform: translate(-50%, -120vh) scale(0.3);
                 opacity: 0;
+                filter: drop-shadow(0 0 5px #ffb703) blur(2px);
             }
         }
 
@@ -708,7 +767,14 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
-        <div id="grand-sky-lantern" class="center-lantern">🏮</div>
+        <div id="grand-sky-lantern" class="center-lantern-container">
+            <div class="lantern-top-cap"></div>
+            <div class="lantern-main-body">
+                <div class="lantern-inner-fire"></div>
+            </div>
+            <div class="lantern-bottom-cap"></div>
+            <div class="lantern-tassel"></div>
+        </div>
 
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
