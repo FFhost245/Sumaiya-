@@ -68,7 +68,6 @@
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         .progress-bar {
@@ -104,7 +103,6 @@
             bottom: -40px;
             z-index: 1;
             pointer-events: none;
-            filter: drop-shadow(0 0 5px rgba(255,64,129,0.3));
         }
 
         @keyframes floatUp {
@@ -185,7 +183,6 @@
             background: linear-gradient(#b388ff, #e8dbff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             position: relative;
             line-height: 1;
         }
@@ -325,13 +322,118 @@
             transform: translateY(0);
         }
 
-        #celebration-screen.active .celeb-text-wrapper {
-            animation: slowPulse 1.8s infinite alternate ease-in-out 1.2s;
+        /* --- QUIZ SCREEN --- */
+        #quiz-screen {
+            display: none;
+            width: 100%;
+            max-width: 360px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 25px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 38;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
         }
 
-        @keyframes slowPulse {
-            0% { transform: scale(0.96); filter: brightness(1); }
-            100% { transform: scale(1.04); filter: brightness(1.2); }
+        .quiz-header {
+            font-size: 1.3rem;
+            color: #ff80ab;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quiz-progress {
+            font-size: 0.85rem;
+            color: #b388ff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .option-btn:active {
+            transform: scale(0.97);
+            background: rgba(255, 64, 129, 0.2);
+            border-color: #ff4081;
+        }
+
+        /* --- PLAYFUL ERROR POPUP --- */
+        #error-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #d81b60 0%, #8e24aa 100%);
+            border: 2px solid #ff80ab;
+            padding: 20px 25px;
+            border-radius: 20px;
+            z-index: 999;
+            width: 85%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #error-popup.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .error-msg {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .error-close-btn {
+            background: #fff;
+            color: #8e24aa;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         /* --- LETTER SCREEN --- */
@@ -424,10 +526,7 @@
         }
     </style>
 </head>
-<body onclick="unmuteAudioContext()">
-
-    <audio id="snd-blow" src="https://assets.mixkit.co/active_storage/sfx/2591/2591-84.wav" preload="auto"></audio>
-    <audio id="snd-cheer" src="https://assets.mixkit.co/active_storage/sfx/2017/2017-84.wav" preload="auto"></audio>
+<body>
 
     <div id="loader">
         <div class="loader-heart">❤️</div>
@@ -438,10 +537,17 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
+    <!-- Playful Error Modal -->
+    <div id="error-popup">
+        <div class="error-msg">You are wrong cute idiot 😜</div>
+        <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
+    </div>
+
     <div class="app-wrapper">
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -463,6 +569,7 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- Celebration Title -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -470,8 +577,19 @@
             </div>
         </div>
 
+        <!-- NEW: INTERACTIVE QUIZ WINDOW -->
+        <div id="quiz-screen">
+            <div class="quiz-header">Verification Quiz 🔒</div>
+            <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
+            <div class="question-text" id="quiz-question-field">Loading question...</div>
+            <div class="options-container" id="quiz-options-field">
+                <!-- Buttons will spawn here dynamically -->
+            </div>
+        </div>
+
+        <!-- Letter Box Screen -->
         <div id="note-screen">
-            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Wish Granted! ✨</h2>
+            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
                 <div class="card-inner">
                     <div class="card-front">
@@ -493,22 +611,32 @@
     </div>
 
     <script>
+        // Quiz Data - Customized specifically for her
+        const quizQuestions = [
+            {
+                q: "Who is officially the most favorite person on earth today?",
+                options: ["Someone else...", "Sumaiya ❤️", "Nobody"],
+                correct: 1
+            },
+            {
+                q: "How many responsibilities are you allowed to have on your 15th birthday?",
+                options: ["A lot of work", "Absolutely zero! 🍰", "A few chores"],
+                correct: 1
+            },
+            {
+                q: "Are you officially stuck with 'ya sin' for another whole year?",
+                options: ["Yes, completely stuck! 🥳", "No way", "Maybe"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
         let confettiParticles = [];
         const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
-
-        let mobileAudioUnlocked = false;
-        function unmuteAudioContext() {
-            if (mobileAudioUnlocked) return;
-            // Warm up both audio components on mobile touch entry
-            const b = document.getElementById('snd-blow');
-            const c = document.getElementById('snd-cheer');
-            b.play().then(() => { b.pause(); b.currentTime = 0; });
-            c.play().then(() => { c.pause(); c.currentTime = 0; });
-            mobileAudioUnlocked = true;
-        }
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -600,9 +728,6 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // Trigger the premium recorded candle blow sound effect
-            try { document.getElementById('snd-blow').play(); } catch(e){}
-
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
 
@@ -618,11 +743,8 @@
                     cakeView.style.display = 'none';
                     celebView.classList.add('active');
                     
-                    // Trigger premium celebration stadium horns and cheers sound effect
-                    try { document.getElementById('snd-cheer').play(); } catch(e){}
-                    
                     const continuousConfetti = setInterval(() => {
-                        if(!structuralStateLit) triggerLoveConfettiBlast(8);
+                        if(confettiActive) triggerLoveConfettiBlast(6);
                     }, 350);
 
                     setTimeout(() => {
@@ -634,17 +756,76 @@
                         
                         setTimeout(() => {
                             celebView.style.display = 'none';
-                            const noteView = document.getElementById('note-screen');
-                            noteView.style.display = 'block';
-                            setTimeout(() => {
-                                noteView.style.opacity = '1';
-                                noteView.style.transform = 'scale(1) translateY(0)';
-                            }, 50);
+                            initiateQuizModule();
                         }, 1200);
-                    }, 4500);
+                    }, 4000);
 
                 }, 600);
             }, 500);
+        }
+
+        /* --- QUIZ LOGIC SYSTEM --- */
+        function initiateQuizModule() {
+            const quizView = document.getElementById('quiz-screen');
+            quizView.style.display = 'block';
+            setTimeout(() => {
+                quizView.style.opacity = '1';
+                quizView.style.transform = 'scale(1)';
+                loadQuizQuestion();
+            }, 50);
+        }
+
+        function loadQuizQuestion() {
+            const currentData = quizQuestions[currentQuestionIndex];
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-question-field').innerText = currentData.q;
+            
+            const optionsContainer = document.getElementById('quiz-options-field');
+            optionsContainer.innerHTML = '';
+
+            currentData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-btn');
+                button.innerText = option;
+                button.onclick = () => checkSelectedAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkSelectedAnswer(selectedIndex) {
+            const currentData = quizQuestions[currentQuestionIndex];
+            if (selectedIndex === currentData.correct) {
+                // Correct answer! Advance or finish
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.length) {
+                    loadQuizQuestion();
+                } else {
+                    // Quiz successfully passed! Close quiz and open final card
+                    const quizView = document.getElementById('quiz-screen');
+                    quizView.style.opacity = '0';
+                    quizView.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        quizView.style.display = 'none';
+                        revealFinalLetter();
+                    }, 500);
+                }
+            } else {
+                // Show custom playful message if wrong
+                document.getElementById('error-popup').classList.add('show');
+            }
+        }
+
+        function closeErrorPopup() {
+            document.getElementById('error-popup').classList.remove('show');
+        }
+
+        function revealFinalLetter() {
+            const noteView = document.getElementById('note-screen');
+            noteView.style.display = 'block';
+            setTimeout(() => {
+                noteView.style.opacity = '1';
+                noteView.style.transform = 'scale(1) translateY(0)';
+            }, 50);
         }
 
         function openLetterCard(element) {
