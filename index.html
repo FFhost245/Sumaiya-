@@ -93,7 +93,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 25;
+            z-index: 35;
             pointer-events: none;
         }
 
@@ -138,7 +138,7 @@
             top: 0;
             left: 0;
             z-index: 20;
-            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 20px;
             text-align: center;
         }
@@ -158,7 +158,6 @@
             margin-bottom: 35px;
         }
 
-        /* --- NEW ALPHABET CANDLE BUILD --- */
         .cake-container {
             width: 200px;
             height: 180px;
@@ -174,7 +173,7 @@
             display: flex;
             gap: 8px;
             position: absolute;
-            top: -22px; /* Adjusted to fit the alphabet height */
+            top: -22px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 5;
@@ -215,7 +214,6 @@
             transform: translateX(-50%) scale(0) translateY(-10px);
         }
 
-        /* --- CAKE LAYERS --- */
         .cake-plate {
             width: 210px;
             height: 10px;
@@ -265,6 +263,58 @@
             max-width: 320px;
         }
 
+        /* --- NEW FULL-SCREEN CELEBRATION SCREEN --- */
+        #celebration-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            background: rgba(12, 0, 24, 0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #celebration-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .celeb-text-wrapper {
+            animation: superPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+        }
+
+        .celeb-main-title {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #ff4081, 0 0 30px #ff4081, 0 0 60px #7b2cbf;
+            margin-bottom: 10px;
+        }
+
+        .celeb-sub-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ff80ab;
+            text-shadow: 0 0 15px rgba(255,128,171,0.6);
+        }
+
+        @keyframes superPop {
+            0% { transform: scale(0.95); filter: brightness(1); }
+            100% { transform: scale(1.05); filter: brightness(1.2); }
+        }
+
         /* --- LETTER SCREEN --- */
         #note-screen {
             width: 100%;
@@ -274,6 +324,7 @@
             transform: scale(0.9) translateY(30px);
             transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
+            z-index: 40;
         }
 
         .card-container {
@@ -369,14 +420,13 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
-            <!-- 1. Removed "Ultimate" from subtitle -->
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
             
             <div class="cake-container">
                 <div class="tier-top">
-                    <!-- 2. Clean Alphabet Candles with matching flames -->
                     <div class="candle-holder">
                         <div class="alphabet-candle">1<div class="magic-flame flame-node"></div></div>
                         <div class="alphabet-candle">5<div class="magic-flame flame-node"></div></div>
@@ -392,6 +442,15 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- NEW FULL SCREEN CELEBRATION BLOCK -->
+        <div id="celebration-screen">
+            <div class="celeb-text-wrapper">
+                <h1 class="celeb-main-title">Happy<br>Birthday</h1>
+                <p class="celeb-sub-title">Sumaiya! 🎉❤️</p>
+            </div>
+        </div>
+
+        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Wish Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -419,7 +478,7 @@
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
         let confettiParticles = [];
-        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffffff'];
+        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -431,19 +490,19 @@
         function createConfettiPiece() {
             return {
                 x: Math.random() * canvas.width,
-                y: -10,
-                size: Math.random() * 6 + 6,
+                y: -20,
+                size: Math.random() * 8 + 6,
                 color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
-                speedX: Math.random() * 4 - 2,
-                speedY: Math.random() * 5 + 4,
+                speedX: Math.random() * 6 - 3,
+                speedY: Math.random() * 6 + 5,
                 rotation: Math.random() * 360,
-                rotationSpeed: Math.random() * 4 - 2
+                rotationSpeed: Math.random() * 6 - 3
             };
         }
 
-        function triggerLoveConfettiBlast() {
+        function triggerLoveConfettiBlast(amount) {
             confettiActive = true;
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < amount; i++) {
                 confettiParticles.push(createConfettiPiece());
             }
             animateConfetti();
@@ -477,7 +536,7 @@
             requestAnimationFrame(animateConfetti);
         }
 
-        // Auto Loading sequence
+        // Auto Loading setup
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
@@ -512,28 +571,50 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // Extinguishes both alphabet flames smoothly
+            // 1. Instantly snuff out the candles
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
 
-            document.getElementById('banner-text').innerText = "💖 HAPPY 15TH BIRTHDAY SUMAIYA! 💖";
-            
-            triggerLoveConfettiBlast();
+            // 2. Trigger a massive full-blast confetti cascade
+            triggerLoveConfettiBlast(180);
 
+            // 3. Bring up the full-screen neon celebration overlay
             setTimeout(() => {
                 const cakeView = document.getElementById('cake-screen');
-                const noteView = document.getElementById('note-screen');
+                const celebView = document.getElementById('celebration-screen');
                 
                 cakeView.style.opacity = '0';
+                
                 setTimeout(() => {
                     cakeView.style.display = 'none';
-                    noteView.style.display = 'block';
+                    celebView.classList.add('active');
+                    
+                    // Keep spawning extra confetti while celebrating
+                    const continuousConfetti = setInterval(() => {
+                        if(!structuralStateLit) triggerLoveConfettiBlast(10);
+                    }, 300);
+
+                    // 4. Leave celebration running for 3 seconds, then drop into the note card
                     setTimeout(() => {
-                        noteView.style.opacity = '1';
-                        noteView.style.transform = 'scale(1) translateY(0)';
-                    }, 50);
-                }, 900);
-            }, 2000);
+                        clearInterval(continuousConfetti);
+                        confettiActive = false; // Stop auto-respawning pieces
+                        
+                        celebView.classList.remove('active');
+                        celebView.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            celebView.style.display = 'none';
+                            const noteView = document.getElementById('note-screen');
+                            noteView.style.display = 'block';
+                            setTimeout(() => {
+                                noteView.style.opacity = '1';
+                                noteView.style.transform = 'scale(1) translateY(0)';
+                            }, 50);
+                        }, 500);
+                    }, 3000); // 3 seconds celebration length
+
+                }, 400);
+            }, 600);
         }
 
         function openLetterCard(element) {
@@ -550,7 +631,7 @@
                 heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
                 container.appendChild(heart);
                 setTimeout(() => { heart.remove(); }, 4500);
-            }, 600);
+            }, 550);
         }
     </script>
 </body>
