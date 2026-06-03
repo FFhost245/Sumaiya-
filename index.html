@@ -577,7 +577,7 @@
             </div>
         </div>
 
-        <!-- NEW: INTERACTIVE QUIZ WINDOW -->
+        <!-- INTERACTIVE QUIZ WINDOW -->
         <div id="quiz-screen">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
@@ -603,7 +603,7 @@
                             <br><br>
                             I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
                         </p>
-                        <div class="letter-signoff">Forever yours, ya sin</div>
+                        <div class="letter-signoff">Forever yours, blaize</div>
                     </div>
                 </div>
             </div>
@@ -611,7 +611,7 @@
     </div>
 
     <script>
-        // Quiz Data - Customized specifically for her
+        // Quiz Data
         const quizQuestions = [
             {
                 q: "Who is officially the most favorite person on earth today?",
@@ -619,12 +619,12 @@
                 correct: 1
             },
             {
-                q: "How many responsibilities are you allowed to have on your 15th birthday?",
-                options: ["A lot of work", "Absolutely zero! 🍰", "A few chores"],
+                q: "What is Sumaiya's actual secret superpower?",
+                options: ["Being secretly super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"],
                 correct: 1
             },
             {
-                q: "Are you officially stuck with 'ya sin' for another whole year?",
+                q: "Are you officially stuck with 'blaize' for another whole year?",
                 options: ["Yes, completely stuck! 🥳", "No way", "Maybe"],
                 correct: 0
             }
@@ -795,12 +795,10 @@
         function checkSelectedAnswer(selectedIndex) {
             const currentData = quizQuestions[currentQuestionIndex];
             if (selectedIndex === currentData.correct) {
-                // Correct answer! Advance or finish
                 currentQuestionIndex++;
                 if (currentQuestionIndex < quizQuestions.length) {
                     loadQuizQuestion();
                 } else {
-                    // Quiz successfully passed! Close quiz and open final card
                     const quizView = document.getElementById('quiz-screen');
                     quizView.style.opacity = '0';
                     quizView.style.transform = 'scale(0.9)';
@@ -810,7 +808,6 @@
                     }, 500);
                 }
             } else {
-                // Show custom playful message if wrong
                 document.getElementById('error-popup').classList.add('show');
             }
         }
