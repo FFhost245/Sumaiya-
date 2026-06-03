@@ -424,7 +424,12 @@
         }
     </style>
 </head>
-<body onclick="unlockAudioEngine()">
+<body onclick="initAudioEngine()"> <!-- Initializes audio on first global tap -->
+
+    <!-- AUDIO ELEMENTS -->
+    <audio id="snd-success" src="success.mp3" preload="auto"></audio>
+    <audio id="snd-blow" src="blow.mp3" preload="auto"></audio>
+    <audio id="snd-cheer" src="cheer.mp3" preload="auto"></audio>
 
     <div id="loader">
         <div class="loader-heart">❤️</div>
@@ -439,6 +444,7 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -460,6 +466,7 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- TWO-LINE ADAPTIVE CELEBRATION BLOCK -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -467,6 +474,7 @@
             </div>
         </div>
 
+        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Wish Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -496,93 +504,18 @@
         let confettiParticles = [];
         const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
 
-        // --- SYNTHESIZED WEB AUDIO ENGINE ---
-        let audioCtx = null;
-
-        function unlockAudioEngine() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+        // Audio state control
+        let audioContextUnlocked = false;
+        function initAudioEngine() {
+            if (audioContextUnlocked) return;
+            // Modern browsers require a user-gesture to play loaded audio
+            document.getElementById('snd-success').play().then(() => {
+                document.getElementById('snd-success').pause();
+                document.getElementById('snd-success').currentTime = 0;
+            }).catch(e => console.log("Audio warm-up handled"));
+            
+            audioContextUnlocked = true;
         }
-
-        function playSuccessSound() {
-            if (!audioCtx) return;
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(523.25, now); // C5 node
-            osc.frequency.setValueAtTime(659.25, now + 0.12); // E5 node
-            osc.frequency.setValueAtTime(783.99, now + 0.24); // G5 node
-            osc.frequency.setValueAtTime(1046.50, now + 0.36); // C6 chord peak
-            
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 0.8);
-        }
-
-        function playBlowSound() {
-            if (!audioCtx) return;
-            const now = audioCtx.currentTime;
-            // Generate synthetic white noise for air/blowing effect
-            const bufferSize = audioCtx.sampleRate * 0.3; 
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
-            
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(400, now);
-            filter.frequency.exponentialRampToValueAtTime(10, now + 0.3);
-
-            const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.4, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-            
-            noise.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-            noise.start(now);
-        }
-
-        function playCheerSound() {
-            if (!audioCtx) return;
-            const now = audioCtx.currentTime;
-            
-            // Retro synth party pop generator
-            for (let i = 0; i < 4; i++) {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                const delay = now + (i * 0.08);
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(150 + (Math.random() * 100), delay);
-                osc.frequency.exponentialRampToValueAtTime(600 + (Math.random() * 400), delay + 0.4);
-                
-                gain.gain.setValueAtTime(0.15, delay);
-                gain.gain.exponentialRampToValueAtTime(0.001, delay + 0.5);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(delay);
-                osc.stop(delay + 0.5);
-            }
-        }
-
-        // --- END AUDIO ENGINE ---
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -658,8 +591,8 @@
                     clearInterval(loaderRunner);
                     loader.style.opacity = '0';
                     
-                    // Native Loader Chime Trigger
-                    setTimeout(() => { playSuccessSound(); }, 200);
+                    // Play the loader success chime
+                    try { document.getElementById('snd-success').play(); } catch(e){}
 
                     setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
                 } else {
@@ -678,8 +611,8 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // Trigger the custom synthesized puff sound
-            playBlowSound();
+            // Play candle blow effect immediately
+            try { document.getElementById('snd-blow').play(); } catch(e){}
 
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
@@ -696,8 +629,8 @@
                     cakeView.style.display = 'none';
                     celebView.classList.add('active');
                     
-                    // Trigger custom synthesized party pop chord
-                    playCheerSound();
+                    // Trigger loud celebratory cheers/pop sound
+                    try { document.getElementById('snd-cheer').play(); } catch(e){}
                     
                     const continuousConfetti = setInterval(() => {
                         if(!structuralStateLit) triggerLoveConfettiBlast(8);
