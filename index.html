@@ -424,12 +424,10 @@
         }
     </style>
 </head>
-<body onclick="initAudioEngine()"> <!-- Initializes audio on first global tap -->
+<body onclick="unmuteAudioContext()">
 
-    <!-- AUDIO ELEMENTS -->
-    <audio id="snd-success" src="success.mp3" preload="auto"></audio>
-    <audio id="snd-blow" src="blow.mp3" preload="auto"></audio>
-    <audio id="snd-cheer" src="cheer.mp3" preload="auto"></audio>
+    <audio id="snd-blow" src="https://assets.mixkit.co/active_storage/sfx/2591/2591-84.wav" preload="auto"></audio>
+    <audio id="snd-cheer" src="https://assets.mixkit.co/active_storage/sfx/2017/2017-84.wav" preload="auto"></audio>
 
     <div id="loader">
         <div class="loader-heart">❤️</div>
@@ -444,7 +442,6 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
-        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -466,7 +463,6 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
-        <!-- TWO-LINE ADAPTIVE CELEBRATION BLOCK -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -474,7 +470,6 @@
             </div>
         </div>
 
-        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Wish Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -504,17 +499,15 @@
         let confettiParticles = [];
         const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
 
-        // Audio state control
-        let audioContextUnlocked = false;
-        function initAudioEngine() {
-            if (audioContextUnlocked) return;
-            // Modern browsers require a user-gesture to play loaded audio
-            document.getElementById('snd-success').play().then(() => {
-                document.getElementById('snd-success').pause();
-                document.getElementById('snd-success').currentTime = 0;
-            }).catch(e => console.log("Audio warm-up handled"));
-            
-            audioContextUnlocked = true;
+        let mobileAudioUnlocked = false;
+        function unmuteAudioContext() {
+            if (mobileAudioUnlocked) return;
+            // Warm up both audio components on mobile touch entry
+            const b = document.getElementById('snd-blow');
+            const c = document.getElementById('snd-cheer');
+            b.play().then(() => { b.pause(); b.currentTime = 0; });
+            c.play().then(() => { c.pause(); c.currentTime = 0; });
+            mobileAudioUnlocked = true;
         }
 
         function resizeCanvas() {
@@ -590,10 +583,6 @@
                 if (width >= 100) {
                     clearInterval(loaderRunner);
                     loader.style.opacity = '0';
-                    
-                    // Play the loader success chime
-                    try { document.getElementById('snd-success').play(); } catch(e){}
-
                     setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
                 } else {
                     width += 5;
@@ -611,7 +600,7 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // Play candle blow effect immediately
+            // Trigger the premium recorded candle blow sound effect
             try { document.getElementById('snd-blow').play(); } catch(e){}
 
             const flames = document.querySelectorAll('.flame-node');
@@ -629,7 +618,7 @@
                     cakeView.style.display = 'none';
                     celebView.classList.add('active');
                     
-                    // Trigger loud celebratory cheers/pop sound
+                    // Trigger premium celebration stadium horns and cheers sound effect
                     try { document.getElementById('snd-cheer').play(); } catch(e){}
                     
                     const continuousConfetti = setInterval(() => {
