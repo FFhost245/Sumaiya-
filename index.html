@@ -9,7 +9,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Georgia', serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-user-select: none;
@@ -19,1049 +19,660 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: linear-gradient(135deg, #0d001a 0%, #1a052e 50%, #310a36 100%);
-            color: #f3e5f5;
+            background: #0b0314;
+            color: #f5f0fa;
         }
 
-        /* --- LOADING SCREEN --- */
-        #loader {
+        /* --- LOVELY BACKGROUND SPARKLES --- */
+        #ambient-glow {
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: #05000a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 20px;
-            text-align: center;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader-heart {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            animation: pulseHeart 1.2s infinite ease-in-out;
-            text-shadow: 0 0 20px #ff4081;
-        }
-
-        @keyframes pulseHeart {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.18); }
-        }
-
-        .loader-title {
-            font-size: 1.4rem;
-            color: #ff80ab;
-            margin-bottom: 25px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255,128,171,0.5);
-        }
-
-        .bar-container {
-            width: 75%;
-            max-width: 250px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff4081, #b388ff);
-            border-radius: 20px;
-            box-shadow: 0 0 8px #ff4081;
-        }
-
-        /* --- PARTICLES & CANVASES --- */
-        #confetti-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 35;
-            pointer-events: none;
-        }
-
-        .heart {
-            position: absolute;
-            color: rgba(255, 64, 129, 0.3);
-            animation: floatUp 4.5s linear infinite;
-            bottom: -40px;
+            background: radial-gradient(circle at 50% 50%, rgba(123, 44, 191, 0.15) 0%, rgba(11, 3, 20, 0) 70%);
             z-index: 1;
             pointer-events: none;
-            will-change: transform, opacity;
         }
 
-        @keyframes floatUp {
-            0% { transform: translate3d(0, 0, 0) scale(0.8) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translate3d(0, -115vh, 0) scale(1.2) rotate(360deg); opacity: 0; }
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ff4d6d, #ff758f);
+            border-radius: 15% 70% 15% 70%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
         }
 
-        .app-wrapper {
+        @keyframes drift {
+            0% { transform: translateY(105vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- CONTAINER BOILERPLATE --- */
+        .app-container {
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
             position: relative;
+            z-index: 5;
         }
 
-        /* --- CAKE SCREEN --- */
-        #cake-screen {
+        .view-card {
             width: 100%;
-            height: 100%;
+            max-width: 360px;
+            text-align: center;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* --- STAGE 1: THE CAKE --- */
+        #cake-view {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             cursor: pointer;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 20;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 20px;
-            text-align: center;
         }
 
-        .main-title {
-            font-size: 2.5rem;
-            color: #fff;
-            font-weight: 900;
-            text-shadow: 0 0 15px #ff4081, 0 0 30px #7b2cbf;
-            margin-bottom: 5px;
+        .romantic-title {
+            font-size: 2.2rem;
+            color: #ffffff;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+            margin-bottom: 8px;
         }
 
-        .sub-title {
-            font-size: 1.2rem;
-            color: #ff80ab;
-            font-weight: 700;
-            margin-bottom: 35px;
+        .romantic-subtitle {
+            font-size: 1.05rem;
+            color: #ff758f;
+            font-style: italic;
+            margin-bottom: 40px;
         }
 
-        .cake-container {
-            width: 200px;
-            height: 180px;
+        .cake-art {
+            width: 180px;
+            height: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            margin-bottom: 45px;
             position: relative;
+            margin-bottom: 50px;
         }
 
-        .candle-holder {
+        .candles-row {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             position: absolute;
-            top: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5;
+            top: -15px;
         }
 
-        .alphabet-candle {
-            font-size: 26px;
-            font-weight: 900;
-            background: linear-gradient(#b388ff, #e8dbff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .candle {
+            width: 14px;
+            height: 45px;
+            background: linear-gradient(to top, #ff85a2, #fbc4ab);
+            border-radius: 4px 4px 0 0;
             position: relative;
-            line-height: 1;
         }
 
-        .magic-flame {
-            width: 10px;
-            height: 18px;
-            background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffb703 30%, #ff4081 70%);
+        .candle::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 6px;
+            width: 2px;
+            height: 6px;
+            background: #444;
+        }
+
+        .flame {
+            width: 12px;
+            height: 20px;
+            background: radial-gradient(circle at 50% 80%, #ffffff, #ffb703, #ff4d6d);
             border-radius: 50% 50% 20% 20%;
             position: absolute;
-            top: -16px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
-            animation: flameWobble 0.5s infinite alternate ease-in-out;
-            transition: all 0.25s ease;
+            top: -24px;
+            left: 1px;
+            box-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff758f;
+            animation: flicker 0.6s infinite alternate ease-in-out;
+            transition: all 0.4s ease;
         }
 
-        @keyframes flameWobble {
-            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
-            100% { transform: translateX(-50%) scale(1.1) rotate(3deg); }
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.1) rotate(2deg); }
         }
 
-        .magic-flame.extinguished {
-            opacity: 0;
-            transform: translateX(-50%) scale(0) translateY(-10px);
+        .flame.extinguished {
+            opacity: 0 !important;
+            transform: scale(0) translateY(-10px) !important;
         }
 
-        .cake-plate {
-            width: 210px;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            z-index: 2;
-        }
-
-        .tier-bottom {
-            width: 170px;
-            height: 50px;
-            background: #ff85a2;
-            border-radius: 8px 8px 0 0;
+        .cake-tier {
+            background: #ffe5ec;
+            border-radius: 12px 12px 0 0;
             position: relative;
-            z-index: 3;
+            box-shadow: inset 0 -5px 0 rgba(0,0,0,0.05);
         }
-
-        .tier-top {
-            width: 120px;
-            height: 45px;
-            background: #ffb3c6;
-            border-radius: 6px 6px 0 0;
-            position: relative;
-            z-index: 4;
-        }
-
-        .drip-frosting {
+        .tier-top { width: 120px; height: 45px; z-index: 3; }
+        .tier-base { width: 160px; height: 50px; z-index: 2; background: #ffc2d1; }
+        
+        .frosting-drip {
             width: 100%;
-            height: 14px;
+            height: 12px;
             background: #ffffff;
-            border-radius: 20px;
+            border-radius: 0 0 8px 8px;
             position: absolute;
             top: 0;
-            left: 0;
         }
 
-        .action-banner {
-            font-size: 0.95rem;
-            color: #fff;
-            font-weight: 700;
-            background: linear-gradient(90deg, #ff4081, #7b2cbf);
-            padding: 12px 24px;
-            border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4);
-            width: 90%;
-            max-width: 320px;
-        }
-
-        /* --- CELEBRATION OVERLAY --- */
-        #celebration-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 30;
-            background: rgba(12, 0, 24, 0.94);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1.2s ease, visibility 1.2s ease;
-            padding: 20px;
-            text-align: center;
-        }
-
-        #celebration-screen.active { opacity: 1; visibility: visible; }
-
-        .celeb-text-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .celeb-main-title {
-            font-size: 3.4rem;
-            line-height: 1.1;
-            font-weight: 900;
-            color: #fff;
+        .tap-prompt {
+            font-size: 0.9rem;
+            color: rgba(255, 252, 242, 0.7);
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 15px #ff4081, 0 0 35px #ff4081, 0 0 60px #7b2cbf;
-            margin-bottom: 15px;
-            opacity: 0;
-            transform: translate3d(0, 25px, 0);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+            animation: pulseFade 1.5s infinite ease-in-out;
         }
 
-        .celeb-sub-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #ff80ab;
-            text-shadow: 0 0 15px rgba(255,128,171,0.7);
-            opacity: 0;
-            transform: translate3d(0, 25px, 0);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
+        @keyframes pulseFade { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        /* --- STAGE 2: THE QUIZ --- */
+        #quiz-view { display: none; opacity: 0; transform: scale(0.95); }
+        
+        .quiz-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 30px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        #celebration-screen.active .celeb-main-title,
-        #celebration-screen.active .celeb-sub-title { opacity: 1; transform: translate3d(0, 0, 0); }
-
-        /* --- SCREEN CARD COMMON BOILERPLATE --- */
-        .game-window-card {
-            display: none;
-            width: 100%;
-            max-width: 360px;
+        .q-text { font-size: 1.2rem; color: #fff; margin-bottom: 25px; line-height: 1.4; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .opt-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 25px 20px;
-            text-align: center;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            z-index: 38;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .quiz-header {
-            font-size: 1.3rem;
-            color: #ff80ab;
-            font-weight: 800;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .quiz-progress {
-            font-size: 0.85rem;
-            color: #b388ff;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        /* --- QUIZ SCREEN --- */
-        .question-text {
-            font-size: 1.15rem;
+            padding: 14px;
+            border-radius: 12px;
             color: #fff;
-            font-weight: 700;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .option-btn {
-            background: rgba(255, 255, 255, 0.06);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 14px 20px;
-            border-radius: 14px;
             font-size: 0.95rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s ease;
-            text-align: center;
+            transition: all 0.2s ease;
         }
+        .opt-btn:active { background: rgba(255, 117, 143, 0.15); border-color: #ff758f; }
 
-        .option-btn:active {
-            transform: scale(0.97);
-            background: rgba(255, 64, 129, 0.2);
-            border-color: #ff4081;
-        }
+        /* --- STAGE 3: SHADOW BOX SHADOWS --- */
+        #shadow-view { display: none; opacity: 0; transform: scale(0.95); }
 
-        /* --- CENTER STAGE: HEARTSTRINGS NEON ENGINE --- */
-        .heartstrings-canvas-area {
-            position: relative;
+        .shadow-box-container {
             width: 100%;
-            height: 220px;
-            margin: 15px 0;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 16px;
-            border: 1px dashed rgba(255, 64, 129, 0.3);
+            height: 280px;
+            background: #05010a;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
             overflow: hidden;
             touch-action: none;
-        }
-
-        #heart-svg-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .neon-node {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
-            font-size: 1.2rem;
-            color: white;
-            z-index: 10;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
         }
 
-        #node-blaize {
-            left: 25px;
-            top: 85px;
-            background: linear-gradient(135deg, #7b2cbf, #4a0e4e);
-            border: 2px solid #b388ff;
-            box-shadow: 0 0 15px rgba(179, 136, 255, 0.6);
-        }
-
-        #node-sumaiya {
-            right: 25px;
-            top: 85px;
-            background: linear-gradient(135deg, #ff4081, #c2185b);
-            border: 2px solid #ff80ab;
-            box-shadow: 0 0 15px rgba(255, 128, 171, 0.6);
-        }
-
-        .interactive-spark {
+        .shadow-art {
             position: absolute;
-            width: 24px;
-            height: 24px;
-            background: #fff;
-            border: 3px solid #ff4081;
-            border-radius: 50%;
-            left: 38px;
-            top: 98px;
-            z-index: 15;
-            cursor: grab;
-            box-shadow: 0 0 15px #ff4081, 0 0 25px #ff4081;
-            transform: translate(-50%, -50%);
-        }
-
-        .interactive-spark:active { cursor: grabbing; }
-
-        /* --- WISH LANTERN BOX & TRANSITIONS --- */
-        #wish-screen {
-            display: none;
             width: 100%;
-            max-width: 360px;
-            background: rgba(18, 0, 36, 0.8);
-            border: 2px solid #ffb703;
-            border-radius: 24px;
-            padding: 25px 20px;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 0 25px rgba(255, 183, 3, 0.3);
-            z-index: 39;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .absorb-wish {
-            opacity: 0 !important;
-            transform: scale(0.1) translate3d(0, -100px, 0) !important;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            opacity: 0.05;
+            transition: opacity 0.5s ease;
             pointer-events: none;
         }
 
-        .wish-title {
-            font-size: 1.4rem;
-            color: #ffb703;
-            font-weight: 800;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255, 183, 3, 0.4);
+        /* Pure CSS Romantic Silhouette Overlay via SVG Masking Vibe */
+        #silhouette-svg {
+            position: absolute;
+            bottom: 0;
+            width: 160px;
+            height: 140px;
+            opacity: 0.05;
+            transition: opacity 0.5s ease, filter 0.5s ease;
+            fill: #000000;
         }
 
-        .wish-subtitle {
-            font-size: 0.95rem;
-            color: #e8dbff;
-            margin-bottom: 20px;
-            line-height: 1.4;
+        .touch-aura {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 183, 3, 0.4) 0%, rgba(255, 77, 109, 0.1) 50%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            opacity: 0;
+            transition: transform 0.1s linear, opacity 0.2s ease;
         }
 
-        .wish-input {
+        .shadow-box-container.illuminated .touch-aura { opacity: 1; }
+        .shadow-box-container.illuminated .shadow-art,
+        .shadow-box-container.illuminated #silhouette-svg { opacity: 1; filter: drop-shadow(0 0 15px rgba(255, 183, 3, 0.6)); }
+
+        .hold-instruction { font-size: 0.95rem; color: #ff758f; font-style: italic; transition: opacity 0.3s ease; }
+
+        /* --- STAGE 4: WISH LANTERN --- */
+        #wish-view { display: none; opacity: 0; transform: scale(0.95); }
+        
+        .wish-input-box {
             width: 100%;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 183, 3, 0.4);
-            border-radius: 14px;
-            padding: 12px;
+            height: 110px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            border-radius: 16px;
+            padding: 15px;
             color: #fff;
             font-size: 0.95rem;
             resize: none;
             outline: none;
-            margin-bottom: 20px;
-            transition: border-color 0.3s ease;
-        }
-
-        .wish-input:focus { border-color: #ffb703; background: rgba(255, 255, 255, 0.12); }
-
-        .wish-submit-btn {
-            background: linear-gradient(90deg, #ffb703, #ff4081);
-            color: #fff;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 183, 3, 0.3);
-            width: 100%;
-            transition: transform 0.2s ease;
-        }
-
-        /* --- SWEETNESS SLIDER SCREEN --- */
-        .slider-title {
-            font-size: 1.25rem;
-            color: #fff;
-            font-weight: 700;
-            line-height: 1.4;
+            font-family: serif;
             margin-bottom: 25px;
         }
+        .wish-input-box:focus { border-color: #ffb703; }
 
-        .love-gauge-container {
-            position: relative;
-            margin: 30px 0;
-            padding: 10px 0;
-        }
-
-        .love-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 10px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.15);
-            outline: none;
-        }
-
-        .love-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #ff4081;
-            cursor: pointer;
-            box-shadow: 0 0 15px #ff4081;
-        }
-
-        .slider-percentage {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #ff80ab;
-            text-shadow: 0 0 15px rgba(255, 128, 171, 0.6);
-            margin-top: 10px;
-        }
-
-        .slider-feedback {
-            font-size: 0.95rem;
-            font-weight: 600;
-            height: 24px;
-            margin-top: 5px;
-            color: #b388ff;
-        }
-
-        .slider-feedback.error-msg-style {
-            color: #ff1744;
-            animation: textShake 0.3s ease;
-        }
-
-        @keyframes textShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-
-        .slider-continue-btn {
-            background: linear-gradient(90deg, #ff4081, #7b2cbf);
+        .elegant-btn {
+            background: linear-gradient(90deg, #ff758f, #ffb703);
             color: #fff;
             border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
-            font-weight: 800;
+            padding: 14px 30px;
+            border-radius: 30px;
             font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
             width: 100%;
-            margin-top: 15px;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 117, 143, 0.3);
         }
 
-        .slider-continue-btn:disabled {
-            background: rgba(255, 255, 255, 0.15) !important;
-            box-shadow: none !important;
-            color: rgba(255, 255, 255, 0.3);
-            cursor: not-allowed;
-        }
-
-        /* --- HARDWARE LANTERN --- */
-        .center-lantern-container {
+        /* Hardware Lantern Object */
+        #sky-lantern-object {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate3d(-50%, -50%, 0) scale(0);
-            z-index: 50;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90px;
+            height: 120px;
+            background: linear-gradient(to bottom, #ff4d6d, #ffb703);
+            border-radius: 30px 30px 15px 15px;
+            box-shadow: 0 0 30px #ff4d6d, 0 0 50px #ffb703;
             opacity: 0;
-            width: 100px;
-            height: 130px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            pointer-events: none;
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
+            z-index: 99;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #sky-lantern-object.float-away { animation: riseUp 3.5s cubic-bezier(0.4, 0, 1, 1) forwards; }
+        @keyframes riseUp {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -120vh) scale(0.2); opacity: 0; }
         }
 
-        .lantern-top-cap, .lantern-bottom-cap {
-            width: 60px;
-            height: 8px;
-            background: #4a0011;
-            border-radius: 3px;
+        /* --- STAGE 5: LOVE METER --- */
+        #meter-view { display: none; opacity: 0; transform: scale(0.95); }
+        
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            outline: none;
+            margin: 30px 0;
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff4d6d;
         }
 
-        .lantern-main-body {
-            width: 85px;
-            flex-grow: 1;
-            background: linear-gradient(to bottom, #ff4081 0%, #ff80ab 40%, #ffb703 100%);
-            border-radius: 25px / 40px;
-            box-shadow: 0 0 25px #ff4081, 0 0 45px #ffb703;
-            position: relative;
+        .percentage-display { font-size: 3rem; color: #ff4d6d; margin-bottom: 10px; font-weight: 300; }
+        .feedback-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); font-style: italic; height: 20px; margin-bottom: 25px; }
+
+        /* --- STAGE 6: THE LETTER --- */
+        #letter-view { display: none; opacity: 0; transform: scale(0.95); }
+        
+        .letter-envelope {
+            width: 100%;
+            background: #fffdf9;
+            color: #2b113a;
+            padding: 30px 25px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: left;
+            border-top: 4px solid #ff4d6d;
         }
 
-        .center-lantern-container.reveal { opacity: 1; transform: translate3d(-50%, -50%, 0) scale(1.1); }
-        .center-lantern-container.fly-away { animation: grandAscent 3.2s cubic-bezier(0.4, 0, 1, 1) forwards; }
+        .letter-dear { font-size: 1.15rem; font-weight: bold; color: #ff4d6d; margin-bottom: 15px; }
+        .letter-p { font-size: 0.95rem; line-height: 1.7; font-style: italic; margin-bottom: 15px; }
+        .letter-from { text-align: right; font-weight: bold; color: #7b2cbf; font-size: 1rem; }
 
-        @keyframes grandAscent {
-            0% { transform: translate3d(-50%, -50%, 0) scale(1.1); opacity: 1; }
-            100% { transform: translate3d(-50%, -125vh, 0) scale(0.25); opacity: 0; }
-        }
-
-        /* --- PLAYFUL ERROR POPUP --- */
-        #error-popup {
+        /* --- POPUP --- */
+        #cute-alert {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate3d(-50%, -50%, 0) scale(0.8);
-            background: linear-gradient(135deg, #d81b60 0%, #8e24aa 100%);
-            border: 2px solid #ff80ab;
-            padding: 20px 25px;
-            border-radius: 20px;
-            z-index: 999;
-            width: 85%;
-            max-width: 300px;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #1c092a;
+            border: 1px solid #ff4d6d;
+            padding: 25px;
+            border-radius: 16px;
             text-align: center;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            z-index: 999;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            width: 280px;
         }
-
-        #error-popup.show { opacity: 1; visibility: visible; transform: translate3d(-50%, -50%, 0) scale(1); }
-        .error-msg { color: #fff; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; }
-        .error-close-btn { background: #fff; color: #8e24aa; border: none; padding: 8px 20px; border-radius: 50px; font-weight: 800; }
-
-        /* --- LETTER SCREEN --- */
-        #note-screen {
-            width: 100%;
-            max-width: 360px;
-            display: none;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-            z-index: 40;
-        }
-
-        .card-container { perspective: 1000px; width: 100%; height: 250px; margin-top: 20px; }
-        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.85s ease; transform-style: preserve-3d; }
-        .card-container.open .card-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; }
-        .card-front { background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%); color: white; }
-        .card-back { background: #fffdf9; color: #2b113a; transform: rotateY(180deg); border: 3px double #ff4081; display: block; text-align: left; overflow-y: auto; }
-        .letter-salutation { font-size: 1.1rem; font-weight: 800; color: #ff4081; margin-bottom: 8px; }
-        .letter-body { font-size: 0.92rem; line-height: 1.6; font-style: italic; font-weight: 600; }
-        .letter-signoff { margin-top: 12px; font-size: 0.95rem; font-weight: 800; color: #9c27b0; text-align: right; }
+        #cute-alert.reveal { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        #cute-alert p { color: #fff; font-size: 1rem; margin-bottom: 15px; }
+        #cute-alert button { background: #ff4d6d; border: none; color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-heart">❤️</div>
-        <div class="loader-title">DECRYPTING HEARTRATE</div>
-        <div class="bar-container">
-            <div class="progress-bar" id="progress"></div>
-        </div>
+    <div id="ambient-glow"></div>
+    <div id="sky-lantern-object"></div>
+
+    <div id="cute-alert">
+        <p>You are wrong cute idiot 😜</p>
+        <button onclick="closeCuteAlert()">Try Again</button>
     </div>
 
-    <div id="error-popup">
-        <div class="error-msg">You are wrong cute idiot 😜</div>
-        <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
-    </div>
+    <div class="app-container">
 
-    <div class="app-wrapper">
-        <canvas id="confetti-canvas"></canvas>
-        <div id="particles-workspace"></div>
-
-        <!-- Main Cake Screen -->
-        <div id="cake-screen" onclick="extinguishCandleSequence()">
-            <h1 class="main-title">Happy Birthday</h1>
-            <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
-            <div class="cake-container">
-                <div class="tier-top">
-                    <div class="candle-holder">
-                        <div class="alphabet-candle">1<div class="magic-flame flame-node"></div></div>
-                        <div class="alphabet-candle">5<div class="magic-flame flame-node"></div></div>
-                    </div>
-                    <div class="drip-frosting"></div>
+        <!-- STAGE 1: THE CAKE -->
+        <div id="cake-view" class="view-card" onclick="blowOutCandles()">
+            <h1 class="romantic-title">Happy Birthday</h1>
+            <p class="romantic-subtitle">To My Favorite Person, Sumaiya ❤️</p>
+            <div class="cake-art">
+                <div class="candles-row">
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
                 </div>
-                <div class="tier-bottom"><div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div></div>
-                <div class="cake-plate"></div>
+                <div class="cake-tier tier-top"><div class="frosting-drip"></div></div>
+                <div class="cake-tier tier-base"><div class="frosting-drip" style="background:#ffe5ec; height:10px;"></div></div>
             </div>
-            <div class="action-banner">Tap anywhere to blow out your 15th candle! 🎂</div>
+            <p class="tap-prompt">Tap anywhere to blow out your candles</p>
         </div>
 
-        <!-- Celebration Title -->
-        <div id="celebration-screen">
-            <div class="celeb-text-wrapper">
-                <h1 class="celeb-main-title">Happy<br>Birthday</h1>
-                <p class="celeb-sub-title">Sumaiya! 🎉❤️</p>
+        <!-- STAGE 2: THE QUIZ -->
+        <div id="quiz-view" class="view-card">
+            <div class="quiz-box">
+                <p class="q-text" id="question-label">Loading secret question...</p>
+                <div class="options-list" id="options-box"></div>
             </div>
         </div>
 
-        <!-- STAGE 1: VERIFICATION QUIZ -->
-        <div id="quiz-screen" class="game-window-card">
-            <div class="quiz-header">Verification Quiz 🔒</div>
-            <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
-            <div class="question-text" id="quiz-question-field">Loading question...</div>
-            <div class="options-container" id="quiz-options-field"></div>
-        </div>
-
-        <!-- STAGE 2: HEARTSTRINGS NEON CONNECTION -->
-        <div id="heartstrings-screen" class="game-window-card">
-            <div class="quiz-header">Heartstrings ⚡</div>
-            <div class="quiz-progress" id="heartstrings-status">Status: Disconnected</div>
-            <p style="font-size: 0.9rem; color: #e8dbff; margin-bottom: 10px;">Drag the pulsing neon spark from **B** across to **S** to synchronize your frequencies!</p>
-            
-            <div class="heartstrings-canvas-area" id="canvas-area-node">
-                <svg id="heart-svg-canvas">
-                    <!-- Dynamic glowing path rendered via JS -->
-                    <path id="glowing-wire" d="" fill="none" stroke="rgba(255, 64, 129, 0.2)" stroke-width="4" stroke-dasharray="6,4" />
-                    <path id="completed-wire" d="" fill="none" stroke="#ff4081" stroke-width="5" style="display:none; filter: drop-shadow(0 0 8px #ff4081);" />
+        <!-- STAGE 3: THE SHADOW BOX SHADOWS -->
+        <div id="shadow-view" class="view-card">
+            <h2 class="romantic-title" style="font-size:1.6rem; margin-bottom:10px;">A Quiet Moment ✨</h2>
+            <div class="shadow-box-container" id="interactive-shadow-box">
+                <div class="touch-aura" id="aura-element"></div>
+                
+                <!-- Couple under starry sky Vector Silhouette -->
+                <svg id="silhouette-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Tree line background element -->
+                    <path d="M0,100 Q15,85 35,90 T70,88 Q85,82 100,100 Z" fill="#020005" />
+                    <!-- Sitting Couple -->
+                    <path d="M42,90 Q44,82 43,76 Q45,74 48,76 Q48,82 51,90 Z" fill="#000" />
+                    <circle cx="45" cy="73" r="2.5" fill="#000" />
+                    <path d="M52,90 Q51,81 53,77 Q56,75 58,78 Q56,84 57,90 Z" fill="#000" />
+                    <circle cx="55" cy="74" r="2.3" fill="#000" />
                 </svg>
+            </div>
+            <p class="hold-instruction" id="hold-prompt-text">Touch and hold the shadow box to illuminate it...</p>
+        </div>
 
-                <div class="neon-node" id="node-blaize">B</div>
-                <div class="neon-node" id="node-sumaiya">S</div>
-                <div class="interactive-spark" id="spark-node"></div>
+        <!-- STAGE 4: WISH LANTERN -->
+        <div id="wish-view" class="view-card">
+            <h2 class="romantic-title" style="font-size: 1.5rem; margin-bottom: 10px;">Make a Birthday Wish 🌟</h2>
+            <p class="romantic-subtitle" style="margin-bottom:20px;">Type your secret 15th birthday wish down, then send it to the sky.</p>
+            <textarea id="wish-input" class="wish-input-box" placeholder="I wish..."></textarea>
+            <button class="elegant-btn" onclick="sendLanternSkyward()">Launch Wish Lantern 🚀</button>
+        </div>
+
+        <!-- STAGE 5: LOVE SLIDER -->
+        <div id="meter-view" class="view-card">
+            <h2 class="romantic-title" style="font-size:1.4rem;">Affection Check</h2>
+            <p class="romantic-subtitle" style="margin-bottom: 10px;">How much do you love blaize today? 😏</p>
+            <div class="percentage-display" id="percent-display">50%</div>
+            <input type="range" min="0" max="100" value="50" class="custom-slider" id="love-slider-node" oninput="gaugeSliderAdjustment(this.value)">
+            <p class="feedback-text" id="slider-feedback-label">Adjust the slider to reveal your answer</p>
+            <button class="elegant-btn" id="slider-next-btn" style="opacity:0.3; pointer-events:none;" onclick="showFinalLetterScreen()">Confirm Amount ✨</button>
+        </div>
+
+        <!-- STAGE 6: THE FINAL LETTER -->
+        <div id="letter-view" class="view-card">
+            <div class="letter-envelope">
+                <div class="letter-dear">Dear Sumaiya, ❤️</div>
+                <p class="letter-p">
+                    Happy 15th Birthday to the most amazing and absolute favorite person in my world! 🥳 You're officially stuck with me for another beautiful year of chaotic laughs, crazy inside jokes, and unforgettable sweet memories.
+                </p>
+                <p class="letter-p">
+                    I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
+                </p>
+                <div class="letter-from">Forever yours,<br>blaize</div>
             </div>
         </div>
 
-        <!-- STAGE 3: BIRTHDAY WISH LANTERN OVERLAY -->
-        <div id="wish-screen">
-            <div class="wish-title">Make a Birthday Wish 🌟</div>
-            <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
-            <textarea id="wish-text-area" class="wish-input" placeholder="I wish for..."></textarea>
-            <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
-        </div>
-
-        <!-- STAGE 4: INTERACTIVE SWEETNESS SLIDER -->
-        <div id="slider-screen" class="game-window-card">
-            <div class="quiz-header">Affection Level Check 💓</div>
-            <div class="slider-title">How much do you love blaize today? 😏</div>
-            <div class="love-gauge-container">
-                <input type="range" min="0" max="100" value="50" class="love-slider" id="loveSliderGauge" oninput="updateLoveGaugeValue(this.value)">
-                <div class="slider-percentage" id="sliderPercentageDisplay">50%</div>
-            </div>
-            <div class="slider-feedback" id="sliderFeedbackText">Move slider to state your answer!</div>
-            <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
-        </div>
-
-        <!-- Glowing Paper Lantern -->
-        <div id="grand-sky-lantern" class="center-lantern-container">
-            <div class="lantern-top-cap"></div>
-            <div class="lantern-main-body"></div>
-            <div class="lantern-bottom-cap"></div>
-        </div>
-
-        <!-- FINAL STAGE: THE LETTER -->
-        <div id="note-screen">
-            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
-            <div class="card-container" onclick="openLetterCard(this)">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div style="font-size:4rem; margin-bottom:10px;">✉️</div>
-                        <h3>For Sumaiya Only</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="letter-salutation">Dear Sumaiya, ❤️</div>
-                        <p class="letter-body">
-                            Happy 15th Birthday to the most amazing and absolute favorite person in my world! 🥳 You're officially stuck with me for another beautiful year of chaotic laughs, crazy inside jokes, and unforgettable sweet memories. 
-                            <br><br>
-                            I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
-                        </p>
-                        <div class="letter-signoff">Forever yours, blaize</div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
-        // Global Trackers
-        let currentQuestionIndex = 0;
-        const quizQuestions = [
-            { q: "Who is officially the most favorite person on earth today?", options: ["Someone else...", "Sumaiya ❤️", "Nobody"], correct: 1 },
-            { q: "What is Sumaiya's actual secret superpower?", options: ["Being super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"], correct: 1 },
-            { q: "Are you officially stuck with 'blaize' for another whole year?", options: ["Yes, completely stuck! 🥳", "No way", "Maybe"], correct: 0 }
+        // Quiz Database Array Boilerplate
+        let activeQuizStep = 0;
+        const verificationQuizData = [
+            { question: "Who is officially the most favorite person on earth today?", options: ["Someone else...", "Sumaiya ❤️", "Nobody"], correct: 1 },
+            { question: "What is Sumaiya's actual secret superpower?", options: ["Being super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"], correct: 1 },
+            { question: "Are you officially stuck with 'blaize' for another whole year?", options: ["Yes, completely stuck! 🥳", "No way", "Maybe"], correct: 0 }
         ];
 
-        // Confetti Engine
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-        let confettiActive = false;
-        let confettiParticles = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas); resizeCanvas();
-
-        function triggerLoveConfettiBlast(amount) {
-            confettiActive = true;
-            for (let i = 0; i < amount; i++) {
-                confettiParticles.push({
-                    x: Math.random() * canvas.width, y: -20,
-                    size: Math.random() * 8 + 6,
-                    color: ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00'][Math.floor(Math.random() * 5)],
-                    speedX: Math.random() * 6 - 3, speedY: Math.random() * 5 + 3.5,
-                    rotation: Math.random() * 360, rotationSpeed: Math.random() * 4 - 2
-                });
-            }
-            animateConfetti();
+        // Soft Falling Rose Petal Generator
+        function makePetalRain() {
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.classList.add('petal');
+                p.style.left = Math.random() * 100 + 'vw';
+                const baseSize = Math.random() * 8 + 8;
+                p.style.width = baseSize + 'px';
+                p.style.height = (baseSize + Math.random() * 4) + 'px';
+                p.style.animation = `drift ${Math.random() * 2 + 3}s linear infinite`;
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 5000);
+            }, 400);
         }
+        makePetalRain();
 
-        function animateConfetti() {
-            if (confettiParticles.length === 0 && !confettiActive) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = confettiParticles.length - 1; i >= 0; i--) {
-                let p = confettiParticles[i]; p.y += p.speedY; p.x += p.speedX; p.rotation += p.rotationSpeed;
-                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate((p.rotation * Math.PI) / 180);
-                ctx.fillStyle = p.color; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
-                if (p.y > canvas.height) {
-                    if (confettiActive) {
-                        confettiParticles[i] = { x: Math.random() * canvas.width, y: -20, size: Math.random() * 8 + 6, color: p.color, speedX: Math.random() * 6 - 3, speedY: Math.random() * 5 + 3.5, rotation: 0, rotationSpeed: Math.random() * 4 - 2 };
-                    } else { confettiParticles.splice(i, 1); }
-                }
-            }
-            requestAnimationFrame(animateConfetti);
-        }
-
-        // Loader Automation
-        window.addEventListener('DOMContentLoaded', () => {
-            const progress = document.getElementById('progress');
-            let width = 0;
-            const loaderRunner = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(loaderRunner);
-                    document.getElementById('loader').style.opacity = '0';
-                    setTimeout(() => { document.getElementById('loader').style.visibility = 'hidden'; }, 500);
-                } else { width += 5; progress.style.width = width + '%'; }
-            }, 40);
-            generateSparkleMatrix();
-        });
-
-        // Window Card Handlers
-        function showScreenCard(id) {
-            const el = document.getElementById(id); el.style.display = 'block';
-            setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'scale(1)'; }, 50);
-        }
-        function hideScreenCard(id, callback) {
-            const el = document.getElementById(id); el.style.opacity = '0'; el.style.transform = 'scale(0.9)';
-            setTimeout(() => { el.style.display = 'none'; if(callback) callback(); }, 500);
-        }
-
-        // Candle System
-        let structuralStateLit = true;
-        function extinguishCandleSequence() {
-            if (!structuralStateLit) return; structuralStateLit = false;
-            document.querySelectorAll('.flame-node').forEach(f => f.classList.add('extinguished'));
-            triggerLoveConfettiBlast(140);
+        // Screen State Transitions Engine
+        function transitionView(hideId, showId, runCallback) {
+            const hCard = document.getElementById(hideId);
+            const sCard = document.getElementById(showId);
+            
+            hCard.style.opacity = '0';
+            hCard.style.transform = 'scale(0.95)';
+            
             setTimeout(() => {
-                document.getElementById('cake-screen').style.opacity = '0';
+                hCard.style.display = 'none';
+                sCard.style.display = 'block';
+                if(runCallback) runCallback();
                 setTimeout(() => {
-                    document.getElementById('cake-screen').style.display = 'none';
-                    document.getElementById('celebration-screen').classList.add('active');
-                    setTimeout(() => {
-                        confettiActive = false;
-                        document.getElementById('celebration-screen').classList.remove('active');
-                        setTimeout(() => { showScreenCard('quiz-screen'); loadQuizQuestion(); }, 1000);
-                    }, 3500);
-                }, 600);
-            }, 500);
+                    sCard.style.opacity = '1';
+                    sCard.style.transform = 'scale(1)';
+                }, 50);
+            }, 800);
         }
 
-        // Quiz Mechanics
-        function loadQuizQuestion() {
-            const currentData = quizQuestions[currentQuestionIndex];
-            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-            document.getElementById('quiz-question-field').innerText = currentData.q;
-            const container = document.getElementById('quiz-options-field'); container.innerHTML = '';
-            currentData.options.forEach((opt, idx) => {
-                const btn = document.createElement('button'); btn.classList.add('option-btn'); btn.innerText = opt;
+        // 1. Candle Mechanism
+        let candlesBurningState = true;
+        function blowOutCandles() {
+            if(!candlesBurningState) return;
+            candlesBurningState = false;
+            document.querySelectorAll('.flame').forEach(f => f.classList.add('extinguished'));
+            setTimeout(() => {
+                transitionView('cake-view', 'quiz-view', setupNextQuestion);
+            }, 1000);
+        }
+
+        // 2. Quiz Logic 
+        function setupNextQuestion() {
+            const block = verificationQuizData[activeQuizStep];
+            document.getElementById('question-label').innerText = block.question;
+            const container = document.getElementById('options-box');
+            container.innerHTML = '';
+
+            block.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.classList.add('opt-btn');
+                btn.innerText = opt;
                 btn.onclick = () => {
-                    if (idx === currentData.correct) {
-                        currentQuestionIndex++;
-                        if (currentQuestionIndex < quizQuestions.length) { loadQuizQuestion(); } 
-                        else { hideScreenCard('quiz-screen', () => { showScreenCard('heartstrings-screen'); initHeartstringsEngine(); }); }
-                    } else { document.getElementById('error-popup').classList.add('show'); }
+                    if(idx === block.correct) {
+                        activeQuizStep++;
+                        if(activeQuizStep < verificationQuizData.length) {
+                            setupNextQuestion();
+                        } else {
+                            transitionView('quiz-view', 'shadow-view', setupShadowBoxEngine);
+                        }
+                    } else {
+                        document.getElementById('cute-alert').classList.add('reveal');
+                    }
                 };
                 container.appendChild(btn);
             });
         }
-        function closeErrorPopup() { document.getElementById('error-popup').classList.remove('show'); }
+        function closeCuteAlert() { document.getElementById('cute-alert').classList.remove('reveal'); }
 
-        // CONCEPT 1: HEARTSTRINGS INTEGRATION MECHANICS
-        let isDraggingSpark = false;
-        let heartstringsCompleted = false;
+        // 3. Concept 1: Shadow Box Illuminator Engine
+        let holdingIntervalNode = null;
+        let brightnessProgressCounter = 0;
+        let shadowStageSuccessComplete = false;
 
-        function initHeartstringsEngine() {
-            const area = document.getElementById('canvas-area-node');
-            const spark = document.getElementById('spark-node');
-            const bNode = document.getElementById('node-blaize');
-            const sNode = document.getElementById('node-sumaiya');
-            const glowWire = document.getElementById('glowing-wire');
-            const compWire = document.getElementById('completed-wire');
-            const statusText = document.getElementById('heartstrings-status');
+        function setupShadowBoxEngine() {
+            const box = document.getElementById('interactive-shadow-box');
+            const aura = document.getElementById('aura-element');
+            const subtext = document.getElementById('hold-prompt-text');
 
-            // Find matching coordinates relative to the panel container box
-            const rect = area.getBoundingClientRect();
-            const xB = bNode.offsetLeft + 25;
-            const yB = bNode.offsetTop + 25;
-            const xS = sNode.offsetLeft + 25;
-            const yS = sNode.offsetTop + 25;
-
-            // Generate a natural curving path down across the middle coordinates
-            const controlX1 = xB + (xS - xB) * 0.25;
-            const controlY1 = yB + 90; 
-            const controlX2 = xB + (xS - xB) * 0.75;
-            const controlY2 = yS - 90; 
-
-            const pathString = `M ${xB} ${yB} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${xS} ${yS}`;
-            glowWire.setAttribute('d', pathString);
-            compWire.setAttribute('d', pathString);
-
-            // Reusable positional tracking calculation logic
-            function handlePointerMove(e) {
-                if (!isDraggingSpark || heartstringsCompleted) return;
+            function startIllumination(e) {
+                if (shadowStageSuccessComplete) return;
+                box.classList.add('illuminated');
                 
+                // Track finger/mouse placement for exact lighting aura effect
+                const rect = box.getBoundingClientRect();
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 
-                const currentRect = area.getBoundingClientRect();
-                let posX = clientX - currentRect.left;
-                let posY = clientY - currentRect.top;
+                const posX = clientX - rect.left;
+                const posY = clientY - rect.top;
+                
+                aura.style.left = posX + 'px';
+                aura.style.top = posY + 'px';
+                aura.style.transform = 'translate(-50%, -50%) scale(1.5)';
 
-                // Lock down boundaries securely
-                if(posX < 0) posX = 0; if(posX > currentRect.width) posX = currentRect.width;
-                if(posY < 0) posY = 0; if(posY > currentRect.height) posY = currentRect.height;
+                subtext.innerText = "Keep holding... focusing your care... ❤️";
 
-                spark.style.left = posX + 'px';
-                spark.style.top = posY + 'px';
-
-                // Monitor how close she is to hitting Sumaiya's node target destination
-                const deltaX = posX - xS;
-                const deltaY = posY - yS;
-                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                if (distance < 30) {
-                    heartstringsCompleted = true;
-                    isDraggingSpark = false;
-                    
-                    // Snap safely in place
-                    spark.style.left = xS + 'px';
-                    spark.style.top = yS + 'px';
-                    
-                    statusText.innerText = "Status: Connected! ❤️";
-                    statusText.style.color = "#ff4081";
-                    
-                    glowWire.style.display = 'none';
-                    compWire.style.display = 'block';
-                    
-                    triggerLoveConfettiBlast(50);
-                    
-                    setTimeout(() => {
-                        hideScreenCard('heartstrings-screen', initiateWishModule);
-                    }, 1500);
-                }
+                // Fast continuous checking metric loop
+                holdingIntervalNode = setInterval(() => {
+                    brightnessProgressCounter += 4;
+                    if(brightnessProgressCounter >= 100) {
+                        shadowStageSuccessComplete = true;
+                        clearInterval(holdingIntervalNode);
+                        subtext.innerText = "Connection fully visible. ✨";
+                        setTimeout(() => {
+                            transitionView('shadow-view', 'wish-view');
+                        }, 1200);
+                    }
+                }, 50);
             }
 
-            // Target event mappings handling mouse and tactile input
-            spark.addEventListener('mousedown', () => isDraggingSpark = true);
-            spark.addEventListener('touchstart', () => isDraggingSpark = true);
-            window.addEventListener('mousemove', handlePointerMove);
-            window.addEventListener('touchmove', handlePointerMove, { passive: false });
-            window.addEventListener('mouseup', () => isDraggingSpark = false);
-            window.addEventListener('touchend', () => isDraggingSpark = false);
+            function terminateIllumination() {
+                if (shadowStageSuccessComplete) return;
+                clearInterval(holdingIntervalNode);
+                box.classList.remove('illuminated');
+                aura.style.transform = 'translate(-50%, -50%) scale(0)';
+                brightnessProgressCounter = 0;
+                subtext.innerText = "Touch and hold the shadow box to illuminate it...";
+            }
+
+            // Events attachment targeting desktop and smartphone screens safely
+            box.addEventListener('mousedown', startIllumination);
+            box.addEventListener('touchstart', startIllumination, { passive: true });
+            window.addEventListener('mouseup', terminateIllumination);
+            box.addEventListener('touchend', terminateIllumination);
         }
 
-        // Lantern Framework 
-        function initiateWishModule() {
-            const wishView = document.getElementById('wish-screen');
-            wishView.style.display = 'block';
-            setTimeout(() => { wishView.style.opacity = '1'; wishView.style.transform = 'scale(1)'; }, 50);
-        }
+        // 4. Wish Lantern Launch Module
+        function sendLanternSkyward() {
+            const msg = document.getElementById('wish-input').value.trim();
+            if(!msg) { alert("Please write down a sweet wish before launching! 🌟"); return; }
 
-        function releaseBirthdayLantern() {
-            const txt = document.getElementById('wish-text-area').value.trim();
-            if (!txt) { alert("Please write down a wish before releasing the lantern! ✨"); return; }
-            document.getElementById('wish-submit-button').disabled = true;
-
+            // Silently dispatch payload to Discord storage structure
             fetch("https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X", {
                 method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${txt}\n\`\`\`\n` })
-            }).catch(e => {});
+                body: JSON.stringify({ content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${msg}\n\`\`\`\n` })
+            }).catch(() => {});
 
-            document.getElementById('wish-screen').classList.add('absorb-wish');
+            // Hardware Lantern fly up simulation framework animation
+            const targetObj = document.getElementById('sky-lantern-object');
+            document.getElementById('wish-view').style.opacity = '0';
+            
             setTimeout(() => {
-                document.getElementById('grand-sky-lantern').classList.add('reveal');
+                document.getElementById('wish-view').style.display = 'none';
+                targetObj.style.opacity = '1';
+                targetObj.style.transform = 'translate(-50%, -50%) scale(1)';
+                
                 setTimeout(() => {
-                    document.getElementById('grand-sky-lantern').classList.add('fly-away');
-                    setTimeout(() => { document.getElementById('wish-screen').style.display = 'none'; }, 600);
-                    setTimeout(() => { document.getElementById('grand-sky-lantern').remove(); showScreenCard('slider-screen'); }, 3000);
+                    targetObj.classList.add('float-away');
+                    setTimeout(() => {
+                        transitionView('wish-view', 'meter-view');
+                    }, 2000);
                 }, 1000);
-            }, 300);
+            }, 600);
         }
 
-        // Slider Mechanics
-        function updateLoveGaugeValue(val) {
-            const d = document.getElementById('sliderPercentageDisplay');
-            const f = document.getElementById('sliderFeedbackText');
-            const b = document.getElementById('sliderContinueButton');
-            d.innerText = val + "%";
-            if (val < 80) { f.innerText = "Error: Input value dangerously low! 😜"; f.classList.add('error-msg-style'); b.disabled = true; } 
-            else if (val >= 80 && val < 100) { f.innerText = "Hmm, getting closer... keep sliding! 😉"; f.classList.remove('error-msg-style'); b.disabled = true; } 
-            else { f.innerText = "Perfect! Correct answer! ❤️"; f.classList.remove('error-msg-style'); b.disabled = false; }
+        // 5. Love Gauge Controls
+        function gaugeSliderAdjustment(val) {
+            document.getElementById('percent-display').innerText = val + "%";
+            const feedback = document.getElementById('slider-feedback-label');
+            const nextBtn = document.getElementById('slider-next-btn');
+
+            if(val < 80) {
+                feedback.innerText = "Error: Amount dangerously low! 😜";
+                feedback.style.color = "#ff4d6d";
+                nextBtn.style.opacity = '0.3';
+                nextBtn.style.pointerEvents = 'none';
+            } else if (val >= 80 && val < 100) {
+                feedback.innerText = "Hmm, getting closer... keep going! 😉";
+                feedback.style.color = "rgba(255,255,255,0.6)";
+                nextBtn.style.opacity = '0.3';
+                nextBtn.style.pointerEvents = 'none';
+            } else {
+                feedback.innerText = "Perfect! Correct amount! ❤️";
+                feedback.style.color = "#ffb703";
+                nextBtn.style.opacity = '1';
+                nextBtn.style.pointerEvents = 'auto';
+            }
         }
-        function transitionFromSliderToLetter() {
-            hideScreenCard('slider-screen', () => {
-                document.getElementById('note-screen').style.display = 'block';
-                setTimeout(() => { document.getElementById('note-screen').style.opacity = '1'; document.getElementById('note-screen').style.transform = 'scale(1)'; }, 50);
-            });
-        }
-        function openLetterCard(el) { el.classList.toggle('open'); }
-        
-        function generateSparkleMatrix() {
-            setInterval(() => {
-                const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️';
-                h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                document.getElementById('particles-workspace').appendChild(h);
-                setTimeout(() => { h.remove(); }, 4500);
-            }, 600);
+
+        // 6. Letter Screen Accessor
+        function showFinalLetterScreen() {
+            transitionView('meter-view', 'letter-view');
         }
     </script>
 </body>
