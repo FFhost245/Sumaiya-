@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy 15th Birthday Sumaiya! ❤️</title>
     <style>
-        /* Reset and Premium Mobile Framework */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -22,7 +21,7 @@
             color: #f3e5f5;
         }
 
-        /* --- PRESTIGE LOADING SCREEN --- */
+        /* --- LOADING SCREEN --- */
         #loader {
             position: fixed;
             top: 0;
@@ -87,7 +86,7 @@
             font-style: italic;
         }
 
-        /* --- BACKGROUND PARTICLES & CONFETTI CANVAS --- */
+        /* --- PARTICLES & CANVASES --- */
         #confetti-canvas {
             position: absolute;
             top: 0;
@@ -129,7 +128,6 @@
             50% { opacity: 0.8; transform: scale(1.2); }
         }
 
-        /* --- APP WRAPPER --- */
         .app-wrapper {
             width: 100%;
             height: 100%;
@@ -141,7 +139,7 @@
             position: relative;
         }
 
-        /* --- SCREEN 1: DELUXE CAKE CELEBRATION --- */
+        /* --- CAKE SCREEN --- */
         #cake-screen {
             width: 100%;
             height: 100%;
@@ -160,23 +158,20 @@
         }
 
         .main-title {
-            font-size: 2.3rem;
+            font-size: 2.5rem;
             color: #fff;
             font-weight: 900;
             text-shadow: 0 0 15px #ff4081, 0 0 30px #7b2cbf;
             margin-bottom: 5px;
-            letter-spacing: -0.5px;
         }
 
         .sub-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #ff80ab;
             font-weight: 700;
             margin-bottom: 35px;
-            text-shadow: 0 0 8px rgba(255,128,171,0.4);
         }
 
-        /* --- LUXURY MULTI-TIER CAKE --- */
         .cake-container {
             width: 200px;
             height: 180px;
@@ -204,7 +199,6 @@
             border-radius: 8px 8px 0 0;
             position: relative;
             z-index: 3;
-            box-shadow: inset 0 -5px 0 rgba(0,0,0,0.1);
         }
 
         .tier-top {
@@ -214,7 +208,6 @@
             border-radius: 6px 6px 0 0;
             position: relative;
             z-index: 4;
-            box-shadow: inset 0 -5px 0 rgba(0,0,0,0.08);
         }
 
         .drip-frosting {
@@ -225,13 +218,6 @@
             position: absolute;
             top: 0;
             left: 0;
-        }
-
-        .cake-decor-heart {
-            font-size: 12px;
-            position: absolute;
-            color: #ff4081;
-            bottom: 12px;
         }
 
         .candle-stick {
@@ -267,9 +253,8 @@
             position: absolute;
             top: -24px;
             left: -2px;
-            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab, 0 0 30px #ff4081;
+            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
             animation: flameWobble 0.5s infinite alternate ease-in-out;
-            transition: all 0.25s ease;
         }
 
         @keyframes flameWobble {
@@ -280,6 +265,7 @@
         .magic-flame.extinguished {
             opacity: 0;
             transform: scale(0) translateY(-10px);
+            transition: all 0.25s ease;
         }
 
         .action-banner {
@@ -290,15 +276,9 @@
             padding: 12px 24px;
             border-radius: 50px;
             box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4);
-            animation: pulseAction 1.5s infinite;
         }
 
-        @keyframes pulseAction {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        /* --- SCREEN 2: LOVE LETTER ARCHITECTURE --- */
+        /* --- LETTER SCREEN --- */
         #note-screen {
             width: 100%;
             max-width: 360px;
@@ -345,19 +325,12 @@
 
         .card-front {
             background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%);
-            border: 2px solid rgba(255,255,255,0.15);
             color: white;
         }
 
         .envelope-icon {
             font-size: 4rem;
             margin-bottom: 10px;
-            animation: envelopeHeartbeat 2s infinite ease-in-out;
-        }
-
-        @keyframes envelopeHeartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
         }
 
         .card-back {
@@ -376,8 +349,6 @@
             font-weight: 800;
             color: #ff4081;
             margin-bottom: 8px;
-            border-bottom: 1px dashed #ffb3c6;
-            padding-bottom: 3px;
         }
 
         .letter-body {
@@ -394,18 +365,10 @@
             color: #9c27b0;
             text-align: right;
         }
-
-        .hint-text {
-            font-size: 0.8rem;
-            color: #ff80ab;
-            margin-top: 15px;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOADING SCREEN -->
     <div id="loader">
         <div class="loader-heart">❤️</div>
         <div class="loader-title">DECRYPTING HEARTRATE</div>
@@ -415,12 +378,10 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
-    <!-- MAIN CONTEXT WRAPPER -->
     <div class="app-wrapper">
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
-        <!-- SCREEN ONE: INTERACTIVE MULTI-TIER CAKE -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Ultimate Favorite Person, Sumaiya ❤️</p>
@@ -431,14 +392,9 @@
                         <div class="magic-flame" id="flame-core"></div>
                     </div>
                     <div class="drip-frosting"></div>
-                    <div class="cake-decor-heart" style="left: 20px;">❤️</div>
-                    <div class="cake-decor-heart" style="right: 20px;">❤️</div>
                 </div>
                 <div class="tier-bottom">
                     <div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div>
-                    <div class="cake-decor-heart" style="left: 35px; bottom: 15px; font-size: 14px;">✨</div>
-                    <div class="cake-decor-heart" style="left: 78px; bottom: 10px; font-size: 16px;">💝</div>
-                    <div class="cake-decor-heart" style="right: 35px; bottom: 15px; font-size: 14px;">✨</div>
                 </div>
                 <div class="cake-plate"></div>
             </div>
@@ -446,17 +402,13 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
-        <!-- SCREEN TWO: GREETING LETTER -->
         <div id="note-screen">
-            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 2px;">Wish Granted! ✨</h2>
-            <p style="color: #b388ff; font-size: 0.85rem; margin-bottom: 15px; font-weight: bold;">Tap below to unlock your real letter:</p>
-
+            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Wish Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
                 <div class="card-inner">
                     <div class="card-front">
                         <div class="envelope-icon">✉️</div>
-                        <h3 style="font-size: 1.15rem; letter-spacing: 0.5px;">For Sumaiya Only</h3>
-                        <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.85;">(A secret inside...)</p>
+                        <h3>For Sumaiya Only</h3>
                     </div>
                     <div class="card-back">
                         <div class="letter-salutation">Dear Sumaiya, ❤️</div>
@@ -469,17 +421,15 @@
                     </div>
                 </div>
             </div>
-            <p class="hint-text">Welcome to Chapter 15 🌸</p>
         </div>
     </div>
 
     <script>
-        // Native Offline-Safe Confetti Engine Setup
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
         let confettiParticles = [];
-        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffffff', '#ffb703'];
+        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffffff'];
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -488,15 +438,14 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        function createConfettiPiece(side) {
+        function createConfettiPiece() {
             return {
-                x: side === 'left' ? -10 : canvas.width + 10,
-                y: canvas.height * 0.65,
+                x: Math.random() * canvas.width,
+                y: -10,
                 size: Math.random() * 6 + 6,
                 color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
-                speedX: side === 'left' ? Math.random() * 12 + 8 : -(Math.random() * 12 + 8),
-                speedY: -(Math.random() * 15 + 15),
-                gravity: 0.4,
+                speedX: Math.random() * 4 - 2,
+                speedY: Math.random() * 5 + 4,
                 rotation: Math.random() * 360,
                 rotationSpeed: Math.random() * 4 - 2
             };
@@ -504,9 +453,8 @@
 
         function triggerLoveConfettiBlast() {
             confettiActive = true;
-            for (let i = 0; i < 70; i++) {
-                confettiParticles.push(createConfettiPiece('left'));
-                confettiParticles.push(createConfettiPiece('right'));
+            for (let i = 0; i < 100; i++) {
+                confettiParticles.push(createConfettiPiece());
             }
             animateConfetti();
         }
@@ -517,9 +465,8 @@
 
             for (let i = confettiParticles.length - 1; i >= 0; i--) {
                 let p = confettiParticles[i];
-                p.x += p.speedX;
                 p.y += p.speedY;
-                p.speedY += p.gravity;
+                p.x += p.speedX;
                 p.rotation += p.rotationSpeed;
 
                 ctx.save();
@@ -529,14 +476,18 @@
                 ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
                 ctx.restore();
 
-                if (p.y > canvas.height + 20) {
-                    confettiParticles.splice(i, 1);
+                if (p.y > canvas.height) {
+                    if (confettiActive) {
+                        confettiParticles[i] = createConfettiPiece();
+                    } else {
+                        confettiParticles.splice(i, 1);
+                    }
                 }
             }
             requestAnimationFrame(animateConfetti);
         }
 
-        // Smooth Auto Loading Sequence
+        // Auto Loading sequence
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
@@ -546,7 +497,6 @@
             const statusTicks = [
                 "Locating the birthday girl...",
                 "Baking premium twin layers...",
-                "Calculating maximum love parameters...",
                 "Overloading confetti cartridges...",
                 "System fully loaded with affection! ❤️"
             ];
@@ -557,19 +507,16 @@
                     loader.style.opacity = '0';
                     setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
                 } else {
-                    width += 4;
+                    width += 5;
                     progress.style.width = width + '%';
                     let statusIndex = Math.floor((width / 100) * statusTicks.length);
-                    if(statusTicks[statusIndex]) {
-                        statusText.innerText = statusTicks[statusIndex];
-                    }
+                    if(statusTicks[statusIndex]) statusText.innerText = statusTicks[statusIndex];
                 }
             }, 50); 
             
             generateSparkleMatrix();
         });
 
-        // Candle Blowing Flow Control
         let structuralStateLit = true;
         function extinguishCandleSequence() {
             if (!structuralStateLit) return;
@@ -585,19 +532,33 @@
                 const noteView = document.getElementById('note-screen');
                 
                 cakeView.style.opacity = '0';
-                cakeView.style.transform = 'scale(0.85)';
-                
                 setTimeout(() => {
                     cakeView.style.display = 'none';
                     noteView.style.display = 'block';
-                    
                     setTimeout(() => {
                         noteView.style.opacity = '1';
                         noteView.style.transform = 'scale(1) translateY(0)';
                     }, 50);
                 }, 900);
-            }, 2200);
+            }, 2000);
         }
 
         function openLetterCard(element) {
-          
+            element.classList.toggle('open');
+        }
+
+        function generateSparkleMatrix() {
+            const container = document.getElementById('particles-workspace');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 4500);
+            }, 600);
+        }
+    </script>
+</body>
+</html>
