@@ -263,7 +263,7 @@
             max-width: 320px;
         }
 
-        /* --- SLOWER, SIDE-BY-SIDE CELEBRATION SCREEN --- */
+        /* --- UPDATED CELEBRATION OVERLAY --- */
         #celebration-screen {
             position: fixed;
             top: 0;
@@ -274,11 +274,11 @@
             align-items: center;
             justify-content: center;
             z-index: 30;
-            background: rgba(12, 0, 24, 0.92);
+            background: rgba(12, 0, 24, 0.94);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 1.2s ease, visibility 1.2s ease; /* Slowed down entry transition */
-            padding: 15px;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+            padding: 20px;
             text-align: center;
         }
 
@@ -289,32 +289,51 @@
 
         .celeb-text-wrapper {
             width: 100%;
-            overflow: hidden;
-            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* side-by-side single line styling optimized for mobile */
+        /* Big, bold "Happy Birthday" on its own line */
         .celeb-main-title {
-            font-size: 1.85rem; /* Scaled down perfectly to fit side-by-side on mobile screens */
+            font-size: 3.4rem; /* Big impact size like before */
+            line-height: 1.1;
             font-weight: 900;
             color: #fff;
-            white-space: nowrap; /* Forces side-by-side layout */
-            letter-spacing: 0px;
-            text-shadow: 0 0 12px #ff4081, 0 0 25px #ff4081, 0 0 50px #7b2cbf;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px #ff4081, 0 0 35px #ff4081, 0 0 60px #7b2cbf;
+            margin-bottom: 15px;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth slide-up transition */
+            transform: translateY(25px);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        #celebration-screen.active .celeb-main-title {
+        /* Name strictly shifted to the second line */
+        .celeb-sub-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ff80ab;
+            text-shadow: 0 0 15px rgba(255,128,171,0.7);
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s; /* Delays slightly for a staggered entrance */
+        }
+
+        #celebration-screen.active .celeb-main-title,
+        #celebration-screen.active .celeb-sub-title {
             opacity: 1;
             transform: translateY(0);
-            animation: slowPulse 2s infinite alternate ease-in-out 1.2s; /* Gentle scale animation after it arrives */
+        }
+
+        #celebration-screen.active .celeb-text-wrapper {
+            animation: slowPulse 1.8s infinite alternate ease-in-out 1.2s;
         }
 
         @keyframes slowPulse {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(1.04); filter: brightness(1.15); }
+            0% { transform: scale(0.96); filter: brightness(1); }
+            100% { transform: scale(1.04); filter: brightness(1.2); }
         }
 
         /* --- LETTER SCREEN --- */
@@ -324,7 +343,7 @@
             display: none;
             opacity: 0;
             transform: scale(0.9) translateY(30px);
-            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth transition for the card */
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
             z-index: 40;
         }
@@ -444,10 +463,11 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
-        <!-- FULL SCREEN CELEBRATION BLOCK (SIDE-BY-SIDE DESIGN) -->
+        <!-- TWO-LINE ADAPTIVE CELEBRATION BLOCK -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
-                <h1 class="celeb-main-title">Happy Birthday Sumaiya! 🎉❤️</h1>
+                <h1 class="celeb-main-title">Happy<br>Birthday</h1>
+                <p class="celeb-sub-title">Sumaiya! 🎉❤️</p>
             </div>
         </div>
 
@@ -495,7 +515,7 @@
                 size: Math.random() * 8 + 6,
                 color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
                 speedX: Math.random() * 6 - 3,
-                speedY: Math.random() * 5 + 3.5, // Slightly gentler fall speed
+                speedY: Math.random() * 5 + 3.5,
                 rotation: Math.random() * 360,
                 rotationSpeed: Math.random() * 4 - 2
             };
@@ -537,7 +557,6 @@
             requestAnimationFrame(animateConfetti);
         }
 
-        // Loading Screen Animation Loop
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
@@ -572,14 +591,11 @@
             if (!structuralStateLit) return;
             structuralStateLit = false;
 
-            // 1. Snuff out the flames instantly
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
 
-            // 2. Trigger high-volume confetti blast
             triggerLoveConfettiBlast(160);
 
-            // 3. Initiate the slow celebration screen overlay transition
             setTimeout(() => {
                 const cakeView = document.getElementById('cake-screen');
                 const celebView = document.getElementById('celebration-screen');
@@ -588,14 +604,12 @@
                 
                 setTimeout(() => {
                     cakeView.style.display = 'none';
-                    celebView.classList.add('active'); // Activates 1.2-second slow fade-in
+                    celebView.classList.add('active');
                     
-                    // Maintain a continuous stream of celebration confetti
                     const continuousConfetti = setInterval(() => {
                         if(!structuralStateLit) triggerLoveConfettiBlast(8);
                     }, 350);
 
-                    // 4. Leave celebration screen running longer (4.5 seconds) so it feels elegantly slow
                     setTimeout(() => {
                         clearInterval(continuousConfetti);
                         confettiActive = false;
@@ -611,8 +625,8 @@
                                 noteView.style.opacity = '1';
                                 noteView.style.transform = 'scale(1) translateY(0)';
                             }, 50);
-                        }, 1200); // Matching the slow entry timeline
-                    }, 4500); // 4.5 seconds celebration screen holding time
+                        }, 1200);
+                    }, 4500);
 
                 }, 600);
             }, 500);
