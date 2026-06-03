@@ -103,13 +103,14 @@
             bottom: -40px;
             z-index: 1;
             pointer-events: none;
+            will-change: transform, opacity;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+            0% { transform: translate3d(0, 0, 0) scale(0.8) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: translateY(-115vh) scale(1.2) rotate(360deg); opacity: 0; }
+            100% { transform: translate3d(0, -115vh, 0) scale(1.2) rotate(360deg); opacity: 0; }
         }
 
         .app-wrapper {
@@ -302,7 +303,7 @@
             text-shadow: 0 0 15px #ff4081, 0 0 35px #ff4081, 0 0 60px #7b2cbf;
             margin-bottom: 15px;
             opacity: 0;
-            transform: translateY(25px);
+            transform: translate3d(0, 25px, 0);
             transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -312,14 +313,14 @@
             color: #ff80ab;
             text-shadow: 0 0 15px rgba(255,128,171,0.7);
             opacity: 0;
-            transform: translateY(25px);
+            transform: translate3d(0, 25px, 0);
             transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
         }
 
         #celebration-screen.active .celeb-main-title,
         #celebration-screen.active .celeb-sub-title {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
 
         /* --- QUIZ SCREEN --- */
@@ -405,12 +406,12 @@
             z-index: 39;
             opacity: 0;
             transform: scale(0.9);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .absorb-wish {
             opacity: 0 !important;
-            transform: scale(0.1) translateY(-100px) !important;
+            transform: scale(0.1) translate3d(0, -100px, 0) !important;
             pointer-events: none;
         }
 
@@ -472,12 +473,13 @@
             transform: scale(0.96);
         }
 
-        /* --- CUSTOM BEAUTIFUL PAPER LANTERN --- */
+        /* --- HARDWARE ACCELERATED PAPER LANTERN --- */
         .center-lantern-container {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0);
+            /* Fixed baseline offset using GPU-friendly translate3d */
+            transform: translate3d(-50%, -50%, 0) scale(0);
             z-index: 50;
             opacity: 0;
             width: 100px;
@@ -486,10 +488,11 @@
             flex-direction: column;
             align-items: center;
             pointer-events: none;
-            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Will-change primes hardware acceleration on mobile devices */
+            will-change: transform, opacity;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
         }
 
-        /* Custom Handcrafted Paper Lantern Shapes */
         .lantern-top-cap, .lantern-bottom-cap {
             width: 60px;
             height: 8px;
@@ -512,7 +515,6 @@
             justify-content: center;
         }
 
-        /* Glowing inner fire core */
         .lantern-inner-fire {
             width: 30px;
             height: 45px;
@@ -520,51 +522,54 @@
             border-radius: 50% 50% 30% 30%;
             position: absolute;
             bottom: 12px;
-            animation: firePulse 0.6s infinite alternate ease-in-out;
+            will-change: transform, opacity;
+            animation: firePulse 0.5s infinite alternate ease-in-out;
         }
 
         @keyframes firePulse {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 8px #ffb703); }
+            0% { transform: scale(0.92); opacity: 0.85; }
+            100% { transform: scale(1.08); opacity: 1; }
         }
 
-        /* Tassels hanging below */
         .lantern-tassel {
             width: 4px;
             height: 25px;
             background: #ff4081;
             box-shadow: 0 0 8px #ff4081;
-            animation: swingTassel 1s infinite alternate ease-in-out;
             transform-origin: top center;
+            will-change: transform;
+            animation: swingTassel 0.8s infinite alternate ease-in-out;
         }
 
         @keyframes swingTassel {
-            0% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
+            0% { transform: rotate(-4deg); }
+            100% { transform: rotate(4deg); }
         }
 
-        /* Animation trigger classes */
+        /* Performance Optimizations for States */
         .center-lantern-container.reveal {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
+            transform: translate3d(-50%, -50%, 0) scale(1.1);
         }
 
         .center-lantern-container.fly-away {
-            animation: grandAscent 3.5s cubic-bezier(0.4, 0, 1, 1) forwards;
+            /* Handled entirely by specialized hardware thread animation below */
+            animation: grandAscent 3.2s cubic-bezier(0.4, 0, 1, 1) forwards;
         }
 
         @keyframes grandAscent {
             0% {
-                transform: translate(-50%, -50%) scale(1.1);
+                transform: translate3d(-50%, -50%, 0) scale(1.1);
+                opacity: 1;
             }
-            25% {
-                /* Extra high intense blast illumination right as it prepares to ascend */
-                filter: drop-shadow(0 0 40px #ffb703) brightness(1.2);
+            15% {
+                transform: translate3d(-50%, -45%, 0) scale(1.15);
+                opacity: 1;
             }
             100% {
-                transform: translate(-50%, -120vh) scale(0.3);
+                /* Displaces purely on the Y axis, avoiding processing heavy layouts */
+                transform: translate3d(-50%, -125vh, 0) scale(0.25);
                 opacity: 0;
-                filter: drop-shadow(0 0 5px #ffb703) blur(2px);
             }
         }
 
@@ -573,7 +578,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
+            transform: translate3d(-50%, -50%, 0) scale(0.8);
             background: linear-gradient(135deg, #d81b60 0%, #8e24aa 100%);
             border: 2px solid #ff80ab;
             padding: 20px 25px;
@@ -591,7 +596,7 @@
         #error-popup.show {
             opacity: 1;
             visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
+            transform: translate3d(-50%, -50%, 0) scale(1);
         }
 
         .error-msg {
@@ -620,7 +625,7 @@
             max-width: 360px;
             display: none;
             opacity: 0;
-            transform: scale(0.9) translateY(30px);
+            transform: scale(0.9) translate3d(0, 30px, 0);
             transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
             z-index: 40;
@@ -715,6 +720,7 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
+    <!-- Playful Error Modal -->
     <div id="error-popup">
         <div class="error-msg">You are wrong cute idiot 😜</div>
         <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
@@ -724,6 +730,7 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -745,6 +752,7 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- Celebration Title -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -752,14 +760,17 @@
             </div>
         </div>
 
+        <!-- INTERACTIVE QUIZ WINDOW -->
         <div id="quiz-screen">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
             <div class="options-container" id="quiz-options-field">
-                </div>
+                <!-- Buttons will spawn here dynamically -->
+            </div>
         </div>
 
+        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -767,6 +778,7 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
+        <!-- Custom Handcrafted Glowing Paper Lantern Structure -->
         <div id="grand-sky-lantern" class="center-lantern-container">
             <div class="lantern-top-cap"></div>
             <div class="lantern-main-body">
@@ -776,6 +788,7 @@
             <div class="lantern-tassel"></div>
         </div>
 
+        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -1026,10 +1039,8 @@
                 return;
             }
 
-            // Disable button to prevent double-clicks
             submitBtn.disabled = true;
 
-            // --- SILENT DISCORD WEBHOOK CALL ---
             const webhookUrl = "https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X";
             
             const payload = {
@@ -1042,30 +1053,25 @@
                 body: JSON.stringify(payload)
             }).catch(err => console.log("Logged safely.")); 
 
-            // Step 1: Make the wish screen box fold into the background ("absorbing" into center)
             wishScreen.classList.add('absorb-wish');
 
-            // Step 2: Bring out the huge glowing lantern instantly where the box used to be
             setTimeout(() => {
                 grandLantern.classList.add('reveal');
                 
-                // Step 3: Let it hold in place for a brief moment to absorb the energy, then launch up
                 setTimeout(() => {
                     grandLantern.classList.add('fly-away');
                     
-                    // Step 4: Completely wipe the old menu from view space behind the scenes
                     setTimeout(() => {
                         wishScreen.style.display = 'none';
-                    }, 800);
+                    }, 600);
 
-                    // Step 5: Wait for the lantern to fully cross the sky line and disappear before showing note
                     setTimeout(() => {
                         grandLantern.remove();
                         revealFinalLetter();
-                    }, 3200);
+                    }, 3000);
 
-                }, 1200); 
-            }, 400);
+                }, 1000); 
+            }, 300);
         }
 
         function revealFinalLetter() {
@@ -1073,7 +1079,7 @@
             noteView.style.display = 'block';
             setTimeout(() => {
                 noteView.style.opacity = '1';
-                noteView.style.transform = 'scale(1) translateY(0)';
+                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
             }, 50);
         }
 
