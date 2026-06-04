@@ -1,590 +1,257 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy 15th Birthday, Sumaiya! ✨</title>
-    <style>
-        /* --- Global Reset & Original Aesthetic --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+// --- CONTINUATION OF SCRIPT ---
 
-        body {
-            background: linear-gradient(135deg, #fef6f6 0%, #f3e9f7 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            perspective: 1000px;
-        }
-
-        .app-window {
-            width: 100%;
-            max-width: 440px;
-            min-height: 620px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(163, 110, 184, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            padding: 30px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .screen-panel {
-            display: none;
-            width: 100%;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .screen-panel.active {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .primary-action-btn {
-            background: linear-gradient(135deg, #d481b9 0%, #b16bb4 100%);
-            color: #ffffff;
-            border: none;
-            padding: 14px 32px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(212, 129, 185, 0.3);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-top: 20px;
-        }
-
-        .primary-action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 26px rgba(212, 129, 185, 0.45);
-        }
-
-        #fx-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        /* ==========================================================================
-           FIXED CAKE LAYER ANIMATION ENGINE
-           ========================================================================== */
-        .cake-assembly-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            min-height: 420px;
-            width: 100%;
-        }
-
-        .cake-system {
-            position: relative;
-            width: 260px;
-            height: 240px;
-            margin-bottom: 20px;
-        }
-
-        .cake-layer {
-            position: absolute;
-            margin: 0 auto;
-            left: 0;
-            right: 0;
-            background-repeat: repeat;
-            border-radius: 8px 8px 0 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-        }
-
-        /* Bottom layer is immediately visible and stable */
-        .bottom-layer {
-            height: 80px;
-            width: 240px;
-            bottom: 10px;
-            background-image: 
-                linear-gradient(transparent 50px, #e3a953 50px, #e3a953 60px, transparent 60px),
-                radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
-            background-size: 100% 100%, 60px 100px;
-            background-position: 28px 0;
-            animation: cakePulse 2.5s ease-in-out infinite;
-        }
-
-        /* Middle layer transitions to its position cleanly */
-        .middle-layer {
-            height: 80px;
-            width: 240px;
-            bottom: 10px;
-            transform: scale(0.85);
-            transform-origin: bottom center;
-            background-image: 
-                linear-gradient(transparent 50px, #e3a953 50px, #e3a953 60px, transparent 60px),
-                radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
-            background-size: 100% 100%, 60px 100px;
-            background-position: 28px 0;
-            opacity: 0;
-            animation: 
-                layerRise1 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards, 
-                cakePulse 2.5s ease-in-out infinite 1.5s;
-        }
-
-        /* Top layer drops directly onto the middle layer */
-        .top-layer {
-            height: 80px;
-            width: 240px;
-            bottom: 10px;
-            transform: scale(0.7);
-            transform-origin: bottom center;
-            background-image: 
-                linear-gradient(transparent 50px, #e3a953 50px, #e3a953 60px, transparent 60px),
-                radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
-            background-size: 100% 100%, 60px 100px;
-            background-position: 28px 0;
-            opacity: 0;
-            animation: 
-                layerRise2 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards, 
-                cakePulse 2.5s ease-in-out infinite 2.4s;
-        }
-
-        .candle-element {
-            height: 45px;
-            width: 15px;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 10px;
-            margin: auto;
-            background: repeating-linear-gradient(45deg, #fd3018 0px, #fd3018 5px, #ffa89e 5px, #ffa89e 10px);
-            border-radius: 2px 2px 0 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            opacity: 0;
-            cursor: pointer;
-            animation: 
-                candleDrop 1s ease-out 2.2s forwards, 
-                candleWiggle 1s ease-in-out infinite 3.2s;
-        }
-
-        .candle-element::after {
-            content: "";
-            position: absolute;
-            height: 18px;
-            width: 13px;
-            bottom: 50px;
-            left: 1px;
-            background: radial-gradient(circle, #ffee54, #ff9800);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            box-shadow: 0 0 12px rgba(255, 152, 0, 0.85);
-            transform: scale(0);
-            transform-origin: bottom center;
-            animation: 
-                flameIgnite 0.6s cubic-bezier(0.175, 0.885, 0.42, 1.5) 3.1s forwards, 
-                flameFlicker 0.6s ease-in-out infinite 3.7s;
-        }
-
-        .candle-element.extinguished::after {
-            animation: none !important;
-            transform: scale(0) !important;
-            opacity: 0 !important;
-            transition: all 0.4s ease-out;
-        }
-
-        .delayed-birthday-headline {
-            font-size: 2rem;
-            color: #513629;
-            margin-top: 15px;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: interfaceReveal 0.8s ease-out 3.6s forwards;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .delayed-subtext {
-            font-size: 1rem;
-            color: #7d675b;
-            margin-top: 6px;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: interfaceReveal 0.8s ease-out 4.0s forwards;
-            text-align: center;
-        }
-
-        /* --- Keyframe Directives --- */
-        @keyframes cakePulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.03); }
-        }
-        @keyframes layerRise1 {
-            0% { transform: scale(0.85) translateY(60px); opacity: 0; }
-            100% { transform: scale(0.85) translateY(0); opacity: 1; }
-        }
-        @keyframes layerRise2 {
-            0% { transform: scale(0.7) translateY(120px); opacity: 0; }
-            100% { transform: scale(0.7) translateY(0); opacity: 1; }
-        }
-        @keyframes candleDrop {
-            0% { transform: translateY(-100px); opacity: 0; }
-            100% { transform: translateY(-146px); opacity: 1; }
-        }
-        @keyframes candleWiggle {
-            0%, 100% { transform: translateY(-146px) rotate(0deg); }
-            25% { transform: translateY(-146px) rotate(0.6deg); }
-            75% { transform: translateY(-146px) rotate(-0.6deg); }
-        }
-        @keyframes flameIgnite { 100% { transform: scale(1); } }
-        @keyframes flameFlicker {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.06) rotate(2deg); filter: brightness(1.15); }
-        }
-        @keyframes interfaceReveal { 100% { opacity: 1; transform: translateY(0); } }
-
-        /* ==========================================================================
-           ORIGINAL STYLES FOR THE REST OF THE APP
-           ========================================================================== */
-        .celebration-billboard { text-align: center; padding: 10px; }
-        .celebration-billboard .badge-icon { font-size: 4rem; margin-bottom: 15px; animation: popPulse 2s infinite; }
-        .celebration-billboard h2 { font-size: 2.2rem; color: #74428a; margin-bottom: 12px; font-weight: 800; }
-        .celebration-billboard p { font-size: 1.1rem; color: #615866; line-height: 1.6; }
-        @keyframes popPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
-
-        .quiz-card { width: 100%; }
-        .quiz-progress-tracker { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .tracker-pill { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a76eb8; background: rgba(167, 110, 184, 0.1); padding: 6px 14px; border-radius: 15px; }
-        .progress-bar-rail { flex-grow: 1; height: 6px; background: rgba(0, 0, 0, 0.05); margin-left: 15px; border-radius: 3px; overflow: hidden; position: relative; }
-        .progress-bar-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #d481b9, #b16bb4); border-radius: 3px; transition: width 0.4s ease; }
-        .quiz-prompt-text { font-size: 1.25rem; font-weight: 700; color: #433a47; margin-bottom: 25px; line-height: 1.5; }
-        .quiz-options-stack { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-        .option-node { background: #ffffff; border: 2px solid rgba(0, 0, 0, 0.04); padding: 16px 20px; border-radius: 16px; cursor: pointer; font-size: 1rem; font-weight: 600; color: #554b59; text-align: left; transition: all 0.25s ease; }
-        .option-node:hover { border-color: #d481b9; background: rgba(254, 246, 246, 0.6); transform: translateX(4px); }
-        .option-node.validated-correct { background: #e6f7ed !important; border-color: #2ecc71 !important; color: #27ae60 !important; }
-        .option-node.validated-incorrect { background: #fdf2f2 !important; border-color: #e74c3c !important; color: #c0392b !important; animation: structuralShake 0.4s ease-in-out; }
-        @keyframes structuralShake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
-
-        .gift-stage-wrapper { text-align: center; width: 100%; }
-        .gift-box-element { font-size: 6rem; cursor: pointer; margin: 30px 0; display: inline-block; animation: structuralBounce 2s infinite; }
-        @keyframes structuralBounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-15px); } 60% { transform: translateY(-7px); } }
-
-        .letter-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(67, 58, 71, 0.5); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; padding: 20px; }
-        .letter-paper-body { background: #fffcf7; background-image: linear-gradient(#e4dcd3 1px, transparent 1px); background-size: 100% 28px; width: 100%; max-width: 400px; padding: 35px 30px; border-radius: 4px; box-shadow: 0 15px 40px rgba(0,0,0,0.25); line-height: 28px; font-size: 1.05rem; color: #4a3e3d; transform: scale(0.8); transition: transform 0.5s ease; position: relative; }
-        .letter-paper-body::before { content: ''; position: absolute; left: 20px; top: 0; height: 100%; width: 1px; background: rgba(221, 90, 90, 0.4); }
-        .letter-modal-overlay.active { display: flex; opacity: 1; }
-        .letter-modal-overlay.active .letter-paper-body { transform: scale(1); }
-        .close-letter-trigger { margin-top: 25px; float: right; background: #4a3e3d; color: #fff; border: none; padding: 6px 16px; border-radius: 4px; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-    <canvas id="fx-canvas"></canvas>
-
-    <div class="app-window">
-        
-        <!-- SCREEN 1: NEW ANIMATED CAKE SCREEN -->
-        <div class="screen-panel active" id="cake-screen">
-            <div class="cake-assembly-container">
-                <div class="cake-system" onclick="handleCandleBlowInteraction()">
-                    <div class="cake-layer top-layer"></div>
-                    <div class="cake-layer middle-layer"></div>
-                    <div class="cake-layer bottom-layer"></div>
-                    <div class="candle-element"></div>
-                </div>
-                <h1 class="delayed-birthday-headline" id="banner-text">Happy Birthday, Sumaiya! ✨</h1>
-                <p class="delayed-subtext">Tap the burning candle to blow it out and make your wish...</p>
-            </div>
-        </div>
-
-        <!-- SCREEN 2: ORIGINAL TRANSITION SCREEN -->
-        <div class="screen-panel" id="celebration-screen">
-            <div class="celebration-billboard">
-                <div class="badge-icon">👑</div>
-                <h2>Sweet 15!</h2>
-                <p>Welcome to your special day, Sumaiya. Today marks the transition into a fantastic new year of your life! Let's see how well you know the details before you unlock your gift.</p>
-            </div>
-        </div>
-
-        <!-- SCREEN 3: ORIGINAL QUIZ SCREEN -->
-        <div class="screen-panel" id="quiz-screen">
-            <div class="quiz-card">
-                <div class="quiz-progress-tracker">
-                    <span class="tracker-pill" id="step-indicator">Question 1/3</span>
-                    <div class="progress-bar-rail">
-                        <div class="progress-bar-fill" id="step-progress-fill"></div>
-                    </div>
-                </div>
-                <div class="quiz-prompt-text" id="question-payload-text">Loading challenge...</div>
-                <div class="quiz-options-stack" id="options-matrix-box"></div>
-            </div>
-        </div>
-
-        <!-- SCREEN 4: ORIGINAL GIFT SCREEN -->
-        <div class="screen-panel" id="gift-screen">
-            <div class="gift-stage-wrapper">
-                <h2 style="color: #74428a; font-size: 2rem; font-weight: 800; margin-bottom: 10px;">Challenge Complete! 🎉</h2>
-                <p style="color: #615866; font-size: 1rem; padding: 0 10px;">You proved it! Tap the mystery box below to unlock your official 15th birthday letter.</p>
-                <div class="gift-box-element" onclick="revealEnclosedLetter()">🎁</div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- ORIGINAL LETTER MODAL OVERLAY -->
-    <div class="letter-modal-overlay" id="envelope-modal">
-        <div class="letter-paper-body">
-            <p style="margin-bottom: 15px; font-weight: bold; color: #a15da1;">Dear Sumaiya,</p>
-            <p style="text-indent: 15px; margin-bottom: 10px;">Happy 15th Birthday! Watching you grow into such an amazing, bright, and genuinely wonderful person is an absolute joy. This milestone marks the start of a beautiful chapter ahead.</p>
-            <p style="text-indent: 15px; margin-bottom: 10px;">May this year bring you endless reasons to smile, magical memories, and all the success you deserve. Never lose that bright light that makes you so unique.</p>
-            <p style="text-indent: 15px; margin-bottom: 15px;">Enjoy every single moment of your special day today! ❤️</p>
-            <p style="text-align: right; font-weight: bold; color: #74428a;">With all my love,</p>
-            <p style="text-align: right; font-style: italic; color: #615866; margin-top: -5px;">Always ✨</p>
-            <button class="close-letter-trigger" onclick="dismissLetterModal()">Close Letter</button>
-        </div>
-    </div>
-
-    <!-- ==========================================================================
-       ORIGINAL JAVASCRIPT LOGIC ENGINE
-       ========================================================================== -->
-    <script>
-        let activeQuizStep = 0;
-        let blockInteraction = false;
-        let fxCanvas, fxContext;
-        let particleArray = [];
-        let confettiActive = false;
-
-        const triviaDatabase = [
-            {
-                prompt: "What special milestone are we celebrating today for you?",
-                choices: ["Your 14th Birthday", "Your Sweet 15th Birthday!", "Your Sweet 16th", "A Normal Day"],
-                correct: 1
-            },
-            {
-                prompt: "Which of these traits makes you uniquely amazing?",
-                choices: ["Your wonderful kind heart", "Your bright energy", "Just everything about you", "All of the above! 💖"],
-                correct: 3
-            },
-            {
-                prompt: "What is the absolute number one rule for your birthday today?",
-                choices: ["To study all day long", "To smile, be happy, and enjoy your day! ✨", "To clean up the house", "To go to bed early"],
-                correct: 1
-            }
-        ];
-
+        // Automatic Fake Loading Screen Simulation
         window.addEventListener('DOMContentLoaded', () => {
-            initParticleCanvasSystem();
-            window.addEventListener('resize', syncCanvasDimensions);
-        });
-
-        function initParticleCanvasSystem() {
-            fxCanvas = document.getElementById('fx-canvas');
-            fxContext = fxCanvas.getContext('2d');
-            syncCanvasDimensions();
-        }
-
-        function syncCanvasDimensions() {
-            if (fxCanvas) {
-                fxCanvas.width = window.innerWidth;
-                fxCanvas.height = window.innerHeight;
-            }
-        }
-
-        class ConfettiParticle {
-            constructor(xPosition, yPosition) {
-                this.x = xPosition;
-                this.y = yPosition;
-                this.size = Math.random() * 8 + 6;
-                const colorPalette = ['#e972b5', '#c853c5', '#8a42b1', '#ff94c2', '#ffcc29', '#4ac7ff'];
-                this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                this.speedX = Math.random() * 10 - 5;
-                this.speedY = Math.random() * -12 - 5;
-                this.gravity = 0.35;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 4 - 2;
-                this.opacity = 1;
-            }
-            update() {
-                this.speedY += this.gravity;
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.rotation += this.rotationSpeed;
-                if (this.speedY > 0) this.opacity -= 0.012;
-            }
-            draw() {
-                fxContext.save();
-                fxContext.translate(this.x, this.y);
-                fxContext.rotate((this.rotation * Math.PI) / 180);
-                fxContext.globalAlpha = Math.max(0, this.opacity);
-                fxContext.fillStyle = this.color;
-                fxContext.beginPath();
-                fxContext.moveTo(0, -this.size / 2);
-                fxContext.lineTo(this.size / 2, 0);
-                fxContext.lineTo(0, this.size / 2);
-                fxContext.lineTo(-this.size / 2, 0);
-                fxContext.closePath();
-                fxContext.fill();
-                fxContext.restore();
-            }
-        }
-
-        function triggerLoveConfettiBlast(count) {
-            const centerPointX = window.innerWidth / 2;
-            const centerPointY = window.innerHeight * 0.45;
-            for (let i = 0; i < count; i++) {
-                particleArray.push(new ConfettiParticle(centerPointX, centerPointY));
-            }
-            if (!confettiActive) {
-                confettiActive = true;
-                runAnimationLoop();
-            }
-        }
-
-        function runAnimationLoop() {
-            if (particleArray.length === 0) {
-                confettiActive = false;
-                fxContext.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
-                return;
-            }
-            fxContext.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
-            for (let i = particleArray.length - 1; i >= 0; i--) {
-                const particle = particleArray[i];
-                particle.update();
-                particle.draw();
-                if (particle.opacity <= 0 || particle.y > window.innerHeight) {
-                    particleArray.splice(i, 1);
-                }
-            }
-            requestAnimationFrame(runAnimationLoop);
-        }
-
-        function handleCandleBlowInteraction() {
-            if (blockInteraction) return;
+            const progress = document.getElementById('progress');
+            const statusText = document.getElementById('loader-status');
+            const loader = document.getElementById('loader');
             
-            const candle = document.querySelector('.candle-element');
-            if (candle) candle.classList.add('extinguished');
+            const loadMessages = [
+                "Assembling feelings...",
+                "Baking virtual cake...",
+                "Inflating digital balloons...",
+                "Polishing sky lanterns...",
+                "Decrypting heartrate... Done!"
+            ];
             
-            blockInteraction = true;
-            document.getElementById('banner-text').innerText = "Candles blown! Making magic happen... 🤫";
+            let currentProgress = 0;
+            let messageIndex = 0;
             
-            triggerLoveConfettiBlast(140);
-            
-            setTimeout(() => {
-                const cakeScreen = document.getElementById('cake-screen');
-                const celebScreen = document.getElementById('celebration-screen');
-                
-                cakeScreen.style.opacity = '0';
-                setTimeout(() => {
-                    cakeScreen.style.display = 'none';
-                    celebScreen.classList.add('active');
-                    particleArray = [];
+            const interval = setInterval(() => {
+                currentProgress += Math.floor(Math.random() * 15) + 5;
+                if (currentProgress >= 100) {
+                    currentProgress = 100;
+                    clearInterval(interval);
+                    progress.style.width = '100%';
+                    statusText.innerText = loadMessages[loadMessages.length - 1];
                     
                     setTimeout(() => {
-                        celebScreen.style.opacity = '0';
+                        loader.style.opacity = '0';
                         setTimeout(() => {
-                            celebScreen.style.display = 'none';
-                            initQuizSetup();
-                        }, 1000);
-                    }, 4000);
+                            loader.style.display = 'none';
+                            spawnFloatingBackgroundHearts();
+                        }, 500);
+                    }, 600);
+                } else {
+                    progress.style.width = currentProgress + '%';
+                    if (currentProgress > (messageIndex + 1) * 20 && messageIndex < loadMessages.length - 2) {
+                        messageIndex++;
+                        statusText.innerText = loadMessages[messageIndex];
+                    }
+                }
+            }, 150);
+        });
+
+        // Background Decorative Floating Hearts Spawner
+        function spawnFloatingBackgroundHearts() {
+            const workspace = document.getElementById('particles-workspace');
+            const heartEmojis = ['❤️', '💖', '✨', '🌸', '💕'];
+            
+            setInterval(() => {
+                if (document.getElementById('cake-screen').style.display === 'none' && 
+                    document.getElementById('celebration-screen').classList.contains('active') === false) {
+                    return; // Pause spawning when quiz/letter is open to optimize performance
+                }
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                workspace.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 400);
+        }
+
+        // --- SCREEN 1: CAKE BLOW OUT LOGIC ---
+        let candleExtinguishedCount = 0;
+        let isTransitioning = false;
+
+        function extinguishCandleSequence() {
+            if (isTransitioning) return;
+            
+            const flames = document.querySelectorAll('.flame-node');
+            flames.forEach(flame => {
+                if (!flame.classList.contains('extinguished')) {
+                    flame.classList.add('extinguished');
+                }
+            });
+
+            document.getElementById('banner-text').innerText = "Make a wish! 🌟";
+            isTransitioning = true;
+            triggerLoveConfettiBlast(120);
+
+            // Display "Happy Birthday" overlay screen briefly
+            setTimeout(() => {
+                const celebScreen = document.getElementById('celebration-screen');
+                celebScreen.classList.add('active');
+                
+                setTimeout(() => {
+                    confettiActive = false; // Gracefully reduce confetti generation
+                    celebScreen.style.opacity = '0';
                     
-                }, 800);
+                    setTimeout(() => {
+                        celebScreen.style.display = 'none';
+                        document.getElementById('cake-screen').style.display = 'none';
+                        initiateQuizSequence();
+                    }, 1000);
+                }, 3500);
             }, 1200);
         }
 
-        function initQuizSetup() {
-            blockInteraction = false;
+        // --- SCREEN 2: VERIFICATION QUIZ LOGIC ---
+        function initiateQuizSequence() {
             const quizScreen = document.getElementById('quiz-screen');
-            quizScreen.classList.add('active');
-            renderActiveQuestion();
+            quizScreen.style.display = 'block';
+            setTimeout(() => {
+                quizScreen.style.opacity = '1';
+                quizScreen.style.transform = 'scale(1)';
+            }, 50);
+            renderCurrentQuizQuestion();
         }
 
-        function renderActiveQuestion() {
-            const currentItem = triviaDatabase[activeQuizStep];
-            document.getElementById('step-indicator').innerText = `Question ${activeQuizStep + 1}/${triviaDatabase.length}`;
-            const targetPercentage = ((activeQuizStep) / triviaDatabase.length) * 100;
-            document.getElementById('step-progress-fill').style.width = `${targetPercentage}%`;
-            document.getElementById('question-payload-text').innerText = currentItem.prompt;
+        function renderCurrentQuizQuestion() {
+            const qData = quizQuestions[currentQuestionIndex];
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-question-field').innerText = qData.q;
             
-            const container = document.getElementById('options-matrix-box');
-            container.innerHTML = '';
+            const optionsContainer = document.getElementById('quiz-options-field');
+            optionsContainer.innerHTML = '';
             
-            currentItem.choices.forEach((choice, dynamicIndex) => {
-                const button = document.createElement('button');
-                button.className = 'option-node';
-                button.innerText = choice;
-                button.onclick = () => validateSelectedAnswer(dynamicIndex, button);
-                container.appendChild(button);
+            qData.options.forEach((option, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+                btn.onclick = () => evaluateQuizAnswer(idx);
+                optionsContainer.appendChild(btn);
             });
         }
 
-        function validateSelectedAnswer(selectedIdx, UIElement) {
-            if (blockInteraction) return;
-            blockInteraction = true;
-            
-            const stepData = triviaDatabase[activeQuizStep];
-            
-            if (selectedIdx === stepData.correct) {
-                UIElement.classList.add('validated-correct');
-                triggerLoveConfettiBlast(45);
+        function evaluateQuizAnswer(selectedIndex) {
+            const qData = quizQuestions[currentQuestionIndex];
+            if (selectedIndex === qData.correct) {
+                currentQuestionIndex++;
+                triggerLoveConfettiBlast(25);
                 
-                setTimeout(() => {
-                    activeQuizStep++;
-                    if (activeQuizStep < triviaDatabase.length) {
-                        renderActiveQuestion();
-                        blockInteraction = false;
-                    } else {
-                        document.getElementById('step-progress-fill').style.width = '100%';
-                        setTimeout(transitionToGiftScreen, 600);
-                    }
-                }, 1400);
+                if (currentQuestionIndex < quizQuestions.length) {
+                    renderCurrentQuizQuestion();
+                } else {
+                    // Transition to Birthday Wish Screen
+                    transitionScreens('quiz-screen', 'wish-screen');
+                }
             } else {
-                UIElement.classList.add('validated-incorrect');
-                setTimeout(() => {
-                    UIElement.classList.remove('validated-incorrect');
-                    blockInteraction = false;
-                }, 500);
+                openErrorPopup();
             }
         }
 
-        function transitionToGiftScreen() {
-            const quizScreen = document.getElementById('quiz-screen');
-            const giftScreen = document.getElementById('gift-screen');
-            quizScreen.style.opacity = '0';
+        function openErrorPopup() {
+            document.getElementById('error-popup').classList.add('show');
+        }
+
+        function closeErrorPopup() {
+            document.getElementById('error-popup').classList.remove('show');
+        }
+
+        // --- SCREEN 3: WISH LANTERN LOGIC ---
+        function transitionScreens(hideId, showId) {
+            const hideElement = document.getElementById(hideId);
+            const showElement = document.getElementById(showId);
+            
+            hideElement.style.opacity = '0';
+            hideElement.style.transform = 'scale(0.9)';
+            
             setTimeout(() => {
-                quizScreen.style.display = 'none';
-                giftScreen.classList.add('active');
-                blockInteraction = false;
-            }, 800);
+                hideElement.style.display = 'none';
+                showElement.style.display = 'block';
+                setTimeout(() => {
+                    showElement.style.opacity = '1';
+                    showElement.style.transform = 'scale(1)';
+                }, 50);
+            }, 500);
         }
 
-        function revealEnclosedLetter() {
-            triggerLoveConfettiBlast(160);
-            const overlay = document.getElementById('envelope-modal');
-            overlay.style.display = 'flex';
-            setTimeout(() => { overlay.classList.add('active'); }, 50);
+        function releaseBirthdayLantern() {
+            const wishText = document.getElementById('wish-text-area').value.trim();
+            if (wishText === "") return;
+
+            document.getElementById('wish-submit-button').disabled = true;
+            
+            // Absorb box transition
+            const wishScreen = document.getElementById('wish-screen');
+            wishScreen.classList.add('absorb-wish');
+            
+            // Reveal Handcrafted Glow Lantern
+            const lantern = document.getElementById('grand-sky-lantern');
+            lantern.classList.add('reveal');
+            
+            setTimeout(() => {
+                lantern.classList.add('fly-away');
+                triggerLoveConfettiBlast(40);
+                
+                setTimeout(() => {
+                    lantern.style.display = 'none';
+                    wishScreen.style.display = 'none';
+                    // Open the custom value assessment check
+                    openLoveSliderGaugeScreen();
+                }, 3000);
+            }, 1000);
         }
 
-        function dismissLetterModal() {
-            const overlay = document.getElementById('envelope-modal');
-            overlay.classList.remove('active');
-            setTimeout(() => { overlay.style.display = 'none'; }, 500);
+        // --- SCREEN 4: LOVE SLIDER LOGIC ---
+        function openLoveSliderGaugeScreen() {
+            const sliderScreen = document.getElementById('slider-screen');
+            sliderScreen.style.display = 'block';
+            setTimeout(() => {
+                sliderScreen.style.opacity = '1';
+                sliderScreen.style.transform = 'scale(1)';
+            }, 50);
         }
+
+        function updateLoveGaugeValue(val) {
+            const display = document.getElementById('sliderPercentageDisplay');
+            const feedback = document.getElementById('sliderFeedbackText');
+            const btn = document.getElementById('sliderContinueButton');
+            
+            display.innerText = val + "%";
+            feedback.classList.remove('error-msg-style');
+            
+            if (parseInt(val) < 100) {
+                feedback.innerText = "Error: Input value too low! 🧐 Try harder.";
+                btn.disabled = true;
+            } else {
+                feedback.innerText = "Perfect amount! Access code unlocked. 🥰";
+                btn.disabled = false;
+                triggerLoveConfettiBlast(15);
+            }
+        }
+
+        function transitionFromSliderToLetter() {
+            transitionScreens('slider-screen', 'note-screen');
+            setTimeout(() => {
+                triggerLoveConfettiBlast(80);
+                confettiActive = true;
+            }, 1000);
+        }
+
+        // --- SCREEN 5: FINAL ENVELOPE BOX CARD OPENER ---
+        function openLetterCard(cardElement) {
+            cardElement.classList.toggle('open');
+            if (cardElement.classList.contains('open')) {
+                triggerLoveConfettiBlast(50);
+            }
+        }
+
+        // Continuous Loop Animation Caller for Confetti Engine Canvas
+        function runConfettiLoop() {
+            if (confettiParticles.length > 0 || confettiActive) {
+                animateConfetti();
+            }
+            requestAnimationFrame(runConfettiLoop);
+        }
+        runConfettiLoop();
     </script>
 </body>
 </html>
