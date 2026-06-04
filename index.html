@@ -1,4 +1,4 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -157,119 +157,124 @@
             margin-bottom: 35px;
         }
 
-        /* --- ADJUSTED CAKE GRAPHICS --- */
-        .cake-container {
-            width: 250px;
-            height: 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 45px;
+        /* ==========================================================================
+           TRANSCRIPTION OF CAKE DESIGN FROM SOURCE CODE IMAGES
+           ========================================================================== */
+        .cake {
+            width: 100%;
             position: relative;
+            height: 240px; /* Provides fixed structural clearance for absolute child layers */
+            margin-bottom: 40px;
         }
 
-        .candle-holder {
-            display: flex;
-            gap: 12px;
+        .bottom-layer,
+        .middle-layer,
+        .top-layer {
+            height: 80px;
+            width: 248px;
+            margin: auto;
+            background-repeat: repeat;
+            background-size: 100% 100%, 60px 100%;
+            background-position: 28px 0;
+            background-image: 
+                linear-gradient(transparent 50px, #e3a953 50px, #e3a953 60px, transparent 60px),
+                radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
             position: absolute;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            right: 0;
+        }
+
+        .bottom-layer {
+            bottom: 0px;
+        }
+
+        .middle-layer {
+            transform: scale(0.85);
+            top: 72px;
+            animation: rise1 2s forwards, pulse 2s ease-in-out infinite;
+        }
+
+        .top-layer {
+            transform: scale(0.7);
+            top: 144px;
+            animation: rise2 2s 2s forwards, pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); }
+        }
+
+        @keyframes rise1 {
+            100% { top: 7px; }
+        }
+
+        @keyframes rise2 {
+            100% { top: -58px; } /* Recalculated from original layout flow to stack beautifully on top */
+        }
+
+        /* --- SINGLE TIMED BIRTHDAY CANDLE IMPLEMENTATION --- */
+        .candle {
+            height: 45px;
+            width: 15px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            background: repeating-linear-gradient(45deg, #fd3018 0 5px, #ffa89e 5px 10px);
+            border-radius: 2px 2px 0 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: rise3 1s 4s forwards, wiggle 1s 5s ease-in-out infinite;
             z-index: 10;
         }
 
-        .alphabet-candle {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(#ffebee, #ff80ab);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            line-height: 1;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        @keyframes rise3 {
+            100% { bottom: 202px; } /* Positions precisely right on top of third layer rim */
         }
 
-        .magic-flame {
-            width: 12px;
-            height: 22px;
-            background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffb703 30%, #ff4081 70%);
-            border-radius: 50% 50% 20% 20%;
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(1deg); }
+            75% { transform: rotate(-1deg); }
+        }
+
+        .candle::after {
+            content: "";
             position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 12px #ff4081, 0 0 24px #ff80ab, 0 0 35px #ffb703;
-            animation: flameWobble 0.6s infinite alternate ease-in-out;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 16px;
+            width: 16px;
+            bottom: 50px;
+            left: -0.5px;
+            background: radial-gradient(circle, #ffee54, #ff9800);
+            border-radius: 0 50% 50% 50%;
+            transform: scale(0) rotate(45deg);
+            box-shadow: 0 0 10px rgba(255, 238, 84, 0.8);
+            animation: flame 1.5s 5s forwards, flicker 0.5s 6.5s infinite;
+            transition: all 0.3s ease-out;
         }
 
-        @keyframes flameWobble {
-            0% { transform: translateX(-50%) scale(1) rotate(-3deg); }
-            100% { transform: translateX(-50%) scale(1.15) rotate(4deg); }
+        @keyframes flame {
+            100% { transform: scale(1) rotate(45deg); }
         }
 
-        .magic-flame.extinguished {
-            opacity: 0;
-            transform: translateX(-50%) scale(0) translateY(-15px);
-            filter: blur(2px);
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(45deg); }
+            50% { transform: scale(1.1) rotate(47deg); }
         }
 
-        .cake-plate {
-            width: 240px;
-            height: 14px;
-            background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
-            border-radius: 50px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-            z-index: 2;
+        /* Logic trigger state when the candle gets blown out */
+        .candle.extinguished::after {
+            animation: none !important;
+            opacity: 0 !important;
+            transform: scale(0) translateY(-10px) !important;
         }
-
-        .tier-bottom {
-            width: 200px;
-            height: 65px;
-            background: linear-gradient(135deg, #ff6584 0%, #f43f5e 100%);
-            border-radius: 12px 12px 0 0;
-            position: relative;
-            z-index: 3;
-            box-shadow: inset 0 4px 8px rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .tier-top {
-            width: 140px;
-            height: 55px;
-            background: linear-gradient(135deg, #ff9ebb 0%, #ff6584 100%);
-            border-radius: 10px 10px 0 0;
-            position: relative;
-            z-index: 4;
-            box-shadow: inset 0 4px 8px rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        .drip-frosting {
-            width: 100%;
-            height: 18px;
-            background: #ffffff;
-            border-radius: 0 0 8px 8px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
-        }
-
-        /* Cream frosting decorations */
-        .drip-frosting::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 8px;
-            background: transparent;
-            bottom: -6px;
-            left: 0;
-            background-image: radial-gradient(circle at 10px 0, #ffffff 10px, transparent 11px);
-            background-size: 20px 20px;
-        }
-        /* --- END OF CAKE ADJUSTMENTS --- */
+        /* ==========================================================================
+           END OF TRANSCRIBED DESIGN COMPONENT
+           ========================================================================== */
 
         .action-banner {
             font-size: 0.95rem;
@@ -864,18 +869,11 @@
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
             
-            <div class="cake-container">
-                <div class="tier-top">
-                    <div class="candle-holder">
-                        <div class="alphabet-candle">1<div class="magic-flame flame-node"></div></div>
-                        <div class="alphabet-candle">5<div class="magic-flame flame-node"></div></div>
-                    </div>
-                    <div class="drip-frosting"></div>
-                </div>
-                <div class="tier-bottom">
-                    <div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div>
-                </div>
-                <div class="cake-plate"></div>
+            <div class="cake">
+                <div class="candle" id="birthdayCandleElement"></div>
+                <div class="top-layer"></div>
+                <div class="middle-layer"></div>
+                <div class="bottom-layer"></div>
             </div>
             
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
@@ -1029,7 +1027,6 @@
             }
         }
 
-        // --- THE SCRIPT LOGIC YOU MENTIONED WAS WORKING PERFECTLY ---
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
@@ -1099,12 +1096,11 @@
         function extinguishCandleSequence() {
             if (isTransitioning) return;
             
-            const flames = document.querySelectorAll('.flame-node');
-            flames.forEach(flame => {
-                if (!flame.classList.contains('extinguished')) {
-                    flame.classList.add('extinguished');
-                }
-            });
+            // Extinguishes the custom flame pseudo element safely
+            const targetCandle = document.getElementById('birthdayCandleElement');
+            if (targetCandle) {
+                targetCandle.classList.add('extinguished');
+            }
 
             document.getElementById('banner-text').innerText = "Make a wish! 🌟";
             isTransitioning = true;
@@ -1149,7 +1145,10 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = option;
-                btn.onclick = () => evaluateQuizAnswer(idx);
+                btn.onclick = (e) => {
+                    e.stopPropagation(); // Stops bubbling up to background containers
+                    evaluateQuizAnswer(idx);
+                };
                 optionsContainer.appendChild(btn);
             });
         }
@@ -1175,7 +1174,6 @@
         }
 
         function closeErrorPopup() {
-            document.getElementById('error-popup').classList.remove('remove');
             document.getElementById('error-popup').classList.remove('show');
         }
 
