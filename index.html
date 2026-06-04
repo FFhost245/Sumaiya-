@@ -158,7 +158,7 @@
         }
 
         /* ==========================================================================
-           RESTORED ORIGINAL ABSOLUTE CAKE DESIGN ARCHITECTURE (PINK & WHITE)
+           FIXED: TRUE PINK & WHITE CAKE STYLING ON ORIGINAL STRUCTURAL SCHEMATICS
            ========================================================================== */
         .cake {
             width: 250px;
@@ -176,10 +176,12 @@
             background-repeat: repeat;
             background-size: 100% 100%, 60px 100%;
             background-position: 28px 0;
-            /* Updated color formulas to gorgeous Pink & White Frosting layers */
+            
+            /* Clean high-contrast Pink & White frosting layers with zero brown remnants */
             background-image: 
-                linear-gradient(transparent 50px, #ffb6c1 50px, #ffb6c1 60px, transparent 60px),
-                radial-gradient(circle at 30px 5px, #ff69b4 30px, #fff0f5 31px);
+                linear-gradient(transparent 50px, #ffffff 50px, #ffffff 60px, transparent 60px),
+                radial-gradient(circle at 30px 5px, #ff69b4 30px, #ffffff 31px);
+                
             border-radius: 0 0 8px 8px;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
             animation: pulse 2s ease-in-out infinite;
@@ -206,7 +208,7 @@
 
         @keyframes pulse {
             0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.08); }
+            50% { filter: brightness(1.06); }
         }
 
         @keyframes rise1 {
@@ -217,7 +219,7 @@
             100% { top: -58px; }
         }
 
-        /* Twin Character "15" Candle Element System */
+        /* Twin Character "15" Candle Element Layout */
         .candle-duo {
             display: flex;
             gap: 6px;
@@ -242,7 +244,7 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));
         }
 
-        /* Handcrafted Flame Pseudo elements sitting directly above each number character */
+        /* Flame element alignments mapped overhead */
         .digit-candle::after {
             content: "";
             position: absolute;
@@ -283,7 +285,7 @@
             transform: translateX(-50%) scale(0) translateY(-10px) !important;
         }
         /* ==========================================================================
-           END OF ORIGINAL STYLE COMPONENT RESTORATION
+           END OF STYLING REGION
            ========================================================================== */
 
         .action-banner {
@@ -866,6 +868,7 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
+    <!-- Playful Error Modal -->
     <div id="error-popup">
         <div class="error-msg">You are wrong cute idiot 😜</div>
         <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
@@ -875,11 +878,14 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
             
+            <!-- Original Absolute Positioning Box Wrapper -->
             <div class="cake">
+                <!-- Dual Glowing 15 Milestone Candles -->
                 <div class="candle-duo" id="birthdayCandleElement">
                     <div class="digit-candle">1</div>
                     <div class="digit-candle">5</div>
@@ -892,6 +898,7 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- Celebration Title -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -899,14 +906,17 @@
             </div>
         </div>
 
+        <!-- INTERACTIVE QUIZ WINDOW -->
         <div id="quiz-screen">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
             <div class="options-container" id="quiz-options-field">
-                </div>
+                <!-- Buttons spawn dynamically -->
+            </div>
         </div>
 
+        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -914,6 +924,7 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
+        <!-- INTERACTIVE SWEETNESS SLIDER -->
         <div id="slider-screen">
             <div class="quiz-header">Affection Level Check 💓</div>
             <div class="slider-title" id="slider-prompt">How much do you love blaize today? 😏</div>
@@ -927,6 +938,7 @@
             <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
         </div>
 
+        <!-- Custom Handcrafted Glowing Paper Lantern Structure -->
         <div id="grand-sky-lantern" class="center-lantern-container">
             <div class="lantern-top-cap"></div>
             <div class="lantern-main-body">
@@ -936,6 +948,7 @@
             <div class="lantern-tassel"></div>
         </div>
 
+        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -986,16 +999,18 @@
         let confettiParticles = [];
         const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        if (canvas) {
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
 
         function createConfettiPiece() {
             return {
-                x: Math.random() * canvas.width,
+                x: Math.random() * (canvas ? canvas.width : 500),
                 y: -20,
                 size: Math.random() * 8 + 6,
                 color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
@@ -1014,6 +1029,7 @@
         }
 
         function animateConfetti() {
+            if (!canvas || !ctx) return;
             if (confettiParticles.length === 0 && !confettiActive) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -1061,21 +1077,21 @@
                 if (currentProgress >= 100) {
                     currentProgress = 100;
                     clearInterval(interval);
-                    progress.style.width = '100%';
-                    statusText.innerText = loadMessages[loadMessages.length - 1];
+                    if (progress) progress.style.width = '100%';
+                    if (statusText) statusText.innerText = loadMessages[loadMessages.length - 1];
                     
                     setTimeout(() => {
-                        loader.style.opacity = '0';
+                        if (loader) loader.style.opacity = '0';
                         setTimeout(() => {
-                            loader.style.display = 'none';
+                            if (loader) loader.style.display = 'none';
                             spawnFloatingBackgroundHearts();
                         }, 500);
                     }, 600);
                 } else {
-                    progress.style.width = currentProgress + '%';
+                    if (progress) progress.style.width = currentProgress + '%';
                     if (currentProgress > (messageIndex + 1) * 20 && messageIndex < loadMessages.length - 2) {
                         messageIndex++;
-                        statusText.innerText = loadMessages[messageIndex];
+                        if (statusText) statusText.innerText = loadMessages[messageIndex];
                     }
                 }
             }, 150);
@@ -1086,8 +1102,11 @@
             const heartEmojis = ['❤️', '💖', '✨', '🌸', '💕'];
             
             setInterval(() => {
-                if (document.getElementById('cake-screen').style.display === 'none' && 
-                    document.getElementById('celebration-screen').classList.contains('active') === false) {
+                const cakeScreen = document.getElementById('cake-screen');
+                const celebScreen = document.getElementById('celebration-screen');
+                if (!cakeScreen || !celebScreen) return;
+                
+                if (cakeScreen.style.display === 'none' && !celebScreen.classList.contains('active')) {
                     return;
                 }
                 const heart = document.createElement('div');
@@ -1096,7 +1115,7 @@
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
                 heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                workspace.appendChild(heart);
+                if (workspace) workspace.appendChild(heart);
                 
                 setTimeout(() => {
                     heart.remove();
@@ -1114,21 +1133,24 @@
                 targetCandle.classList.add('extinguished');
             }
 
-            document.getElementById('banner-text').innerText = "Make a wish! 🌟";
+            const bannerText = document.getElementById('banner-text');
+            if (bannerText) bannerText.innerText = "Make a wish! 🌟";
+            
             isTransitioning = true;
             triggerLoveConfettiBlast(120);
 
             setTimeout(() => {
                 const celebScreen = document.getElementById('celebration-screen');
-                celebScreen.classList.add('active');
+                if (celebScreen) celebScreen.classList.add('active');
                 
                 setTimeout(() => {
                     confettiActive = false;
-                    celebScreen.style.opacity = '0';
+                    if (celebScreen) celebScreen.style.opacity = '0';
                     
                     setTimeout(() => {
-                        celebScreen.style.display = 'none';
-                        document.getElementById('cake-screen').style.display = 'none';
+                        if (celebScreen) celebScreen.style.display = 'none';
+                        const cakeScreen = document.getElementById('cake-screen');
+                        if (cakeScreen) cakeScreen.style.display = 'none';
                         initiateQuizSequence();
                     }, 1000);
                 }, 3500);
@@ -1137,32 +1159,38 @@
 
         function initiateQuizSequence() {
             const quizScreen = document.getElementById('quiz-screen');
-            quizScreen.style.display = 'block';
-            setTimeout(() => {
-                quizScreen.style.opacity = '1';
-                quizScreen.style.transform = 'scale(1)';
-            }, 50);
+            if (quizScreen) {
+                quizScreen.style.display = 'block';
+                setTimeout(() => {
+                    quizScreen.style.opacity = '1';
+                    quizScreen.style.transform = 'scale(1)';
+                }, 50);
+            }
             renderCurrentQuizQuestion();
         }
 
         function renderCurrentQuizQuestion() {
             const qData = quizQuestions[currentQuestionIndex];
-            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-            document.getElementById('quiz-question-field').innerText = qData.q;
-            
+            const progressText = document.getElementById('quiz-progress-text');
+            const questionField = document.getElementById('quiz-question-field');
             const optionsContainer = document.getElementById('quiz-options-field');
-            optionsContainer.innerHTML = '';
             
-            qData.options.forEach((option, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = option;
-                btn.onclick = (e) => {
-                    e.stopPropagation(); 
-                    evaluateQuizAnswer(idx);
-                };
-                optionsContainer.appendChild(btn);
-            });
+            if (progressText) progressText.innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            if (questionField) questionField.innerText = qData.q;
+            if (optionsContainer) {
+                optionsContainer.innerHTML = '';
+                
+                qData.options.forEach((option, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = option;
+                    btn.onclick = (e) => {
+                        e.stopPropagation(); 
+                        evaluateQuizAnswer(idx);
+                    };
+                    optionsContainer.appendChild(btn);
+                });
+            }
         }
 
         function evaluateQuizAnswer(selectedIndex) {
@@ -1182,49 +1210,55 @@
         }
 
         function openErrorPopup() {
-            document.getElementById('error-popup').classList.add('show');
+            const popup = document.getElementById('error-popup');
+            if (popup) popup.classList.add('show');
         }
 
         function closeErrorPopup() {
-            document.getElementById('error-popup').classList.remove('show');
+            const popup = document.getElementById('error-popup');
+            if (popup) popup.classList.remove('show');
         }
 
         function transitionScreens(hideId, showId) {
             const hideElement = document.getElementById(hideId);
             const showElement = document.getElementById(showId);
             
-            hideElement.style.opacity = '0';
-            hideElement.style.transform = 'scale(0.9)';
-            
-            setTimeout(() => {
-                hideElement.style.display = 'none';
-                showElement.style.display = 'block';
+            if (hideElement && showElement) {
+                hideElement.style.opacity = '0';
+                hideElement.style.transform = 'scale(0.9)';
+                
                 setTimeout(() => {
-                    showElement.style.opacity = '1';
-                    showElement.style.transform = 'scale(1)';
-                }, 50);
-            }, 500);
+                    hideElement.style.display = 'none';
+                    showElement.style.display = 'block';
+                    setTimeout(() => {
+                        showElement.style.opacity = '1';
+                        showElement.style.transform = 'scale(1)';
+                    }, 50);
+                }, 500);
+            }
         }
 
         function releaseBirthdayLantern() {
-            const wishText = document.getElementById('wish-text-area').value.trim();
+            const textArea = document.getElementById('wish-text-area');
+            const wishText = textArea ? textArea.value.trim() : "";
             if (wishText === "") return;
 
-            document.getElementById('wish-submit-button').disabled = true;
+            const submitBtn = document.getElementById('wish-submit-button');
+            if (submitBtn) submitBtn.disabled = true;
             
             const wishScreen = document.getElementById('wish-screen');
-            wishScreen.classList.add('absorb-wish');
+            if (wishScreen) wishScreen.classList.add('absorb-wish');
             
             const lantern = document.getElementById('grand-sky-lantern');
-            lantern.classList.add('reveal');
+            if (lantern) lantern.classList.add('reveal');
             
             setTimeout(() => {
-                lantern.classList.add('fly-away');
+                if (lantern) lantern.classList.add('fly-away');
                 triggerLoveConfettiBlast(40);
                 
                 setTimeout(() => {
-                    lantern.style.display = 'none';
-                    wishScreen.style.display = 'none';
+                    if (lantern) lantern.style.display = 'none';
+                    if (wishScreen) wishScreen.style.display = 'none';
                     openLoveSliderGaugeScreen();
                 }, 3000);
             }, 1000);
@@ -1232,11 +1266,13 @@
 
         function openLoveSliderGaugeScreen() {
             const sliderScreen = document.getElementById('slider-screen');
-            sliderScreen.style.display = 'block';
-            setTimeout(() => {
-                sliderScreen.style.opacity = '1';
-                sliderScreen.style.transform = 'scale(1)';
-            }, 50);
+            if (sliderScreen) {
+                sliderScreen.style.display = 'block';
+                setTimeout(() => {
+                    sliderScreen.style.opacity = '1';
+                    sliderScreen.style.transform = 'scale(1)';
+                }, 50);
+            }
         }
 
         function updateLoveGaugeValue(val) {
@@ -1244,15 +1280,15 @@
             const feedback = document.getElementById('sliderFeedbackText');
             const btn = document.getElementById('sliderContinueButton');
             
-            display.innerText = val + "%";
-            feedback.classList.remove('error-msg-style');
+            if (display) display.innerText = val + "%";
+            if (feedback) feedback.classList.remove('error-msg-style');
             
             if (parseInt(val) < 100) {
-                feedback.innerText = "Error: Input value too low! 🧐 Try harder.";
-                btn.disabled = true;
+                if (feedback) feedback.innerText = "Error: Input value too low! 🧐 Try harder.";
+                if (btn) btn.disabled = true;
             } else {
-                feedback.innerText = "Perfect amount! Access code unlocked. 🥰";
-                btn.disabled = false;
+                if (feedback) feedback.innerText = "Perfect amount! Access code unlocked. 🥰";
+                if (btn) btn.disabled = false;
                 triggerLoveConfettiBlast(15);
             }
         }
@@ -1266,9 +1302,11 @@
         }
 
         function openLetterCard(cardElement) {
-            cardElement.classList.toggle('open');
-            if (cardElement.classList.contains('open')) {
-                triggerLoveConfettiBlast(50);
+            if (cardElement) {
+                cardElement.classList.toggle('open');
+                if (cardElement.classList.contains('open')) {
+                    triggerLoveConfettiBlast(50);
+                }
             }
         }
 
