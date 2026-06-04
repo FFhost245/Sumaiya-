@@ -36,7 +36,7 @@
             z-index: 9999;
             padding: 20px;
             text-align: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
         .loader-heart {
@@ -76,6 +76,7 @@
             background: linear-gradient(90deg, #ff4081, #b388ff);
             border-radius: 20px;
             box-shadow: 0 0 8px #ff4081;
+            transition: width 0.1s linear;
         }
 
         .loader-text {
@@ -94,23 +95,6 @@
             height: 100%;
             z-index: 35;
             pointer-events: none;
-        }
-
-        .heart {
-            position: absolute;
-            color: rgba(255, 64, 129, 0.35);
-            animation: floatUp 4.5s linear infinite;
-            bottom: -40px;
-            z-index: 1;
-            pointer-events: none;
-            will-change: transform, opacity;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translate3d(0, 0, 0) scale(0.8) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translate3d(0, -115vh, 0) scale(1.2) rotate(360deg); opacity: 0; }
         }
 
         .app-wrapper {
@@ -208,8 +192,8 @@
         }
 
         .magic-flame.extinguished {
-            opacity: 0;
-            transform: translateX(-50%) scale(0) translateY(-10px);
+            opacity: 0 !important;
+            transform: translateX(-50%) scale(0) translateY(-10px) !important;
         }
 
         .cake-plate {
@@ -383,6 +367,7 @@
             cursor: pointer;
             transition: all 0.25s ease;
             text-align: center;
+            outline: none;
         }
 
         .option-btn:active {
@@ -777,6 +762,7 @@
         .card-front {
             background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%);
             color: white;
+            cursor: pointer;
         }
 
         .envelope-icon {
@@ -837,7 +823,6 @@
 
     <div class="app-wrapper">
         <canvas id="confetti-canvas"></canvas>
-        <div id="particles-workspace"></div>
 
         <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
@@ -956,6 +941,7 @@
 
         let currentQuestionIndex = 0;
 
+        // Confetti Canvas System
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
@@ -1018,117 +1004,115 @@
             requestAnimationFrame(animateConfetti);
         }
 
+        // 1. Simulation of Loader Screen
         window.addEventListener('DOMContentLoaded', () => {
-            const progress = document.getElementById('progress');
-            const statusText = document.getElementById('loader-status');
+            const progressBar = document.getElementById('progress');
+            const loaderStatus = document.getElementById('loader-status');
             const loader = document.getElementById('loader');
-            
-            let width = 0;
-            const statusTicks = [
-                "Locating the birthday girl...",
-                "Baking premium twin layers...",
-                "Overloading confetti cartridges...",
-                "System fully loaded with affection! ❤️"
+            let progressValue = 0;
+
+            const loadingPhrases = [
+                "Assembling feelings...", 
+                "Baking virtual cake tiers...", 
+                "Calibrating pure affection...", 
+                "Ready!"
             ];
 
-            const loaderRunner = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(loaderRunner);
-                    loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
-                } else {
-                    width += 5;
-                    progress.style.width = width + '%';
-                    let statusIndex = Math.floor((width / 100) * statusTicks.length);
-                    if(statusTicks[statusIndex]) statusText.innerText = statusTicks[statusIndex];
+            const interval = setInterval(() => {
+                progressValue += 2;
+                progressBar.style.width = progressValue + '%';
+
+                if(progressValue < 30) loaderStatus.innerText = loadingPhrases[0];
+                else if(progressValue < 60) loaderStatus.innerText = loadingPhrases[1];
+                else if(progressValue < 90) loaderStatus.innerText = loadingPhrases[2];
+                else loaderStatus.innerText = loadingPhrases[3];
+
+                if(progressValue >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loader.style.opacity = '0';
+                        setTimeout(() => {
+                            loader.style.visibility = 'hidden';
+                        }, 500);
+                    }, 400);
                 }
-            }, 50); 
-            
-            generateSparkleMatrix();
+            }, 50);
         });
 
-        let structuralStateLit = true;
+        // 2. Extinguish Candle System
+        let standardSequenceTriggered = false;
         function extinguishCandleSequence() {
-            if (!structuralStateLit) return;
-            structuralStateLit = false;
+            if (standardSequenceTriggered) return;
+            standardSequenceTriggered = true;
 
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
+            
+            document.getElementById('banner-text').innerText = "🎂 Sparking up joy!";
+            triggerLoveConfettiBlast(120);
 
-            triggerLoveConfettiBlast(160);
-
+            // Pop celebration banner up momentarily
             setTimeout(() => {
-                const cakeView = document.getElementById('cake-screen');
-                const celebView = document.getElementById('celebration-screen');
-                
-                cakeView.style.opacity = '0';
+                document.getElementById('cake-screen').style.opacity = '0';
+                document.getElementById('cake-screen').style.transform = 'scale(0.85)';
                 
                 setTimeout(() => {
-                    cakeView.style.display = 'none';
-                    celebView.classList.add('active');
+                    document.getElementById('cake-screen').style.display = 'none';
+                    document.getElementById('celebration-screen').classList.add('active');
                     
-                    const continuousConfetti = setInterval(() => {
-                        if(confettiActive) triggerLoveConfettiBlast(6);
-                    }, 350);
-
+                    // Show celebration, then proceed to the quiz window
                     setTimeout(() => {
-                        clearInterval(continuousConfetti);
-                        confettiActive = false;
-                        
-                        celebView.classList.remove('active');
-                        celebView.style.opacity = '0';
-                        
+                        document.getElementById('celebration-screen').classList.remove('active');
                         setTimeout(() => {
-                            celebView.style.display = 'none';
-                            initiateQuizModule();
-                        }, 1200);
-                    }, 4000);
-
-                }, 600);
-            }, 500);
+                            initiateQuizLayout();
+                        }, 1000);
+                    }, 3500);
+                }, 800);
+            }, 1000);
         }
 
-        /* --- QUIZ LOGIC SYSTEM --- */
-        function initiateQuizModule() {
-            const quizView = document.getElementById('quiz-screen');
-            quizView.style.display = 'block';
+        // 3. Quiz Interface Engine
+        function initiateQuizLayout() {
+            const quizScreen = document.getElementById('quiz-screen');
+            quizScreen.style.display = 'block';
             setTimeout(() => {
-                quizView.style.opacity = '1';
-                quizView.style.transform = 'scale(1)';
-                loadQuizQuestion();
+                quizScreen.style.opacity = '1';
+                quizScreen.style.transform = 'scale(1)';
             }, 50);
+            renderCurrentQuestion();
         }
 
-        function loadQuizQuestion() {
-            const currentData = quizQuestions[currentQuestionIndex];
+        function renderCurrentQuestion() {
+            const data = quizQuestions[currentQuestionIndex];
             document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-            document.getElementById('quiz-question-field').innerText = currentData.q;
-            
+            document.getElementById('quiz-question-field').innerText = data.q;
+
             const optionsContainer = document.getElementById('quiz-options-field');
             optionsContainer.innerHTML = '';
 
-            currentData.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.classList.add('option-btn');
-                button.innerText = option;
-                button.onclick = () => checkSelectedAnswer(index);
-                optionsContainer.appendChild(button);
+            data.options.forEach((optionText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = optionText;
+                btn.onclick = () => checkQuizResponse(idx);
+                optionsContainer.appendChild(btn);
             });
         }
 
-        function checkSelectedAnswer(selectedIndex) {
-            const currentData = quizQuestions[currentQuestionIndex];
-            if (selectedIndex === currentData.correct) {
+        function checkQuizResponse(chosenIndex) {
+            const currentCorrect = quizQuestions[currentQuestionIndex].correct;
+            if(chosenIndex === currentCorrect) {
                 currentQuestionIndex++;
-                if (currentQuestionIndex < quizQuestions.length) {
-                    loadQuizQuestion();
+                if(currentQuestionIndex < quizQuestions.length) {
+                    renderCurrentQuestion();
                 } else {
-                    const quizView = document.getElementById('quiz-screen');
-                    quizView.style.opacity = '0';
-                    quizView.style.transform = 'scale(0.9)';
+                    // Transition to Wish Screen
+                    const quizScreen = document.getElementById('quiz-screen');
+                    quizScreen.style.opacity = '0';
+                    quizScreen.style.transform = 'scale(0.9)';
                     setTimeout(() => {
-                        quizView.style.display = 'none';
-                        initiateWishModule(); // Correct Flow: Quiz -> Wish screen!
+                        quizScreen.style.display = 'none';
+                        revealWishScreenLayout();
                     }, 500);
                 }
             } else {
@@ -1140,129 +1124,94 @@
             document.getElementById('error-popup').classList.remove('show');
         }
 
-        /* --- WISH LANTERN MODULE --- */
-        function initiateWishModule() {
-            const wishView = document.getElementById('wish-screen');
-            wishView.style.display = 'block';
+        // 4. Wish Box System & Sky Lantern
+        function revealWishScreenLayout() {
+            const wishScreen = document.getElementById('wish-screen');
+            wishScreen.style.display = 'block';
             setTimeout(() => {
-                wishView.style.opacity = '1';
-                wishView.style.transform = 'scale(1)';
+                wishScreen.style.opacity = '1';
+                wishScreen.style.transform = 'scale(1)';
             }, 50);
         }
 
         function releaseBirthdayLantern() {
-            const inputField = document.getElementById('wish-text-area');
-            const submitBtn = document.getElementById('wish-submit-button');
+            const wishInputText = document.getElementById('wish-text-area').value.trim();
+            if(!wishInputText) return;
+
+            document.getElementById('wish-submit-button').disabled = true;
             const wishScreen = document.getElementById('wish-screen');
-            const grandLantern = document.getElementById('grand-sky-lantern');
-            const wishText = inputField.value.trim();
-
-            if (wishText === "") {
-                alert("Please write down a wish before releasing the lantern! ✨");
-                return;
-            }
-
-            submitBtn.disabled = true;
-
-            const webhookUrl = "https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X";
-            
-            const payload = {
-                content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${wishText}\n\`\`\``
-            };
-
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.log("Logged safely.")); 
-
             wishScreen.classList.add('absorb-wish');
 
             setTimeout(() => {
-                grandLantern.classList.add('reveal');
+                wishScreen.style.display = 'none';
                 
+                // Active Custom Paper Lantern Animation
+                const lantern = document.getElementById('grand-sky-lantern');
+                lantern.classList.add('reveal');
+
                 setTimeout(() => {
-                    grandLantern.classList.add('fly-away');
-                    
-                    setTimeout(() => {
-                        wishScreen.style.display = 'none';
-                    }, 600);
+                    lantern.classList.add('fly-away');
+                    // Stop spawning endless streams, let things dissipate smoothly
+                    setTimeout(() => confettiActive = false, 1000); 
 
                     setTimeout(() => {
-                        grandLantern.remove();
-                        initiateSliderModule(); // Lantern gone! Now show the Cheeky Sweetness Gauge
+                        lantern.style.display = 'none';
+                        revealSweetnessSliderLayout();
                     }, 3000);
-
-                }, 1000); 
-            }, 300);
+                }, 1200);
+            }, 600);
         }
 
-        /* --- SWEETNESS SLIDER LOGIC --- */
-        function initiateSliderModule() {
-            const sliderView = document.getElementById('slider-screen');
-            sliderView.style.display = 'block';
+        // 5. Custom Affection Gauge Slider Layout
+        function revealSweetnessSliderLayout() {
+            const sliderScreen = document.getElementById('slider-screen');
+            sliderScreen.style.display = 'block';
             setTimeout(() => {
-                sliderView.style.opacity = '1';
-                sliderView.style.transform = 'scale(1)';
+                sliderScreen.style.opacity = '1';
+                sliderScreen.style.transform = 'scale(1)';
             }, 50);
         }
 
-        function updateLoveGaugeValue(val) {
+        function updateLoveGaugeValue(value) {
             const display = document.getElementById('sliderPercentageDisplay');
             const feedback = document.getElementById('sliderFeedbackText');
-            const nextBtn = document.getElementById('sliderContinueButton');
+            const button = document.getElementById('sliderContinueButton');
             
-            display.innerText = val + "%";
-            
-            if (val < 80) {
-                feedback.innerText = "Error: Input value dangerously low! 😜";
+            display.innerText = value + '%';
+            feedback.classList.remove('error-msg-style');
+
+            if(parseInt(value) < 100) {
+                feedback.innerText = "Error: Amount too low! Try higher... 🫣";
                 feedback.classList.add('error-msg-style');
-                nextBtn.disabled = true;
-            } else if (val >= 80 && val < 100) {
-                feedback.innerText = "Hmm, getting closer... keep sliding! 😉";
-                feedback.classList.remove('error-msg-style');
-                nextBtn.disabled = true;
-            } else if (parseInt(val) === 100) {
-                feedback.innerText = "Perfect! Correct answer! ❤️";
-                feedback.classList.remove('error-msg-style');
-                nextBtn.disabled = false;
+                button.disabled = true;
+            } else {
+                feedback.innerText = "Perfect absolute statement! Ready! 🥰❤️";
+                button.disabled = false;
             }
         }
 
         function transitionFromSliderToLetter() {
-            const sliderView = document.getElementById('slider-screen');
-            sliderView.style.opacity = '0';
-            sliderView.style.transform = 'scale(0.9)';
+            const sliderScreen = document.getElementById('slider-screen');
+            sliderScreen.style.opacity = '0';
+            sliderScreen.style.transform = 'scale(0.9)';
+            
             setTimeout(() => {
-                sliderView.style.display = 'none';
-                revealFinalLetter(); // 100% unlocked! Open the real letter
+                sliderScreen.style.display = 'none';
+                confettiActive = true; 
+                triggerLoveConfettiBlast(40); // Soft beautiful shower setup
+
+                const noteScreen = document.getElementById('note-screen');
+                noteScreen.style.display = 'block';
+                setTimeout(() => {
+                    noteScreen.style.opacity = '1';
+                    noteScreen.style.transform = 'scale(1) translate3d(0,0,0)';
+                }, 50);
             }, 500);
         }
 
-        function revealFinalLetter() {
-            const noteView = document.getElementById('note-screen');
-            noteView.style.display = 'block';
-            setTimeout(() => {
-                noteView.style.opacity = '1';
-                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
-            }, 50);
-        }
-
+        // 6. Interactive Flips for Card
         function openLetterCard(element) {
             element.classList.toggle('open');
-        }
-
-        function generateSparkleMatrix() {
-            const container = document.getElementById('particles-workspace');
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                container.appendChild(heart);
-                setTimeout(() => { heart.remove(); }, 4500);
-            }, 600);
         }
     </script>
 </body>
