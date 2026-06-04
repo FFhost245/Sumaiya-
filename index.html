@@ -157,136 +157,97 @@
             margin-bottom: 35px;
         }
 
-        /* ==========================================================================
-           FIXED: TRUE PINK & WHITE CAKE STYLING ON ORIGINAL STRUCTURAL SCHEMATICS
-           ========================================================================== */
-        .cake {
-            width: 250px;
-            height: 240px;
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        .bottom-layer,
-        .middle-layer,
-        .top-layer {
-            height: 80px;
-            width: 248px;
-            margin: auto;
-            background-repeat: repeat;
-            background-size: 100% 100%, 60px 100%;
-            background-position: 28px 0;
-            
-            /* Clean high-contrast Pink & White frosting layers with zero brown remnants */
-            background-image: 
-                linear-gradient(transparent 50px, #ffffff 50px, #ffffff 60px, transparent 60px),
-                radial-gradient(circle at 30px 5px, #ff69b4 30px, #ffffff 31px);
-                
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s ease-in-out infinite;
-            position: absolute;
-            left: 0;
-            right: 0;
-        }
-
-        .bottom-layer {
-            bottom: 0px;
-        }
-
-        .middle-layer {
-            transform: scale(0.85);
-            top: 72px;
-            animation: rise1 2s forwards, pulse 2s ease-in-out infinite;
-        }
-
-        .top-layer {
-            transform: scale(0.7);
-            top: 144px;
-            animation: rise2 2s 2s forwards, pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.06); }
-        }
-
-        @keyframes rise1 {
-            100% { top: 7px; }
-        }
-
-        @keyframes rise2 {
-            100% { top: -58px; }
-        }
-
-        /* Twin Character "15" Candle Element Layout */
-        .candle-duo {
+        .cake-container {
+            width: 200px;
+            height: 180px;
             display: flex;
-            gap: 6px;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: auto;
-            width: fit-content;
-            z-index: 10;
-            animation: rise3 1s 4s forwards, wiggle 1s 5s ease-in-out infinite alternate;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 45px;
+            position: relative;
         }
 
-        .digit-candle {
-            font-size: 40px;
+        .candle-holder {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .alphabet-candle {
+            font-size: 26px;
             font-weight: 900;
-            background: linear-gradient(#ffffff, #ffccd5);
+            background: linear-gradient(#b388ff, #e8dbff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
             line-height: 1;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));
         }
 
-        /* Flame element alignments mapped overhead */
-        .digit-candle::after {
-            content: "";
+        .magic-flame {
+            width: 10px;
+            height: 18px;
+            background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffb703 30%, #ff4081 70%);
+            border-radius: 50% 50% 20% 20%;
             position: absolute;
-            height: 14px;
-            width: 14px;
-            top: -15px;
+            top: -16px;
             left: 50%;
-            background: radial-gradient(circle, #ffffff, #ffee54, #ff9800);
-            border-radius: 0 50% 50% 50%;
-            transform: translateX(-50%) scale(0) rotate(45deg);
-            box-shadow: 0 0 10px #ff4081, 0 0 20px #ffee54;
-            animation: flame 1.5s 5s forwards, flicker 0.5s 6.5s infinite alternate;
-            transition: all 0.25s ease-out;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
+            animation: flameWobble 0.5s infinite alternate ease-in-out;
+            transition: all 0.25s ease;
         }
 
-        @keyframes rise3 {
-            100% { bottom: 204px; }
+        @keyframes flameWobble {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(3deg); }
         }
 
-        @keyframes wiggle {
-            0% { transform: rotate(-1deg); }
-            100% { transform: rotate(1deg); }
+        .magic-flame.extinguished {
+            opacity: 0;
+            transform: translateX(-50%) scale(0) translateY(-10px);
         }
 
-        @keyframes flame {
-            100% { transform: translateX(-50%) scale(1) rotate(45deg); }
+        .cake-plate {
+            width: 210px;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            z-index: 2;
         }
 
-        @keyframes flicker {
-            0% { transform: translateX(-50%) scale(1) rotate(43deg); }
-            100% { transform: translateX(-50%) scale(1.1) rotate(47deg); }
+        .tier-bottom {
+            width: 170px;
+            height: 50px;
+            background: #ff85a2;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            z-index: 3;
         }
 
-        /* Blowout Trigger Logic Target */
-        .candle-duo.extinguished .digit-candle::after {
-            animation: none !important;
-            opacity: 0 !important;
-            transform: translateX(-50%) scale(0) translateY(-10px) !important;
+        .tier-top {
+            width: 120px;
+            height: 45px;
+            background: #ffb3c6;
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            z-index: 4;
         }
-        /* ==========================================================================
-           END OF STYLING REGION
-           ========================================================================== */
+
+        .drip-frosting {
+            width: 100%;
+            height: 14px;
+            background: #ffffff;
+            border-radius: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
         .action-banner {
             font-size: 0.95rem;
@@ -883,16 +844,18 @@
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
             
-            <!-- Original Absolute Positioning Box Wrapper -->
-            <div class="cake">
-                <!-- Dual Glowing 15 Milestone Candles -->
-                <div class="candle-duo" id="birthdayCandleElement">
-                    <div class="digit-candle">1</div>
-                    <div class="digit-candle">5</div>
+            <div class="cake-container">
+                <div class="tier-top">
+                    <div class="candle-holder">
+                        <div class="alphabet-candle">1<div class="magic-flame flame-node"></div></div>
+                        <div class="alphabet-candle">5<div class="magic-flame flame-node"></div></div>
+                    </div>
+                    <div class="drip-frosting"></div>
                 </div>
-                <div class="top-layer"></div>
-                <div class="middle-layer"></div>
-                <div class="bottom-layer"></div>
+                <div class="tier-bottom">
+                    <div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div>
+                </div>
+                <div class="cake-plate"></div>
             </div>
             
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
@@ -912,7 +875,7 @@
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
             <div class="options-container" id="quiz-options-field">
-                <!-- Buttons spawn dynamically -->
+                <!-- Buttons will spawn here dynamically -->
             </div>
         </div>
 
@@ -999,18 +962,16 @@
         let confettiParticles = [];
         const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
 
-        if (canvas) {
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         function createConfettiPiece() {
             return {
-                x: Math.random() * (canvas ? canvas.width : 500),
+                x: Math.random() * canvas.width,
                 y: -20,
                 size: Math.random() * 8 + 6,
                 color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
@@ -1026,10 +987,10 @@
             for (let i = 0; i < amount; i++) {
                 confettiParticles.push(createConfettiPiece());
             }
+            animateConfetti();
         }
 
         function animateConfetti() {
-            if (!canvas || !ctx) return;
             if (confettiParticles.length === 0 && !confettiActive) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -1054,6 +1015,7 @@
                     }
                 }
             }
+            requestAnimationFrame(animateConfetti);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -1061,260 +1023,247 @@
             const statusText = document.getElementById('loader-status');
             const loader = document.getElementById('loader');
             
-            const loadMessages = [
-                "Assembling feelings...",
-                "Baking virtual cake...",
-                "Inflating digital balloons...",
-                "Polishing sky lanterns...",
-                "Decrypting heartrate... Done!"
+            let width = 0;
+            const statusTicks = [
+                "Locating the birthday girl...",
+                "Baking premium twin layers...",
+                "Overloading confetti cartridges...",
+                "System fully loaded with affection! ❤️"
             ];
-            
-            let currentProgress = 0;
-            let messageIndex = 0;
-            
-            const interval = setInterval(() => {
-                currentProgress += Math.floor(Math.random() * 15) + 5;
-                if (currentProgress >= 100) {
-                    currentProgress = 100;
-                    clearInterval(interval);
-                    if (progress) progress.style.width = '100%';
-                    if (statusText) statusText.innerText = loadMessages[loadMessages.length - 1];
-                    
-                    setTimeout(() => {
-                        if (loader) loader.style.opacity = '0';
-                        setTimeout(() => {
-                            if (loader) loader.style.display = 'none';
-                            spawnFloatingBackgroundHearts();
-                        }, 500);
-                    }, 600);
+
+            const loaderRunner = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(loaderRunner);
+                    loader.style.opacity = '0';
+                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
                 } else {
-                    if (progress) progress.style.width = currentProgress + '%';
-                    if (currentProgress > (messageIndex + 1) * 20 && messageIndex < loadMessages.length - 2) {
-                        messageIndex++;
-                        if (statusText) statusText.innerText = loadMessages[messageIndex];
-                    }
+                    width += 5;
+                    progress.style.width = width + '%';
+                    let statusIndex = Math.floor((width / 100) * statusTicks.length);
+                    if(statusTicks[statusIndex]) statusText.innerText = statusTicks[statusIndex];
                 }
-            }, 150);
+            }, 50); 
+            
+            generateSparkleMatrix();
         });
 
-        function spawnFloatingBackgroundHearts() {
-            const workspace = document.getElementById('particles-workspace');
-            const heartEmojis = ['❤️', '💖', '✨', '🌸', '💕'];
-            
-            setInterval(() => {
-                const cakeScreen = document.getElementById('cake-screen');
-                const celebScreen = document.getElementById('celebration-screen');
-                if (!cakeScreen || !celebScreen) return;
-                
-                if (cakeScreen.style.display === 'none' && !celebScreen.classList.contains('active')) {
-                    return;
-                }
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                if (workspace) workspace.appendChild(heart);
-                
-                setTimeout(() => {
-                    heart.remove();
-                }, 5000);
-            }, 400);
-        }
-
-        let isTransitioning = false;
-
+        let structuralStateLit = true;
         function extinguishCandleSequence() {
-            if (isTransitioning) return;
-            
-            const targetCandle = document.getElementById('birthdayCandleElement');
-            if (targetCandle) {
-                targetCandle.classList.add('extinguished');
-            }
+            if (!structuralStateLit) return;
+            structuralStateLit = false;
 
-            const bannerText = document.getElementById('banner-text');
-            if (bannerText) bannerText.innerText = "Make a wish! 🌟";
-            
-            isTransitioning = true;
-            triggerLoveConfettiBlast(120);
+            const flames = document.querySelectorAll('.flame-node');
+            flames.forEach(flame => flame.classList.add('extinguished'));
+
+            triggerLoveConfettiBlast(160);
 
             setTimeout(() => {
-                const celebScreen = document.getElementById('celebration-screen');
-                if (celebScreen) celebScreen.classList.add('active');
+                const cakeView = document.getElementById('cake-screen');
+                const celebView = document.getElementById('celebration-screen');
+                
+                cakeView.style.opacity = '0';
                 
                 setTimeout(() => {
-                    confettiActive = false;
-                    if (celebScreen) celebScreen.style.opacity = '0';
+                    cakeView.style.display = 'none';
+                    celebView.classList.add('active');
                     
+                    const continuousConfetti = setInterval(() => {
+                        if(confettiActive) triggerLoveConfettiBlast(6);
+                    }, 350);
+
                     setTimeout(() => {
-                        if (celebScreen) celebScreen.style.display = 'none';
-                        const cakeScreen = document.getElementById('cake-screen');
-                        if (cakeScreen) cakeScreen.style.display = 'none';
-                        initiateQuizSequence();
-                    }, 1000);
-                }, 3500);
-            }, 1200);
+                        clearInterval(continuousConfetti);
+                        confettiActive = false;
+                        
+                        celebView.classList.remove('active');
+                        celebView.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            celebView.style.display = 'none';
+                            initiateQuizModule();
+                        }, 1200);
+                    }, 4000);
+
+                }, 600);
+            }, 500);
         }
 
-        function initiateQuizSequence() {
-            const quizScreen = document.getElementById('quiz-screen');
-            if (quizScreen) {
-                quizScreen.style.display = 'block';
-                setTimeout(() => {
-                    quizScreen.style.opacity = '1';
-                    quizScreen.style.transform = 'scale(1)';
-                }, 50);
-            }
-            renderCurrentQuizQuestion();
+        /* --- QUIZ LOGIC SYSTEM --- */
+        function initiateQuizModule() {
+            const quizView = document.getElementById('quiz-screen');
+            quizView.style.display = 'block';
+            setTimeout(() => {
+                quizView.style.opacity = '1';
+                quizView.style.transform = 'scale(1)';
+                loadQuizQuestion();
+            }, 50);
         }
 
-        function renderCurrentQuizQuestion() {
-            const qData = quizQuestions[currentQuestionIndex];
-            const progressText = document.getElementById('quiz-progress-text');
-            const questionField = document.getElementById('quiz-question-field');
-            const optionsContainer = document.getElementById('quiz-options-field');
+        function loadQuizQuestion() {
+            const currentData = quizQuestions[currentQuestionIndex];
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-question-field').innerText = currentData.q;
             
-            if (progressText) progressText.innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-            if (questionField) questionField.innerText = qData.q;
-            if (optionsContainer) {
-                optionsContainer.innerHTML = '';
-                
-                qData.options.forEach((option, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerText = option;
-                    btn.onclick = (e) => {
-                        e.stopPropagation(); 
-                        evaluateQuizAnswer(idx);
-                    };
-                    optionsContainer.appendChild(btn);
-                });
-            }
+            const optionsContainer = document.getElementById('quiz-options-field');
+            optionsContainer.innerHTML = '';
+
+            currentData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-btn');
+                button.innerText = option;
+                button.onclick = () => checkSelectedAnswer(index);
+                optionsContainer.appendChild(button);
+            });
         }
 
-        function evaluateQuizAnswer(selectedIndex) {
-            const qData = quizQuestions[currentQuestionIndex];
-            if (selectedIndex === qData.correct) {
+        function checkSelectedAnswer(selectedIndex) {
+            const currentData = quizQuestions[currentQuestionIndex];
+            if (selectedIndex === currentData.correct) {
                 currentQuestionIndex++;
-                triggerLoveConfettiBlast(25);
-                
                 if (currentQuestionIndex < quizQuestions.length) {
-                    renderCurrentQuizQuestion();
+                    loadQuizQuestion();
                 } else {
-                    transitionScreens('quiz-screen', 'wish-screen');
+                    const quizView = document.getElementById('quiz-screen');
+                    quizView.style.opacity = '0';
+                    quizView.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        quizView.style.display = 'none';
+                        initiateWishModule(); // Correct Flow: Quiz -> Wish screen!
+                    }, 500);
                 }
             } else {
-                openErrorPopup();
+                document.getElementById('error-popup').classList.add('show');
             }
-        }
-
-        function openErrorPopup() {
-            const popup = document.getElementById('error-popup');
-            if (popup) popup.classList.add('show');
         }
 
         function closeErrorPopup() {
-            const popup = document.getElementById('error-popup');
-            if (popup) popup.classList.remove('show');
+            document.getElementById('error-popup').classList.remove('show');
         }
 
-        function transitionScreens(hideId, showId) {
-            const hideElement = document.getElementById(hideId);
-            const showElement = document.getElementById(showId);
-            
-            if (hideElement && showElement) {
-                hideElement.style.opacity = '0';
-                hideElement.style.transform = 'scale(0.9)';
-                
-                setTimeout(() => {
-                    hideElement.style.display = 'none';
-                    showElement.style.display = 'block';
-                    setTimeout(() => {
-                        showElement.style.opacity = '1';
-                        showElement.style.transform = 'scale(1)';
-                    }, 50);
-                }, 500);
-            }
+        /* --- WISH LANTERN MODULE --- */
+        function initiateWishModule() {
+            const wishView = document.getElementById('wish-screen');
+            wishView.style.display = 'block';
+            setTimeout(() => {
+                wishView.style.opacity = '1';
+                wishView.style.transform = 'scale(1)';
+            }, 50);
         }
 
         function releaseBirthdayLantern() {
-            const textArea = document.getElementById('wish-text-area');
-            const wishText = textArea ? textArea.value.trim() : "";
-            if (wishText === "") return;
-
+            const inputField = document.getElementById('wish-text-area');
             const submitBtn = document.getElementById('wish-submit-button');
-            if (submitBtn) submitBtn.disabled = true;
-            
             const wishScreen = document.getElementById('wish-screen');
-            if (wishScreen) wishScreen.classList.add('absorb-wish');
+            const grandLantern = document.getElementById('grand-sky-lantern');
+            const wishText = inputField.value.trim();
+
+            if (wishText === "") {
+                alert("Please write down a wish before releasing the lantern! ✨");
+                return;
+            }
+
+            submitBtn.disabled = true;
+
+            const webhookUrl = "https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X";
             
-            const lantern = document.getElementById('grand-sky-lantern');
-            if (lantern) lantern.classList.add('reveal');
-            
+            const payload = {
+                content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${wishText}\n\`\`\``
+            };
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log("Logged safely.")); 
+
+            wishScreen.classList.add('absorb-wish');
+
             setTimeout(() => {
-                if (lantern) lantern.classList.add('fly-away');
-                triggerLoveConfettiBlast(40);
+                grandLantern.classList.add('reveal');
                 
                 setTimeout(() => {
-                    if (lantern) lantern.style.display = 'none';
-                    if (wishScreen) wishScreen.style.display = 'none';
-                    openLoveSliderGaugeScreen();
-                }, 3000);
-            }, 1000);
+                    grandLantern.classList.add('fly-away');
+                    
+                    setTimeout(() => {
+                        wishScreen.style.display = 'none';
+                    }, 600);
+
+                    setTimeout(() => {
+                        grandLantern.remove();
+                        initiateSliderModule(); // Lantern gone! Now show the Cheeky Sweetness Gauge
+                    }, 3000);
+
+                }, 1000); 
+            }, 300);
         }
 
-        function openLoveSliderGaugeScreen() {
-            const sliderScreen = document.getElementById('slider-screen');
-            if (sliderScreen) {
-                sliderScreen.style.display = 'block';
-                setTimeout(() => {
-                    sliderScreen.style.opacity = '1';
-                    sliderScreen.style.transform = 'scale(1)';
-                }, 50);
-            }
+        /* --- SWEETNESS SLIDER LOGIC --- */
+        function initiateSliderModule() {
+            const sliderView = document.getElementById('slider-screen');
+            sliderView.style.display = 'block';
+            setTimeout(() => {
+                sliderView.style.opacity = '1';
+                sliderView.style.transform = 'scale(1)';
+            }, 50);
         }
 
         function updateLoveGaugeValue(val) {
             const display = document.getElementById('sliderPercentageDisplay');
             const feedback = document.getElementById('sliderFeedbackText');
-            const btn = document.getElementById('sliderContinueButton');
+            const nextBtn = document.getElementById('sliderContinueButton');
             
-            if (display) display.innerText = val + "%";
-            if (feedback) feedback.classList.remove('error-msg-style');
+            display.innerText = val + "%";
             
-            if (parseInt(val) < 100) {
-                if (feedback) feedback.innerText = "Error: Input value too low! 🧐 Try harder.";
-                if (btn) btn.disabled = true;
-            } else {
-                if (feedback) feedback.innerText = "Perfect amount! Access code unlocked. 🥰";
-                if (btn) btn.disabled = false;
-                triggerLoveConfettiBlast(15);
+            if (val < 80) {
+                feedback.innerText = "Error: Input value dangerously low! 😜";
+                feedback.classList.add('error-msg-style');
+                nextBtn.disabled = true;
+            } else if (val >= 80 && val < 100) {
+                feedback.innerText = "Hmm, getting closer... keep sliding! 😉";
+                feedback.classList.remove('error-msg-style');
+                nextBtn.disabled = true;
+            } else if (parseInt(val) === 100) {
+                feedback.innerText = "Perfect! Correct answer! ❤️";
+                feedback.classList.remove('error-msg-style');
+                nextBtn.disabled = false;
             }
         }
 
         function transitionFromSliderToLetter() {
-            transitionScreens('slider-screen', 'note-screen');
+            const sliderView = document.getElementById('slider-screen');
+            sliderView.style.opacity = '0';
+            sliderView.style.transform = 'scale(0.9)';
             setTimeout(() => {
-                triggerLoveConfettiBlast(80);
-                confettiActive = true;
-            }, 1000);
+                sliderView.style.display = 'none';
+                revealFinalLetter(); // 100% unlocked! Open the real letter
+            }, 500);
         }
 
-        function openLetterCard(cardElement) {
-            if (cardElement) {
-                cardElement.classList.toggle('open');
-                if (cardElement.classList.contains('open')) {
-                    triggerLoveConfettiBlast(50);
-                }
-            }
+        function revealFinalLetter() {
+            const noteView = document.getElementById('note-screen');
+            noteView.style.display = 'block';
+            setTimeout(() => {
+                noteView.style.opacity = '1';
+                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
+            }, 50);
         }
 
-        function runConfettiLoop() {
-            animateConfetti();
-            requestAnimationFrame(runConfettiLoop);
+        function openLetterCard(element) {
+            element.classList.toggle('open');
         }
-        runConfettiLoop();
+
+        function generateSparkleMatrix() {
+            const container = document.getElementById('particles-workspace');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 4500);
+            }, 600);
+        }
     </script>
 </body>
 </html>
