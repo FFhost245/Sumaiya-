@@ -829,6 +829,7 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
+    <!-- Playful Error Modal -->
     <div id="error-popup">
         <div class="error-msg">You are wrong cute idiot 😜</div>
         <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
@@ -838,6 +839,7 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -859,6 +861,7 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- Celebration Title -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -866,14 +869,17 @@
             </div>
         </div>
 
+        <!-- INTERACTIVE QUIZ WINDOW -->
         <div id="quiz-screen">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
             <div class="options-container" id="quiz-options-field">
-                </div>
+                <!-- Buttons will spawn here dynamically -->
+            </div>
         </div>
 
+        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -881,6 +887,7 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
+        <!-- INTERACTIVE SWEETNESS SLIDER -->
         <div id="slider-screen">
             <div class="quiz-header">Affection Level Check 💓</div>
             <div class="slider-title" id="slider-prompt">How much do you love me today? 😏</div>
@@ -894,6 +901,7 @@
             <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
         </div>
 
+        <!-- Custom Handcrafted Glowing Paper Lantern Structure -->
         <div id="grand-sky-lantern" class="center-lantern-container">
             <div class="lantern-top-cap"></div>
             <div class="lantern-main-body">
@@ -903,6 +911,7 @@
             <div class="lantern-tassel"></div>
         </div>
 
+        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -926,7 +935,7 @@
     </div>
 
     <script>
-        // Quiz Configuration Matrix
+        // Quiz Data
         const quizQuestions = [
             {
                 q: "Who is officially the most favorite person on earth today?",
@@ -946,9 +955,7 @@
         ];
 
         let currentQuestionIndex = 0;
-        let ambientHeartInterval = null;
 
-        // Confetti Physics Engine Settings
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
@@ -1011,259 +1018,251 @@
             requestAnimationFrame(animateConfetti);
         }
 
-        // Preloader Initialization Sequence
         window.addEventListener('DOMContentLoaded', () => {
             const progress = document.getElementById('progress');
             const statusText = document.getElementById('loader-status');
             const loader = document.getElementById('loader');
             
-            const logs = [
-                { p: 15, t: "Fetching birthday memories..." },
-                { p: 40, t: "Baking code frosting..." },
-                { p: 70, t: "Lighting virtual candles..." },
-                { p: 90, t: "Unlocking structural adoration parameters..." },
-                { p: 100, t: "System ready! ❤️" }
+            let width = 0;
+            const statusTicks = [
+                "Locating the birthday girl...",
+                "Baking premium twin layers...",
+                "Overloading confetti cartridges...",
+                "System fully loaded with affection! ❤️"
             ];
 
-            let logIndex = 0;
-            
-            function simulateLoading() {
-                if (logIndex < logs.length) {
-                    progress.style.width = logs[logIndex].p + '%';
-                    statusText.textContent = logs[logIndex].t;
-                    
-                    let delay = logIndex === 0 ? 400 : 500;
-                    logIndex++;
-                    setTimeout(simulateLoading, delay);
+            const loaderRunner = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(loaderRunner);
+                    loader.style.opacity = '0';
+                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
                 } else {
-                    setTimeout(() => {
-                        loader.style.opacity = '0';
-                        setTimeout(() => {
-                            loader.style.display = 'none';
-                            startAmbientHeartsEngine();
-                        }, 500);
-                    }, 400);
+                    width += 5;
+                    progress.style.width = width + '%';
+                    let statusIndex = Math.floor((width / 100) * statusTicks.length);
+                    if(statusTicks[statusIndex]) statusText.innerText = statusTicks[statusIndex];
                 }
-            }
-            setTimeout(simulateLoading, 300);
+            }, 50); 
+            
+            generateSparkleMatrix();
         });
 
-        // Ambient Floating Hearts Spawner
-        function startAmbientHeartsEngine() {
-            ambientHeartInterval = setInterval(() => {
-                const workspace = document.getElementById('particles-workspace');
-                if(!workspace) return;
-                
-                const heartNode = document.createElement('div');
-                heartNode.className = 'heart';
-                heartNode.innerHTML = Math.random() > 0.5 ? '❤️' : '💖';
-                heartNode.style.left = Math.random() * 100 + 'vw';
-                
-                let sizeVal = Math.random() * 14 + 14;
-                heartNode.style.fontSize = sizeVal + 'px';
-                
-                let driftDuration = Math.random() * 2 + 3.5;
-                heartNode.style.animationDuration = driftDuration + 's';
-                heartNode.style.opacity = Math.random() * 0.4 + 0.2;
-                
-                workspace.appendChild(heartNode);
-                
-                setTimeout(() => {
-                    heartNode.remove();
-                }, driftDuration * 1000);
-            }, 650);
-        }
-
-        // Cake Interactions: Extinguish Candle Logic
-        let candleIsBlown = false;
+        let structuralStateLit = true;
         function extinguishCandleSequence() {
-            if (candleIsBlown) return;
-            candleIsBlown = true;
+            if (!structuralStateLit) return;
+            structuralStateLit = false;
 
             const flames = document.querySelectorAll('.flame-node');
             flames.forEach(flame => flame.classList.add('extinguished'));
 
-            document.getElementById('banner-text').textContent = "Candles blown out successfully! 🌟";
-            triggerLoveConfettiBlast(75);
+            triggerLoveConfettiBlast(160);
 
             setTimeout(() => {
-                const cakeScreen = document.getElementById('cake-screen');
-                const celebScreen = document.getElementById('celebration-screen');
+                const cakeView = document.getElementById('cake-screen');
+                const celebView = document.getElementById('celebration-screen');
                 
-                cakeScreen.style.opacity = '0';
-                cakeScreen.style.transform = 'scale(0.85)';
+                cakeView.style.opacity = '0';
                 
                 setTimeout(() => {
-                    cakeScreen.style.display = 'none';
-                    celebScreen.classList.add('active');
+                    cakeView.style.display = 'none';
+                    celebView.classList.add('active');
                     
+                    const continuousConfetti = setInterval(() => {
+                        if(confettiActive) triggerLoveConfettiBlast(6);
+                    }, 350);
+
                     setTimeout(() => {
+                        clearInterval(continuousConfetti);
                         confettiActive = false;
-                        celebScreen.style.opacity = '0';
+                        
+                        celebView.classList.remove('active');
+                        celebView.style.opacity = '0';
+                        
                         setTimeout(() => {
-                            celebScreen.style.display = 'none';
-                            mountQuizInterface();
-                        }, 1000);
-                    }, 3500);
-                }, 800);
-            }, 1200);
+                            celebView.style.display = 'none';
+                            initiateQuizModule();
+                        }, 1200);
+                    }, 4000);
+
+                }, 600);
+            }, 500);
         }
 
-        // Verification Quiz Lifecycle Methods
-        function mountQuizInterface() {
-            const quizScreen = document.getElementById('quiz-screen');
-            quizScreen.style.display = 'block';
+        /* --- QUIZ LOGIC SYSTEM --- */
+        function initiateQuizModule() {
+            const quizView = document.getElementById('quiz-screen');
+            quizView.style.display = 'block';
             setTimeout(() => {
-                quizScreen.style.opacity = '1';
-                quizScreen.style.transform = 'scale(1)';
-                renderQuizQuestionBlock();
+                quizView.style.opacity = '1';
+                quizView.style.transform = 'scale(1)';
+                loadQuizQuestion();
             }, 50);
         }
 
-        function renderQuizQuestionBlock() {
+        function loadQuizQuestion() {
             const currentData = quizQuestions[currentQuestionIndex];
-            document.getElementById('quiz-progress-text').textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-            document.getElementById('quiz-question-field').textContent = currentData.q;
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-question-field').innerText = currentData.q;
             
             const optionsContainer = document.getElementById('quiz-options-field');
             optionsContainer.innerHTML = '';
-            
-            currentData.options.forEach((optionText, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = optionText;
-                btn.onclick = () => evaluationQuizAnswer(idx);
-                optionsContainer.appendChild(btn);
+
+            currentData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-btn');
+                button.innerText = option;
+                button.onclick = () => checkSelectedAnswer(index);
+                optionsContainer.appendChild(button);
             });
         }
 
-        function evaluationQuizAnswer(selectedIndex) {
-            const correctIndex = quizQuestions[currentQuestionIndex].correct;
-            if (selectedIndex === correctIndex) {
+        function checkSelectedAnswer(selectedIndex) {
+            const currentData = quizQuestions[currentQuestionIndex];
+            if (selectedIndex === currentData.correct) {
                 currentQuestionIndex++;
                 if (currentQuestionIndex < quizQuestions.length) {
-                    renderQuizQuestionBlock();
+                    loadQuizQuestion();
                 } else {
-                    transitionFromQuizToWishWindow();
+                    const quizView = document.getElementById('quiz-screen');
+                    quizView.style.opacity = '0';
+                    quizView.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        quizView.style.display = 'none';
+                        initiateWishModule(); // Correct Flow: Quiz -> Wish screen!
+                    }, 500);
                 }
             } else {
-                openErrorPopup();
+                document.getElementById('error-popup').classList.add('show');
             }
-        }
-
-        function openErrorPopup() {
-            document.getElementById('error-popup').classList.add('show');
         }
 
         function closeErrorPopup() {
             document.getElementById('error-popup').classList.remove('show');
         }
 
-        function transitionFromQuizToWishWindow() {
-            const quizScreen = document.getElementById('quiz-screen');
-            quizScreen.style.opacity = '0';
-            quizScreen.style.transform = 'scale(0.9)';
-            
+        /* --- WISH LANTERN MODULE --- */
+        function initiateWishModule() {
+            const wishView = document.getElementById('wish-screen');
+            wishView.style.display = 'block';
             setTimeout(() => {
-                quizScreen.style.display = 'none';
-                const wishScreen = document.getElementById('wish-screen');
-                wishScreen.style.display = 'block';
-                setTimeout(() => {
-                    wishScreen.style.opacity = '1';
-                    wishScreen.style.transform = 'scale(1)';
-                }, 50);
-            }, 500);
+                wishView.style.opacity = '1';
+                wishView.style.transform = 'scale(1)';
+            }, 50);
         }
 
-        // Wish Screen Lifecycle & Paper Lantern Controls
         function releaseBirthdayLantern() {
             const inputField = document.getElementById('wish-text-area');
-            const wishBox = document.getElementById('wish-screen');
             const submitBtn = document.getElementById('wish-submit-button');
-            
+            const wishScreen = document.getElementById('wish-screen');
+            const grandLantern = document.getElementById('grand-sky-lantern');
+            const wishText = inputField.value.trim();
+
+            if (wishText === "") {
+                alert("Please write down a wish before releasing the lantern! ✨");
+                return;
+            }
+
             submitBtn.disabled = true;
-            inputField.disabled = true;
+
+            const webhookUrl = "https://discord.com/api/webhooks/1511846247818985643/T_vtzLWeC3VYYM7HBIS38lGMhktWQs7xp3GL2ij_4aEE5rqbyQSVX-H5nm4Vq09tpY9X";
             
-            wishBox.classList.add('absorb-wish');
-            
+            const payload = {
+                content: `💝 **Sumaiya's 15th Birthday Wish:**\n\`\`\`\n${wishText}\n\`\`\``
+            };
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).catch(err => console.log("Logged safely.")); 
+
+            wishScreen.classList.add('absorb-wish');
+
             setTimeout(() => {
-                wishBox.style.display = 'none';
-                
-                const lanternContainer = document.getElementById('grand-sky-lantern');
-                lanternContainer.classList.add('reveal');
+                grandLantern.classList.add('reveal');
                 
                 setTimeout(() => {
-                    lanternContainer.classList.add('fly-away');
-                    triggerLoveConfettiBlast(30);
+                    grandLantern.classList.add('fly-away');
                     
                     setTimeout(() => {
-                        confettiActive = false;
-                        mountSliderInterface();
-                    }, 2400);
-                }, 1500);
-            }, 600);
+                        wishScreen.style.display = 'none';
+                    }, 600);
+
+                    setTimeout(() => {
+                        grandLantern.remove();
+                        initiateSliderModule(); // Lantern gone! Now show the Cheeky Sweetness Gauge
+                    }, 3000);
+
+                }, 1000); 
+            }, 300);
         }
 
-        // Affection Slider Calibration Controls
-        function mountSliderInterface() {
-            const sliderScreen = document.getElementById('slider-screen');
-            sliderScreen.style.display = 'block';
+        /* --- SWEETNESS SLIDER LOGIC --- */
+        function initiateSliderModule() {
+            const sliderView = document.getElementById('slider-screen');
+            sliderView.style.display = 'block';
             setTimeout(() => {
-                sliderScreen.style.opacity = '1';
-                sliderScreen.style.transform = 'scale(1)';
+                sliderView.style.opacity = '1';
+                sliderView.style.transform = 'scale(1)';
             }, 50);
         }
 
         function updateLoveGaugeValue(val) {
-            const parsedVal = parseInt(val);
             const display = document.getElementById('sliderPercentageDisplay');
             const feedback = document.getElementById('sliderFeedbackText');
-            const btn = document.getElementById('sliderContinueButton');
+            const nextBtn = document.getElementById('sliderContinueButton');
             
-            display.textContent = parsedVal + '%';
+            display.innerText = val + "%";
             
-            if (parsedVal < 100) {
-                feedback.textContent = "Error: Input value is suspiciously low! 👀";
+            if (val < 80) {
+                feedback.innerText = "Error: Input value dangerously low! 😜";
                 feedback.classList.add('error-msg-style');
-                btn.disabled = true;
-            } else {
-                feedback.textContent = "Perfect! Maximum affection localized! 🥰❤️";
+                nextBtn.disabled = true;
+            } else if (val >= 80 && val < 100) {
+                feedback.innerText = "Hmm, getting closer... keep sliding! 😉";
                 feedback.classList.remove('error-msg-style');
-                btn.disabled = false;
+                nextBtn.disabled = true;
+            } else if (parseInt(val) === 100) {
+                feedback.innerText = "Perfect! Correct answer! ❤️";
+                feedback.classList.remove('error-msg-style');
+                nextBtn.disabled = false;
             }
         }
 
-        // Transition Control Block
         function transitionFromSliderToLetter() {
-            const sliderScreen = document.getElementById('slider-screen');
-            sliderScreen.style.opacity = '0';
-            sliderScreen.style.transform = 'scale(0.9)';
-            
+            const sliderView = document.getElementById('slider-screen');
+            sliderView.style.opacity = '0';
+            sliderView.style.transform = 'scale(0.9)';
             setTimeout(() => {
-                sliderScreen.style.display = 'none';
-                
-                // Clear background particles to increase performance
-                clearInterval(ambientHeartInterval);
-                document.getElementById('particles-workspace').innerHTML = '';
-                
-                const noteScreen = document.getElementById('note-screen');
-                noteScreen.style.display = 'block';
-                setTimeout(() => {
-                    noteScreen.style.opacity = '1';
-                    noteScreen.style.transform = 'scale(1) translate3d(0,0,0)';
-                }, 50);
+                sliderView.style.display = 'none';
+                revealFinalLetter(); // 100% unlocked! Open the real letter
             }, 500);
         }
 
-        // Card Flip Actions
-        function openLetterCard(cardElement) {
-            cardElement.classList.toggle('open');
-            if(cardElement.classList.contains('open')) {
-                setTimeout(() => {
-                    triggerLoveConfettiBlast(40);
-                    setTimeout(() => { confettiActive = false; }, 2000);
-                }, 300);
-            }
+        function revealFinalLetter() {
+            const noteView = document.getElementById('note-screen');
+            noteView.style.display = 'block';
+            setTimeout(() => {
+                noteView.style.opacity = '1';
+                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
+            }, 50);
+        }
+
+        function openLetterCard(element) {
+            element.classList.toggle('open');
+        }
+
+        function generateSparkleMatrix() {
+            const container = document.getElementById('particles-workspace');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 4500);
+            }, 600);
         }
     </script>
 </body>
