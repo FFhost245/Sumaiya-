@@ -154,126 +154,147 @@
             font-size: 1.2rem;
             color: #ff80ab;
             font-weight: 700;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
         }
 
         /* ==========================================================================
-           TRANSCRIPTION OF CAKE DESIGN FROM SOURCE CODE IMAGES
+           FIXED, STABLE & COLOR-MATCHED 3-LAYER CAKE WITH "15" CANDLES
            ========================================================================== */
-        .cake {
-            width: 100%;
+        .cake-assembly-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
             position: relative;
-            height: 240px; /* Provides fixed structural clearance for absolute child layers */
-            margin-bottom: 40px;
+            width: 280px;
+            height: 290px;
+            margin-bottom: 30px;
         }
 
-        .bottom-layer,
-        .middle-layer,
-        .top-layer {
-            height: 80px;
-            width: 248px;
-            margin: auto;
-            background-repeat: repeat;
-            background-size: 100% 100%, 60px 100%;
-            background-position: 28px 0;
-            background-image: 
-                linear-gradient(transparent 50px, #e3a953 50px, #e3a953 60px, transparent 60px),
-                radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s ease-in-out infinite;
+        /* Twin 15 Alphabet Candle Holder Layout */
+        .candle-duo-wrapper {
+            display: flex;
+            gap: 10px;
             position: absolute;
-            left: 0;
-            right: 0;
-        }
-
-        .bottom-layer {
-            bottom: 0px;
-        }
-
-        .middle-layer {
-            transform: scale(0.85);
-            top: 72px;
-            animation: rise1 2s forwards, pulse 2s ease-in-out infinite;
-        }
-
-        .top-layer {
-            transform: scale(0.7);
-            top: 144px;
-            animation: rise2 2s 2s forwards, pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.1); }
-        }
-
-        @keyframes rise1 {
-            100% { top: 7px; }
-        }
-
-        @keyframes rise2 {
-            100% { top: -58px; } /* Recalculated from original layout flow to stack beautifully on top */
-        }
-
-        /* --- SINGLE TIMED BIRTHDAY CANDLE IMPLEMENTATION --- */
-        .candle {
-            height: 45px;
-            width: 15px;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: auto;
-            background: repeating-linear-gradient(45deg, #fd3018 0 5px, #ffa89e 5px 10px);
-            border-radius: 2px 2px 0 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            animation: rise3 1s 4s forwards, wiggle 1s 5s ease-in-out infinite;
+            bottom: 210px; /* Securely pins candles directly on top of the third layer */
             z-index: 10;
+            animation: riseCandles 1.2s 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both, wiggleCandles 1s 2.7s ease-in-out infinite alternate;
         }
 
-        @keyframes rise3 {
-            100% { bottom: 202px; } /* Positions precisely right on top of third layer rim */
+        .num-candle {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(#ffffff, #ffcbdc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            line-height: 1;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
         }
 
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0); }
-            25% { transform: rotate(1deg); }
-            75% { transform: rotate(-1deg); }
-        }
-
-        .candle::after {
+        /* Transcribed flame element logic inside pseudo-layers */
+        .num-candle::after {
             content: "";
             position: absolute;
-            height: 16px;
-            width: 16px;
-            bottom: 50px;
-            left: -0.5px;
-            background: radial-gradient(circle, #ffee54, #ff9800);
+            height: 15px;
+            width: 15px;
+            top: -16px;
+            left: 50%;
+            background: radial-gradient(circle, #ffffff, #ffee54, #ff9800);
             border-radius: 0 50% 50% 50%;
-            transform: scale(0) rotate(45deg);
-            box-shadow: 0 0 10px rgba(255, 238, 84, 0.8);
-            animation: flame 1.5s 5s forwards, flicker 0.5s 6.5s infinite;
-            transition: all 0.3s ease-out;
+            transform: translateX(-50%) scale(0) rotate(45deg);
+            box-shadow: 0 0 12px #ff4081, 0 0 22px #ffee54;
+            animation: igniteFlame 1s 2.5s forwards, flickerFlame 0.5s 3.5s infinite alternate;
+            transition: all 0.25s ease-out;
         }
 
-        @keyframes flame {
-            100% { transform: scale(1) rotate(45deg); }
-        }
-
-        @keyframes flicker {
-            0%, 100% { transform: scale(1) rotate(45deg); }
-            50% { transform: scale(1.1) rotate(47deg); }
-        }
-
-        /* Logic trigger state when the candle gets blown out */
-        .candle.extinguished::after {
+        /* Candle state transition on blowout action */
+        .candle-duo-wrapper.extinguished .num-candle::after {
             animation: none !important;
             opacity: 0 !important;
-            transform: scale(0) translateY(-10px) !important;
+            transform: translateX(-50%) scale(0) translateY(-10px) !important;
+        }
+
+        @keyframes riseCandles {
+            0% { transform: translateY(60px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes wiggleCandles {
+            0% { transform: rotate(-1deg); }
+            100% { transform: rotate(1deg); }
+        }
+
+        @keyframes igniteFlame {
+            100% { transform: translateX(-50%) scale(1) rotate(45deg); }
+        }
+
+        @keyframes flickerFlame {
+            0% { transform: translateX(-50%) scale(1) rotate(43deg); }
+            100% { transform: translateX(-50%) scale(1.12) rotate(47deg); filter: brightness(1.1); }
+        }
+
+        /* Styled layers using background image formulas from images, re-colored to match background shades */
+        .cake-tier-base {
+            height: 72px;
+            background-repeat: repeat;
+            background-size: 100% 100%, 40px 100%;
+            background-position: 20px 0;
+            /* Formula using shades of deep purple, vivid magenta, and soft highlight accents */
+            background-image: 
+                linear-gradient(transparent 42px, #c2185b 42px, #b71c1c 48px, transparent 48px),
+                radial-gradient(circle at 20px 4px, #ffffff 18px, #7b1fa2 19px);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            position: relative;
+            transform-origin: bottom center;
+        }
+
+        .layer-c3 {
+            width: 250px;
+            z-index: 3;
+            animation: pulseTier 2s ease-in-out infinite;
+        }
+
+        .layer-c2 {
+            width: 206px; 
+            z-index: 4;
+            margin-bottom: -4px; /* Eliminates separation gaps between tiers completely */
+            animation: riseTier1 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards, pulseTier 2s ease-in-out infinite;
+        }
+
+        .layer-c1 {
+            width: 160px;
+            z-index: 5;
+            margin-bottom: -4px;
+            animation: riseTier2 1.2s 0.6s cubic-bezier(0.25, 1, 0.5, 1) both, pulseTier 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseTier {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.08); }
+        }
+
+        @keyframes riseTier1 {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes riseTier2 {
+            0% { transform: translateY(90px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .cake-plate-rim {
+            width: 275px;
+            height: 10px;
+            background: linear-gradient(to bottom, #f5f5f5, #b0bec5);
+            border-radius: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            z-index: 2;
         }
         /* ==========================================================================
-           END OF TRANSCRIBED DESIGN COMPONENT
+           END OF CORRECTED DESIGN COMPONENT
            ========================================================================== */
 
         .action-banner {
@@ -869,11 +890,16 @@
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
             
-            <div class="cake">
-                <div class="candle" id="birthdayCandleElement"></div>
-                <div class="top-layer"></div>
-                <div class="middle-layer"></div>
-                <div class="bottom-layer"></div>
+            <div class="cake-assembly-box">
+                <div class="candle-duo-wrapper" id="birthdayCandleElement">
+                    <div class="num-candle">1</div>
+                    <div class="num-candle">5</div>
+                </div>
+                
+                <div class="cake-tier-base layer-c1"></div>
+                <div class="cake-tier-base layer-c2"></div>
+                <div class="cake-tier-base layer-c3"></div>
+                <div class="cake-plate-rim"></div>
             </div>
             
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
@@ -1096,7 +1122,6 @@
         function extinguishCandleSequence() {
             if (isTransitioning) return;
             
-            // Extinguishes the custom flame pseudo element safely
             const targetCandle = document.getElementById('birthdayCandleElement');
             if (targetCandle) {
                 targetCandle.classList.add('extinguished');
@@ -1146,7 +1171,7 @@
                 btn.className = 'option-btn';
                 btn.innerText = option;
                 btn.onclick = (e) => {
-                    e.stopPropagation(); // Stops bubbling up to background containers
+                    e.stopPropagation(); 
                     evaluateQuizAnswer(idx);
                 };
                 optionsContainer.appendChild(btn);
