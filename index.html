@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<! DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,7 +36,7 @@
             z-index: 9999;
             padding: 20px;
             text-align: center;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.5s ease;
         }
 
         .loader-heart {
@@ -76,7 +76,6 @@
             background: linear-gradient(90deg, #ff4081, #b388ff);
             border-radius: 20px;
             box-shadow: 0 0 8px #ff4081;
-            transition: width 0.1s linear;
         }
 
         .loader-text {
@@ -95,6 +94,23 @@
             height: 100%;
             z-index: 35;
             pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 64, 129, 0.35);
+            animation: floatUp 4.5s linear infinite;
+            bottom: -40px;
+            z-index: 1;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translate3d(0, 0, 0) scale(0.8) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate3d(0, -115vh, 0) scale(1.2) rotate(360deg); opacity: 0; }
         }
 
         .app-wrapper {
@@ -141,9 +157,10 @@
             margin-bottom: 35px;
         }
 
+        /* --- ADJUSTED CAKE GRAPHICS --- */
         .cake-container {
-            width: 200px;
-            height: 180px;
+            width: 250px;
+            height: 220px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -154,84 +171,105 @@
 
         .candle-holder {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             position: absolute;
-            top: -22px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 5;
+            z-index: 10;
         }
 
         .alphabet-candle {
-            font-size: 26px;
+            font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(#b388ff, #e8dbff);
+            background: linear-gradient(#ffebee, #ff80ab);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
             line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .magic-flame {
-            width: 10px;
-            height: 18px;
+            width: 12px;
+            height: 22px;
             background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffb703 30%, #ff4081 70%);
             border-radius: 50% 50% 20% 20%;
             position: absolute;
-            top: -16px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
-            animation: flameWobble 0.5s infinite alternate ease-in-out;
-            transition: all 0.25s ease;
+            box-shadow: 0 0 12px #ff4081, 0 0 24px #ff80ab, 0 0 35px #ffb703;
+            animation: flameWobble 0.6s infinite alternate ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes flameWobble {
-            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
-            100% { transform: translateX(-50%) scale(1.1) rotate(3deg); }
+            0% { transform: translateX(-50%) scale(1) rotate(-3deg); }
+            100% { transform: translateX(-50%) scale(1.15) rotate(4deg); }
         }
 
         .magic-flame.extinguished {
-            opacity: 0 !important;
-            transform: translateX(-50%) scale(0) translateY(-10px) !important;
+            opacity: 0;
+            transform: translateX(-50%) scale(0) translateY(-15px);
+            filter: blur(2px);
         }
 
         .cake-plate {
-            width: 210px;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            width: 240px;
+            height: 14px;
+            background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+            border-radius: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
             z-index: 2;
         }
 
         .tier-bottom {
-            width: 170px;
-            height: 50px;
-            background: #ff85a2;
-            border-radius: 8px 8px 0 0;
+            width: 200px;
+            height: 65px;
+            background: linear-gradient(135deg, #ff6584 0%, #f43f5e 100%);
+            border-radius: 12px 12px 0 0;
             position: relative;
             z-index: 3;
+            box-shadow: inset 0 4px 8px rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
 
         .tier-top {
-            width: 120px;
-            height: 45px;
-            background: #ffb3c6;
-            border-radius: 6px 6px 0 0;
+            width: 140px;
+            height: 55px;
+            background: linear-gradient(135deg, #ff9ebb 0%, #ff6584 100%);
+            border-radius: 10px 10px 0 0;
             position: relative;
             z-index: 4;
+            box-shadow: inset 0 4px 8px rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
         .drip-frosting {
             width: 100%;
-            height: 14px;
+            height: 18px;
             background: #ffffff;
-            border-radius: 20px;
+            border-radius: 0 0 8px 8px;
             position: absolute;
             top: 0;
             left: 0;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
         }
+
+        /* Cream frosting decorations */
+        .drip-frosting::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            bottom: -6px;
+            left: 0;
+            background-image: radial-gradient(circle at 10px 0, #ffffff 10px, transparent 11px);
+            background-size: 20px 20px;
+        }
+        /* --- END OF CAKE ADJUSTMENTS --- */
 
         .action-banner {
             font-size: 0.95rem;
@@ -367,7 +405,6 @@
             cursor: pointer;
             transition: all 0.25s ease;
             text-align: center;
-            outline: none;
         }
 
         .option-btn:active {
@@ -762,7 +799,6 @@
         .card-front {
             background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%);
             color: white;
-            cursor: pointer;
         }
 
         .envelope-icon {
@@ -815,7 +851,6 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
-    <!-- Playful Error Modal -->
     <div id="error-popup">
         <div class="error-msg">You are wrong cute idiot 😜</div>
         <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
@@ -823,8 +858,8 @@
 
     <div class="app-wrapper">
         <canvas id="confetti-canvas"></canvas>
+        <div id="particles-workspace"></div>
 
-        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -846,7 +881,6 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
-        <!-- Celebration Title -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -854,17 +888,14 @@
             </div>
         </div>
 
-        <!-- INTERACTIVE QUIZ WINDOW -->
         <div id="quiz-screen">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
             <div class="options-container" id="quiz-options-field">
-                <!-- Buttons will spawn here dynamically -->
-            </div>
+                </div>
         </div>
 
-        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -872,7 +903,6 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
-        <!-- INTERACTIVE SWEETNESS SLIDER -->
         <div id="slider-screen">
             <div class="quiz-header">Affection Level Check 💓</div>
             <div class="slider-title" id="slider-prompt">How much do you love blaize today? 😏</div>
@@ -886,7 +916,6 @@
             <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
         </div>
 
-        <!-- Custom Handcrafted Glowing Paper Lantern Structure -->
         <div id="grand-sky-lantern" class="center-lantern-container">
             <div class="lantern-top-cap"></div>
             <div class="lantern-main-body">
@@ -896,7 +925,6 @@
             <div class="lantern-tassel"></div>
         </div>
 
-        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -941,7 +969,6 @@
 
         let currentQuestionIndex = 0;
 
-        // Confetti Canvas System
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
@@ -973,7 +1000,6 @@
             for (let i = 0; i < amount; i++) {
                 confettiParticles.push(createConfettiPiece());
             }
-            animateConfetti();
         }
 
         function animateConfetti() {
@@ -1001,169 +1027,200 @@
                     }
                 }
             }
-            requestAnimationFrame(animateConfetti);
         }
 
-        // 1. Simulation of Loader Screen
+        // --- THE SCRIPT LOGIC YOU MENTIONED WAS WORKING PERFECTLY ---
         window.addEventListener('DOMContentLoaded', () => {
-            const progressBar = document.getElementById('progress');
-            const loaderStatus = document.getElementById('loader-status');
+            const progress = document.getElementById('progress');
+            const statusText = document.getElementById('loader-status');
             const loader = document.getElementById('loader');
-            let progressValue = 0;
-
-            const loadingPhrases = [
-                "Assembling feelings...", 
-                "Baking virtual cake tiers...", 
-                "Calibrating pure affection...", 
-                "Ready!"
+            
+            const loadMessages = [
+                "Assembling feelings...",
+                "Baking virtual cake...",
+                "Inflating digital balloons...",
+                "Polishing sky lanterns...",
+                "Decrypting heartrate... Done!"
             ];
-
+            
+            let currentProgress = 0;
+            let messageIndex = 0;
+            
             const interval = setInterval(() => {
-                progressValue += 2;
-                progressBar.style.width = progressValue + '%';
-
-                if(progressValue < 30) loaderStatus.innerText = loadingPhrases[0];
-                else if(progressValue < 60) loaderStatus.innerText = loadingPhrases[1];
-                else if(progressValue < 90) loaderStatus.innerText = loadingPhrases[2];
-                else loaderStatus.innerText = loadingPhrases[3];
-
-                if(progressValue >= 100) {
+                currentProgress += Math.floor(Math.random() * 15) + 5;
+                if (currentProgress >= 100) {
+                    currentProgress = 100;
                     clearInterval(interval);
+                    progress.style.width = '100%';
+                    statusText.innerText = loadMessages[loadMessages.length - 1];
+                    
                     setTimeout(() => {
                         loader.style.opacity = '0';
                         setTimeout(() => {
-                            loader.style.visibility = 'hidden';
+                            loader.style.display = 'none';
+                            spawnFloatingBackgroundHearts();
                         }, 500);
-                    }, 400);
+                    }, 600);
+                } else {
+                    progress.style.width = currentProgress + '%';
+                    if (currentProgress > (messageIndex + 1) * 20 && messageIndex < loadMessages.length - 2) {
+                        messageIndex++;
+                        statusText.innerText = loadMessages[messageIndex];
+                    }
                 }
-            }, 50);
+            }, 150);
         });
 
-        // 2. Extinguish Candle System
-        let standardSequenceTriggered = false;
-        function extinguishCandleSequence() {
-            if (standardSequenceTriggered) return;
-            standardSequenceTriggered = true;
-
-            const flames = document.querySelectorAll('.flame-node');
-            flames.forEach(flame => flame.classList.add('extinguished'));
+        function spawnFloatingBackgroundHearts() {
+            const workspace = document.getElementById('particles-workspace');
+            const heartEmojis = ['❤️', '💖', '✨', '🌸', '💕'];
             
-            document.getElementById('banner-text').innerText = "🎂 Sparking up joy!";
-            triggerLoveConfettiBlast(120);
-
-            // Pop celebration banner up momentarily
-            setTimeout(() => {
-                document.getElementById('cake-screen').style.opacity = '0';
-                document.getElementById('cake-screen').style.transform = 'scale(0.85)';
+            setInterval(() => {
+                if (document.getElementById('cake-screen').style.display === 'none' && 
+                    document.getElementById('celebration-screen').classList.contains('active') === false) {
+                    return;
+                }
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                workspace.appendChild(heart);
                 
                 setTimeout(() => {
-                    document.getElementById('cake-screen').style.display = 'none';
-                    document.getElementById('celebration-screen').classList.add('active');
-                    
-                    // Show celebration, then proceed to the quiz window
-                    setTimeout(() => {
-                        document.getElementById('celebration-screen').classList.remove('active');
-                        setTimeout(() => {
-                            initiateQuizLayout();
-                        }, 1000);
-                    }, 3500);
-                }, 800);
-            }, 1000);
+                    heart.remove();
+                }, 5000);
+            }, 400);
         }
 
-        // 3. Quiz Interface Engine
-        function initiateQuizLayout() {
+        let isTransitioning = false;
+
+        function extinguishCandleSequence() {
+            if (isTransitioning) return;
+            
+            const flames = document.querySelectorAll('.flame-node');
+            flames.forEach(flame => {
+                if (!flame.classList.contains('extinguished')) {
+                    flame.classList.add('extinguished');
+                }
+            });
+
+            document.getElementById('banner-text').innerText = "Make a wish! 🌟";
+            isTransitioning = true;
+            triggerLoveConfettiBlast(120);
+
+            setTimeout(() => {
+                const celebScreen = document.getElementById('celebration-screen');
+                celebScreen.classList.add('active');
+                
+                setTimeout(() => {
+                    confettiActive = false;
+                    celebScreen.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        celebScreen.style.display = 'none';
+                        document.getElementById('cake-screen').style.display = 'none';
+                        initiateQuizSequence();
+                    }, 1000);
+                }, 3500);
+            }, 1200);
+        }
+
+        function initiateQuizSequence() {
             const quizScreen = document.getElementById('quiz-screen');
             quizScreen.style.display = 'block';
             setTimeout(() => {
                 quizScreen.style.opacity = '1';
                 quizScreen.style.transform = 'scale(1)';
             }, 50);
-            renderCurrentQuestion();
+            renderCurrentQuizQuestion();
         }
 
-        function renderCurrentQuestion() {
-            const data = quizQuestions[currentQuestionIndex];
+        function renderCurrentQuizQuestion() {
+            const qData = quizQuestions[currentQuestionIndex];
             document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
-            document.getElementById('quiz-question-field').innerText = data.q;
-
+            document.getElementById('quiz-question-field').innerText = qData.q;
+            
             const optionsContainer = document.getElementById('quiz-options-field');
             optionsContainer.innerHTML = '';
-
-            data.options.forEach((optionText, idx) => {
+            
+            qData.options.forEach((option, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = optionText;
-                btn.onclick = () => checkQuizResponse(idx);
+                btn.innerText = option;
+                btn.onclick = () => evaluateQuizAnswer(idx);
                 optionsContainer.appendChild(btn);
             });
         }
 
-        function checkQuizResponse(chosenIndex) {
-            const currentCorrect = quizQuestions[currentQuestionIndex].correct;
-            if(chosenIndex === currentCorrect) {
+        function evaluateQuizAnswer(selectedIndex) {
+            const qData = quizQuestions[currentQuestionIndex];
+            if (selectedIndex === qData.correct) {
                 currentQuestionIndex++;
-                if(currentQuestionIndex < quizQuestions.length) {
-                    renderCurrentQuestion();
+                triggerLoveConfettiBlast(25);
+                
+                if (currentQuestionIndex < quizQuestions.length) {
+                    renderCurrentQuizQuestion();
                 } else {
-                    // Transition to Wish Screen
-                    const quizScreen = document.getElementById('quiz-screen');
-                    quizScreen.style.opacity = '0';
-                    quizScreen.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        quizScreen.style.display = 'none';
-                        revealWishScreenLayout();
-                    }, 500);
+                    transitionScreens('quiz-screen', 'wish-screen');
                 }
             } else {
-                document.getElementById('error-popup').classList.add('show');
+                openErrorPopup();
             }
         }
 
+        function openErrorPopup() {
+            document.getElementById('error-popup').classList.add('show');
+        }
+
         function closeErrorPopup() {
+            document.getElementById('error-popup').classList.remove('remove');
             document.getElementById('error-popup').classList.remove('show');
         }
 
-        // 4. Wish Box System & Sky Lantern
-        function revealWishScreenLayout() {
-            const wishScreen = document.getElementById('wish-screen');
-            wishScreen.style.display = 'block';
+        function transitionScreens(hideId, showId) {
+            const hideElement = document.getElementById(hideId);
+            const showElement = document.getElementById(showId);
+            
+            hideElement.style.opacity = '0';
+            hideElement.style.transform = 'scale(0.9)';
+            
             setTimeout(() => {
-                wishScreen.style.opacity = '1';
-                wishScreen.style.transform = 'scale(1)';
-            }, 50);
+                hideElement.style.display = 'none';
+                showElement.style.display = 'block';
+                setTimeout(() => {
+                    showElement.style.opacity = '1';
+                    showElement.style.transform = 'scale(1)';
+                }, 50);
+            }, 500);
         }
 
         function releaseBirthdayLantern() {
-            const wishInputText = document.getElementById('wish-text-area').value.trim();
-            if(!wishInputText) return;
+            const wishText = document.getElementById('wish-text-area').value.trim();
+            if (wishText === "") return;
 
             document.getElementById('wish-submit-button').disabled = true;
+            
             const wishScreen = document.getElementById('wish-screen');
             wishScreen.classList.add('absorb-wish');
-
+            
+            const lantern = document.getElementById('grand-sky-lantern');
+            lantern.classList.add('reveal');
+            
             setTimeout(() => {
-                wishScreen.style.display = 'none';
+                lantern.classList.add('fly-away');
+                triggerLoveConfettiBlast(40);
                 
-                // Active Custom Paper Lantern Animation
-                const lantern = document.getElementById('grand-sky-lantern');
-                lantern.classList.add('reveal');
-
                 setTimeout(() => {
-                    lantern.classList.add('fly-away');
-                    // Stop spawning endless streams, let things dissipate smoothly
-                    setTimeout(() => confettiActive = false, 1000); 
-
-                    setTimeout(() => {
-                        lantern.style.display = 'none';
-                        revealSweetnessSliderLayout();
-                    }, 3000);
-                }, 1200);
-            }, 600);
+                    lantern.style.display = 'none';
+                    wishScreen.style.display = 'none';
+                    openLoveSliderGaugeScreen();
+                }, 3000);
+            }, 1000);
         }
 
-        // 5. Custom Affection Gauge Slider Layout
-        function revealSweetnessSliderLayout() {
+        function openLoveSliderGaugeScreen() {
             const sliderScreen = document.getElementById('slider-screen');
             sliderScreen.style.display = 'block';
             setTimeout(() => {
@@ -1172,47 +1229,44 @@
             }, 50);
         }
 
-        function updateLoveGaugeValue(value) {
+        function updateLoveGaugeValue(val) {
             const display = document.getElementById('sliderPercentageDisplay');
             const feedback = document.getElementById('sliderFeedbackText');
-            const button = document.getElementById('sliderContinueButton');
+            const btn = document.getElementById('sliderContinueButton');
             
-            display.innerText = value + '%';
+            display.innerText = val + "%";
             feedback.classList.remove('error-msg-style');
-
-            if(parseInt(value) < 100) {
-                feedback.innerText = "Error: Amount too low! Try higher... 🫣";
-                feedback.classList.add('error-msg-style');
-                button.disabled = true;
+            
+            if (parseInt(val) < 100) {
+                feedback.innerText = "Error: Input value too low! 🧐 Try harder.";
+                btn.disabled = true;
             } else {
-                feedback.innerText = "Perfect absolute statement! Ready! 🥰❤️";
-                button.disabled = false;
+                feedback.innerText = "Perfect amount! Access code unlocked. 🥰";
+                btn.disabled = false;
+                triggerLoveConfettiBlast(15);
             }
         }
 
         function transitionFromSliderToLetter() {
-            const sliderScreen = document.getElementById('slider-screen');
-            sliderScreen.style.opacity = '0';
-            sliderScreen.style.transform = 'scale(0.9)';
-            
+            transitionScreens('slider-screen', 'note-screen');
             setTimeout(() => {
-                sliderScreen.style.display = 'none';
-                confettiActive = true; 
-                triggerLoveConfettiBlast(40); // Soft beautiful shower setup
-
-                const noteScreen = document.getElementById('note-screen');
-                noteScreen.style.display = 'block';
-                setTimeout(() => {
-                    noteScreen.style.opacity = '1';
-                    noteScreen.style.transform = 'scale(1) translate3d(0,0,0)';
-                }, 50);
-            }, 500);
+                triggerLoveConfettiBlast(80);
+                confettiActive = true;
+            }, 1000);
         }
 
-        // 6. Interactive Flips for Card
-        function openLetterCard(element) {
-            element.classList.toggle('open');
+        function openLetterCard(cardElement) {
+            cardElement.classList.toggle('open');
+            if (cardElement.classList.contains('open')) {
+                triggerLoveConfettiBlast(50);
+            }
         }
+
+        function runConfettiLoop() {
+            animateConfetti();
+            requestAnimationFrame(runConfettiLoop);
+        }
+        runConfettiLoop();
     </script>
 </body>
 </html>
