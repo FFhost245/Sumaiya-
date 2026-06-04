@@ -89,7 +89,7 @@
         }
 
         /* ==========================================================================
-           UPDATED CAKE LAYER ANIMATION ENGINE (FROM IMAGE)
+           FIXED CAKE LAYER ANIMATION ENGINE
            ========================================================================== */
         .cake-assembly-container {
             display: flex;
@@ -118,6 +118,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
         }
 
+        /* Bottom layer is immediately visible and stable */
         .bottom-layer {
             height: 80px;
             width: 240px;
@@ -130,6 +131,7 @@
             animation: cakePulse 2.5s ease-in-out infinite;
         }
 
+        /* Middle layer transitions to its position cleanly */
         .middle-layer {
             height: 80px;
             width: 240px;
@@ -141,13 +143,13 @@
                 radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
             background-size: 100% 100%, 60px 100px;
             background-position: 28px 0;
-            top: 150px; 
             opacity: 0;
             animation: 
-                layerRise1 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards, 
-                cakePulse 2.5s ease-in-out infinite 2s;
+                layerRise1 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards, 
+                cakePulse 2.5s ease-in-out infinite 1.5s;
         }
 
+        /* Top layer drops directly onto the middle layer */
         .top-layer {
             height: 80px;
             width: 240px;
@@ -159,11 +161,10 @@
                 radial-gradient(circle at 30px 5px, #713e16 30px, #eac284 31px);
             background-size: 100% 100%, 60px 100px;
             background-position: 28px 0;
-            top: 150px;
             opacity: 0;
             animation: 
-                layerRise2 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards, 
-                cakePulse 2.5s ease-in-out infinite 3s;
+                layerRise2 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards, 
+                cakePulse 2.5s ease-in-out infinite 2.4s;
         }
 
         .candle-element {
@@ -180,8 +181,8 @@
             opacity: 0;
             cursor: pointer;
             animation: 
-                candleDrop 1.2s ease-out 3.2s forwards, 
-                candleWiggle 1s ease-in-out infinite 4.4s;
+                candleDrop 1s ease-out 2.2s forwards, 
+                candleWiggle 1s ease-in-out infinite 3.2s;
         }
 
         .candle-element::after {
@@ -197,8 +198,8 @@
             transform: scale(0);
             transform-origin: bottom center;
             animation: 
-                flameIgnite 0.8s cubic-bezier(0.175, 0.885, 0.42, 1.5) 4.3s forwards, 
-                flameFlicker 0.6s ease-in-out infinite 5.1s;
+                flameIgnite 0.6s cubic-bezier(0.175, 0.885, 0.42, 1.5) 3.1s forwards, 
+                flameFlicker 0.6s ease-in-out infinite 3.7s;
         }
 
         .candle-element.extinguished::after {
@@ -214,7 +215,7 @@
             margin-top: 15px;
             opacity: 0;
             transform: translateY(15px);
-            animation: interfaceReveal 1s ease-out 5.2s forwards;
+            animation: interfaceReveal 0.8s ease-out 3.6s forwards;
             text-align: center;
             font-weight: 700;
         }
@@ -225,7 +226,7 @@
             margin-top: 6px;
             opacity: 0;
             transform: translateY(10px);
-            animation: interfaceReveal 1s ease-out 5.6s forwards;
+            animation: interfaceReveal 0.8s ease-out 4.0s forwards;
             text-align: center;
         }
 
@@ -234,8 +235,14 @@
             0%, 100% { filter: brightness(1); }
             50% { filter: brightness(1.03); }
         }
-        @keyframes layerRise1 { 100% { top: 62px; opacity: 1; } }
-        @keyframes layerRise2 { 100% { top: -12px; opacity: 1; } }
+        @keyframes layerRise1 {
+            0% { transform: scale(0.85) translateY(60px); opacity: 0; }
+            100% { transform: scale(0.85) translateY(0); opacity: 1; }
+        }
+        @keyframes layerRise2 {
+            0% { transform: scale(0.7) translateY(120px); opacity: 0; }
+            100% { transform: scale(0.7) translateY(0); opacity: 1; }
+        }
         @keyframes candleDrop {
             0% { transform: translateY(-100px); opacity: 0; }
             100% { transform: translateY(-146px); opacity: 1; }
@@ -292,6 +299,7 @@
 
     <div class="app-window">
         
+        <!-- SCREEN 1: NEW ANIMATED CAKE SCREEN -->
         <div class="screen-panel active" id="cake-screen">
             <div class="cake-assembly-container">
                 <div class="cake-system" onclick="handleCandleBlowInteraction()">
@@ -305,6 +313,7 @@
             </div>
         </div>
 
+        <!-- SCREEN 2: ORIGINAL TRANSITION SCREEN -->
         <div class="screen-panel" id="celebration-screen">
             <div class="celebration-billboard">
                 <div class="badge-icon">👑</div>
@@ -313,6 +322,7 @@
             </div>
         </div>
 
+        <!-- SCREEN 3: ORIGINAL QUIZ SCREEN -->
         <div class="screen-panel" id="quiz-screen">
             <div class="quiz-card">
                 <div class="quiz-progress-tracker">
@@ -326,6 +336,7 @@
             </div>
         </div>
 
+        <!-- SCREEN 4: ORIGINAL GIFT SCREEN -->
         <div class="screen-panel" id="gift-screen">
             <div class="gift-stage-wrapper">
                 <h2 style="color: #74428a; font-size: 2rem; font-weight: 800; margin-bottom: 10px;">Challenge Complete! 🎉</h2>
@@ -336,6 +347,7 @@
 
     </div>
 
+    <!-- ORIGINAL LETTER MODAL OVERLAY -->
     <div class="letter-modal-overlay" id="envelope-modal">
         <div class="letter-paper-body">
             <p style="margin-bottom: 15px; font-weight: bold; color: #a15da1;">Dear Sumaiya,</p>
@@ -348,6 +360,9 @@
         </div>
     </div>
 
+    <!-- ==========================================================================
+       ORIGINAL JAVASCRIPT LOGIC ENGINE
+       ========================================================================== -->
     <script>
         let activeQuizStep = 0;
         let blockInteraction = false;
