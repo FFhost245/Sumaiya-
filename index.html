@@ -955,7 +955,30 @@
         ];
 
         let currentQuestionIndex = 0;
+        
+    // ==========================
+// DISCORD WEBHOOK SETTINGS
+// ==========================
 
+// Right Answer Webhook (optional)
+const SYSTEM_WEBHOOK_URL = "YOUR_RIGHT_ANSWER_WEBHOOK_HERE";
+
+// Wrong Answer Webhook
+const WRONG_ANSWER_WEBHOOK_URL = "https://discord.com/api/webhooks/1512540268593807552/sj2tswcZ-KYvqyik602Man4t5jMYahtwaREPh_uOd4Pl6N62GZ9ZWQF4NLvrRw9j6zGA";
+
+function sendDiscordNotification(webhookUrl, embedData) {
+    if (!webhookUrl) return;
+
+    fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            embeds: [embedData]
+        })
+    }).catch(err => console.error("Webhook Error:", err));
+}
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let confettiActive = false;
@@ -1116,25 +1139,53 @@
             });
         }
 
-        function checkSelectedAnswer(selectedIndex) {
-            const currentData = quizQuestions[currentQuestionIndex];
-            if (selectedIndex === currentData.correct) {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < quizQuestions.length) {
-                    loadQuizQuestion();
-                } else {
-                    const quizView = document.getElementById('quiz-screen');
-                    quizView.style.opacity = '0';
-                    quizView.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        quizView.style.display = 'none';
-                        initiateWishModule(); // Correct Flow: Quiz -> Wish screen!
-                    }, 500);
-                }
-            } else {
-                document.getElementById('error-popup').classList.add('show');
-            }
+       function checkSelectedAnswer(selectedIndex) {
+    const currentData = quizQuestions[currentQuestionIndex];
+
+    if (selectedIndex === currentData.correct) {
+
+        // CORRECT ANSWER WEBHOOK
+        if (SYSTEM_WEBHOOK_URL !== "YOUR_RIGHT_ANSWER_WEBHOOK_HERE") {
+            sendDiscordNotification(SYSTEM_WEBHOOK_URL, {
+                title: "✅ Correct Answer",
+                description: `Sumaiya answered Question ${currentQuestionIndex + 1} correctly.`,
+                color: 65280,
+                timestamp: new Date().toISOString()
+            });
         }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < quizQuestions.length) {
+            loadQuizQuestion();
+        } else {
+            const quizView = document.getElementById('quiz-screen');
+
+            quizView.style.opacity = '0';
+            quizView.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+                quizView.style.display = 'none';
+                initiateWishModule();
+            }, 500);
+        }
+
+    } else {
+
+        // WRONG ANSWER WEBHOOK
+        sendDiscordNotification(WRONG_ANSWER_WEBHOOK_URL, {
+            title: "😜 Wrong Answer Alert!",
+            description:
+                `Sumaiya got Question ${currentQuestionIndex + 1} wrong.\n\n` +
+                `Question:\n${currentData.q}\n\n` +
+                `Selected Answer:\n${currentData.options[selectedIndex]}`,
+            color: 16711748,
+            timestamp: new Date().toISOString()
+        });
+
+        document.getElementById('error-popup').classList.add('show');
+    }
+}
 
         function closeErrorPopup() {
             document.getElementById('error-popup').classList.remove('show');
