@@ -921,13 +921,11 @@
                         <h3>For Sumaiya Only</h3>
                     </div>
                     <div class="card-back">
-                        <div class="letter-salutation">Dear Sumaiya, ❤️</div>
-                        <p class="letter-body">
-                            Happy 15th Birthday to the most amazing and absolute favorite person in my world! 🥳 You're officially stuck with me for another beautiful year of chaotic laughs, crazy inside jokes, and unforgettable sweet memories. 
-                            <br><br>
-                            I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
-                        </p>
-                        <div class="letter-signoff">Forever yours, blaize</div>
+                       <div class="letter-salutation">Dear Sumaiya, ❤️</div>
+
+                       <div class="letter-body" id="animated-letter"></div>
+
+                       <div class="letter-signoff">Forever yours, blaize</div>
                     </div>
                 </div>
             </div>
@@ -1299,9 +1297,10 @@ function sendDiscordNotification(webhookUrl, embedData) {
             }, 50);
         }
 
-        function openLetterCard(element) {
-            element.classList.toggle('open');
-        }
+       function openLetterCard(element) {
+    element.classList.toggle('open');
+    typeLetterLines();
+}
 
         function generateSparkleMatrix() {
             const container = document.getElementById('particles-workspace');
@@ -1314,6 +1313,35 @@ function sendDiscordNotification(webhookUrl, embedData) {
                 container.appendChild(heart);
                 setTimeout(() => { heart.remove(); }, 4500);
             }, 600);
+            
+            const letterLines = [
+    "Happy 15th Birthday to the most amazing person in my world! 🥳",
+    "You're officially stuck with me for another beautiful year...",
+    "of chaotic laughs, crazy inside jokes, and unforgettable memories ❤️",
+    "",
+    "I hope your day is filled with endless cake 🍰",
+    "zero stress, and full happiness ✨",
+    "",
+    "You mean more than words can explain 💖",
+    "and I’m really lucky to know you.",
+    "",
+    "Forever yours, blaize"
+];
+
+function startLetterAnimation() {
+    const container = document.getElementById("animated-letter");
+    container.innerHTML = "";
+
+    letterLines.forEach((line, i) => {
+        const div = document.createElement("div");
+        div.className = "letter-line";
+        div.textContent = line;
+
+        div.style.animationDelay = (i * 0.6) + "s";
+
+        container.appendChild(div);
+    });
+}
         }
     </script>
 </body>
