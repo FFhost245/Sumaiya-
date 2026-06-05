@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<! DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -387,4 +387,483 @@
 
         .option-btn:active {
             transform: scale(0.97);
-            background: rgba(255, 64, 129, 0.
+            background: rgba(255, 64, 129, 0.2);
+            border-color: #ff4081;
+        }
+
+        /* --- WISH LANTERN BOX & TRANSITIONS --- */
+        #wish-screen {
+            display: none;
+            width: 100%;
+            max-width: 360px;
+            background: rgba(18, 0, 36, 0.75);
+            border: 2px solid #ffb703;
+            border-radius: 24px;
+            padding: 25px 20px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 25px rgba(255, 183, 3, 0.3);
+            z-index: 39;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .absorb-wish {
+            opacity: 0 !important;
+            transform: scale(0.1) translate3d(0, -100px, 0) !important;
+            pointer-events: none;
+        }
+
+        .wish-title {
+            font-size: 1.4rem;
+            color: #ffb703;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.4);
+        }
+
+        .wish-subtitle {
+            font-size: 0.95rem;
+            color: #e8dbff;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .wish-input {
+            width: 100%;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            border-radius: 14px;
+            padding: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .wish-input:focus {
+            border-color: #ffb703;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .wish-submit-btn {
+            background: linear-gradient(90deg, #ffb703, #ff4081);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 183, 3, 0.3);
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .wish-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .wish-submit-btn:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+
+        /* --- SWEETNESS SLIDER SCREEN --- */
+        #slider-screen {
+            display: none;
+            width: 100%;
+            max-width: 360px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 25px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 38;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+
+        .slider-title {
+            font-size: 1.25rem;
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 25px;
+        }
+
+        .love-gauge-container {
+            position: relative;
+            margin: 30px 0;
+            padding: 10px 0;
+        }
+
+        .love-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .love-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ff4081;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff4081;
+            transition: transform 0.1s ease;
+        }
+
+        .love-slider::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ff4081;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff4081;
+            border: none;
+        }
+
+        .slider-percentage {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ff80ab;
+            text-shadow: 0 0 15px rgba(255, 128, 171, 0.6);
+            margin-top: 10px;
+        }
+
+        .slider-feedback {
+            font-size: 0.95rem;
+            font-weight: 600;
+            height: 24px;
+            margin-top: 5px;
+            color: #b388ff;
+            transition: color 0.3s ease;
+        }
+
+        .slider-feedback.error-msg-style {
+            color: #ff1744;
+            animation: textShake 0.3s ease;
+        }
+
+        @keyframes textShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .slider-continue-btn {
+            background: linear-gradient(90deg, #ff4081, #7b2cbf);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .slider-continue-btn:disabled {
+            background: rgba(255, 255, 255, 0.15) !important;
+            box-shadow: none !important;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+        }
+
+        /* --- HARDWARE ACCELERATED PAPER LANTERN --- */
+        .center-lantern-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0) scale(0);
+            z-index: 50;
+            opacity: 0;
+            width: 100px;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            will-change: transform, opacity;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease;
+        }
+
+        .lantern-top-cap, .lantern-bottom-cap {
+            width: 60px;
+            height: 8px;
+            background: #4a0011;
+            border-radius: 3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .lantern-main-body {
+            width: 85px;
+            flex-grow: 1;
+            background: linear-gradient(to bottom, #ff4081 0%, #ff80ab 40%, #ffb703 100%);
+            border-radius: 25px / 40px;
+            box-shadow: 0 0 25px #ff4081, 0 0 45px #ffb703, inset 0 0 20px rgba(255,255,255,0.4);
+            position: relative;
+            margin: -2px 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lantern-inner-fire {
+            width: 30px;
+            height: 45px;
+            background: radial-gradient(circle at 50% 100%, #ffffff 20%, #ffb703 60%, transparent 100%);
+            border-radius: 50% 50% 30% 30%;
+            position: absolute;
+            bottom: 12px;
+            will-change: transform, opacity;
+            animation: firePulse 0.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes firePulse {
+            0% { transform: scale(0.92); opacity: 0.85; }
+            100% { transform: scale(1.08); opacity: 1; }
+        }
+
+        .lantern-tassel {
+            width: 4px;
+            height: 25px;
+            background: #ff4081;
+            box-shadow: 0 0 8px #ff4081;
+            transform-origin: top center;
+            will-change: transform;
+            animation: swingTassel 0.8s infinite alternate ease-in-out;
+        }
+
+        @keyframes swingTassel {
+            0% { transform: rotate(-4deg); }
+            100% { transform: rotate(4deg); }
+        }
+
+        .center-lantern-container.reveal {
+            opacity: 1;
+            transform: translate3d(-50%, -50%, 0) scale(1.1);
+        }
+
+        .center-lantern-container.fly-away {
+            animation: grandAscent 3.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+        }
+
+        @keyframes grandAscent {
+            0% {
+                transform: translate3d(-50%, -50%, 0) scale(1.1);
+                opacity: 1;
+            }
+            15% {
+                transform: translate3d(-50%, -45%, 0) scale(1.15);
+                opacity: 1;
+            }
+            100% {
+                transform: translate3d(-50%, -125vh, 0) scale(0.25);
+                opacity: 0;
+            }
+        }
+
+        /* --- PLAYFUL ERROR POPUP --- */
+        #error-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0) scale(0.8);
+            background: linear-gradient(135deg, #d81b60 0%, #8e24aa 100%);
+            border: 2px solid #ff80ab;
+            padding: 20px 25px;
+            border-radius: 20px;
+            z-index: 999;
+            width: 85%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #error-popup.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate3d(-50%, -50%, 0) scale(1);
+        }
+
+        .error-msg {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .error-close-btn {
+            background: #fff;
+            color: #8e24aa;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* --- LETTER SCREEN --- */
+        #note-screen {
+            width: 100%;
+            max-width: 360px;
+            display: none;
+            opacity: 0;
+            transform: scale(0.9) translate3d(0, 30px, 0);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            z-index: 40;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 250px;
+            margin-top: 20px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-container.open .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ff4081 0%, #9c27b0 100%);
+            color: white;
+        }
+
+        .envelope-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .card-back {
+            background: #fffdf9;
+            color: #2b113a;
+            transform: rotateY(180deg);
+            border: 3px double #ff4081;
+            display: block;
+            text-align: left;
+            overflow-y: auto;
+            padding: 22px 20px;
+        }
+
+        .letter-salutation {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #ff4081;
+            margin-bottom: 8px;
+        }
+
+        .letter-body {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .letter-signoff {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #9c27b0;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="loader-heart">❤️</div>
+        <div class="loader-title">DECRYPTING HEARTRATE</div>
+        <div class="bar-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <div class="loader-text" id="loader-status">Assembling feelings...</div>
+    </div>
+
+    <div id="error-popup">
+        <div class="error-msg">You are wrong cute idiot 😜</div>
+        <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
+    </div>
+
+    <div class="app-wrapper">
+        <canvas id="confetti-canvas"></canvas>
+        <div id="particles-workspace"></div>
+
+        <div id="cake-screen" onclick="extinguishCandleSequence()">
+            <h1 class="main-title">Happy Birthday</h1>
+            <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
+            
+            <div class="cake-container">
+                <div class="tier-top">
+                    <div class="candle-holder">
+                        <div class="alphabet-candle">1<div class="magic-flame flame-node"></div></div>
+                        <div class="alphabet-candle">5<div class="magic-flame flame-node"></div></div>
+                    </div>
+                    <div class="drip-frosting"></div>
+                </div>
+                <div class="tier-bottom">
+                    <div class="drip-frosting" style="height: 16px; background: #fffcf2;"></div>
+                </div>
+                <div class="cake-plate"></div>
+            </div>
+            
+            <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
+        </div>
+
+        <div id="celebration-screen">
+            <div class="celeb-text-wrapper">
+                <h1 class="celeb-main-title">Happy<br>Birthday</h1>
+                <p class="celeb-sub-title">Sumaiya! 🎉❤️</p>
+            </div>
+        </div>
+
+        <div id="quiz-screen
