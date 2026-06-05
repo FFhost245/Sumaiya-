@@ -933,6 +933,34 @@
     </div>
 
     <script>
+        const letterLines = [
+    "Happy 15th Birthday to the most amazing person in my world! 🥳",
+    "You're officially stuck with me for another beautiful year...",
+    "of chaotic laughs, crazy inside jokes, and unforgettable memories ❤️",
+    "",
+    "I hope your day is filled with endless cake 🍰",
+    "zero stress, and full happiness ✨",
+    "",
+    "You mean more than words can explain 💖",
+    "and I’m really lucky to know you.",
+    "",
+    "Forever yours, blaize"
+];
+
+function startLetterAnimation() {
+    const container = document.getElementById("animated-letter");
+    container.innerHTML = "";
+
+    letterLines.forEach((line, i) => {
+        const div = document.createElement("div");
+        div.className = "letter-line";
+        div.textContent = line;
+
+        div.style.animationDelay = (i * 0.6) + "s";
+
+        container.appendChild(div);
+    });
+}
         // Quiz Data
         const quizQuestions = [
             {
@@ -1297,11 +1325,10 @@ function sendDiscordNotification(webhookUrl, embedData) {
             }, 50);
         }
 
-       function openLetterCard(element) {
+      function openLetterCard(element) {
     element.classList.toggle('open');
-    typeLetterLines();
+    startLetterAnimation();
 }
-
         function generateSparkleMatrix() {
             const container = document.getElementById('particles-workspace');
             setInterval(() => {
@@ -1313,35 +1340,7 @@ function sendDiscordNotification(webhookUrl, embedData) {
                 container.appendChild(heart);
                 setTimeout(() => { heart.remove(); }, 4500);
             }, 600);
-            
-            const letterLines = [
-    "Happy 15th Birthday to the most amazing person in my world! 🥳",
-    "You're officially stuck with me for another beautiful year...",
-    "of chaotic laughs, crazy inside jokes, and unforgettable memories ❤️",
-    "",
-    "I hope your day is filled with endless cake 🍰",
-    "zero stress, and full happiness ✨",
-    "",
-    "You mean more than words can explain 💖",
-    "and I’m really lucky to know you.",
-    "",
-    "Forever yours, blaize"
-];
 
-function startLetterAnimation() {
-    const container = document.getElementById("animated-letter");
-    container.innerHTML = "";
-
-    letterLines.forEach((line, i) => {
-        const div = document.createElement("div");
-        div.className = "letter-line";
-        div.textContent = line;
-
-        div.style.animationDelay = (i * 0.6) + "s";
-
-        container.appendChild(div);
-    });
-}
         }
     </script>
 </body>
