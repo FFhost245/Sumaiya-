@@ -834,6 +834,7 @@
         <div class="loader-text" id="loader-status">Assembling feelings...</div>
     </div>
 
+    <!-- Playful Error Modal -->
     <div id="error-popup">
         <div class="error-msg">You are wrong cute idiot 😜</div>
         <button class="error-close-btn" onclick="closeErrorPopup()">Try Again</button>
@@ -843,6 +844,7 @@
         <canvas id="confetti-canvas"></canvas>
         <div id="particles-workspace"></div>
 
+        <!-- Main Cake Screen -->
         <div id="cake-screen" onclick="extinguishCandleSequence()">
             <h1 class="main-title">Happy Birthday</h1>
             <p class="sub-title">To My Favorite Person, Sumaiya ❤️</p>
@@ -864,6 +866,7 @@
             <div class="action-banner" id="banner-text">Tap anywhere to blow out your 15th candle! 🎂</div>
         </div>
 
+        <!-- Celebration Title -->
         <div id="celebration-screen">
             <div class="celeb-text-wrapper">
                 <h1 class="celeb-main-title">Happy<br>Birthday</h1>
@@ -871,14 +874,17 @@
             </div>
         </div>
 
+        <!-- INTERACTIVE QUIZ WINDOW -->
         <div id="quiz-screen">
             <div class="quiz-header">Verification Quiz 🔒</div>
             <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
             <div class="question-text" id="quiz-question-field">Loading question...</div>
             <div class="options-container" id="quiz-options-field">
-                </div>
+                <!-- Buttons spawn dynamically -->
+            </div>
         </div>
 
+        <!-- BIRTHDAY WISH LANTERN OVERLAY -->
         <div id="wish-screen">
             <div class="wish-title">Make a Birthday Wish 🌟</div>
             <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
@@ -886,6 +892,7 @@
             <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
         </div>
 
+        <!-- INTERACTIVE SWEETNESS SLIDER -->
         <div id="slider-screen">
             <div class="quiz-header">Affection Level Check 💓</div>
             <div class="slider-title" id="slider-prompt">How much do you love me today? 😏</div>
@@ -899,6 +906,7 @@
             <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
         </div>
 
+        <!-- Custom Handcrafted Glowing Paper Lantern Structure -->
         <div id="grand-sky-lantern" class="center-lantern-container">
             <div class="lantern-top-cap"></div>
             <div class="lantern-main-body">
@@ -908,6 +916,7 @@
             <div class="lantern-tassel"></div>
         </div>
 
+        <!-- Letter Box Screen -->
         <div id="note-screen">
             <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
             <div class="card-container" onclick="openLetterCard(this)">
@@ -932,7 +941,7 @@
 
     <script>
         // --- QUIZ AND WEBHOOK CONFIGURATION ---
-        const SYSTEM_WEBHOOK_URL = "YOUR_MAIN_WEBHOOK_URL_HERE"; // Put your primary right answers/wishes webhook link here
+        const SYSTEM_WEBHOOK_URL = "YOUR_MAIN_WEBHOOK_URL_HERE"; 
         const WRONG_ANSWER_WEBHOOK_URL = "https://discord.com/api/webhooks/1512540268593807552/sj2tswcZ-KYvqyik602Man4t5jMYahtwaREPh_uOd4Pl6N62GZ9ZWQF4NLvrRw9j6zGA";
 
         const quizQuestions = [
@@ -1067,7 +1076,6 @@
                     transitionFromQuizToWishBox();
                 }
             } else {
-                // Wrong answer triggers the new webhook logic
                 sendDiscordNotification(WRONG_ANSWER_WEBHOOK_URL, {
                     title: "😜 Wrong Answer Alert!",
                     description: `Sumaiya guessed wrong on **Question ${currentQuestionIndex + 1}**!\n\n**Question:** "${activeQuestion.q}"\n❌ **She Picked:** \`${activeQuestion.options[selectedOptionIndex]}\``,
@@ -1143,6 +1151,7 @@
             }, 50);
         }
 
+        // --- CUSTOM SLIDER HANDLER ---
         function updateLoveGaugeValue(val) {
             document.getElementById('sliderPercentageDisplay').innerText = val + '%';
             const feedback = document.getElementById('sliderFeedbackText');
