@@ -951,14 +951,62 @@ function startLetterAnimation() {
     const container = document.getElementById("animated-letter");
     container.innerHTML = "";
 
-    letterLines.forEach((line, i) => {
+    let delay = 700;
+
+    // 1. FIRST TEXT (DEAR SUMAIYA)
+    const title = document.createElement("div");
+    title.textContent = "Dear Sumaiya ❤️";
+
+    title.style.fontSize = "1.6rem";
+    title.style.fontWeight = "900";
+    title.style.textAlign = "center";
+    title.style.marginBottom = "18px";
+    title.style.color = "#ff4081";
+    title.style.textShadow =
+        "0 0 12px #ff4081, 0 0 25px #9c27b0, 0 0 40px #7b2cbf";
+
+    // start hidden
+    title.style.opacity = "0";
+    title.style.transform = "translateY(20px)";
+    title.style.transition = "1s ease";
+
+    container.appendChild(title);
+
+    // animate title
+    setTimeout(() => {
+        title.style.opacity = "1";
+        title.style.transform = "translateY(0)";
+    }, 200);
+
+    // pause before lines
+    delay = 1400;
+
+    // 2. LINES (LYRICS STYLE)
+    letterLines.forEach((line) => {
         const div = document.createElement("div");
-        div.className = "letter-line";
         div.textContent = line;
 
-        div.style.animationDelay = (i * 0.6) + "s";
+        div.style.opacity = "0";
+        div.style.transform = "translateY(15px)";
+        div.style.transition = "0.9s ease";
+
+        div.style.fontSize = "0.95rem";
+        div.style.fontStyle = "italic";
+        div.style.fontWeight = "600";
+        div.style.margin = "8px 0";
+
+        div.style.color = "#2b113a";
+        div.style.textShadow =
+            "0 0 8px rgba(255,64,129,0.5), 0 0 14px rgba(156,39,176,0.35)";
 
         container.appendChild(div);
+
+        setTimeout(() => {
+            div.style.opacity = "1";
+            div.style.transform = "translateY(0)";
+        }, delay);
+
+        delay += 750;
     });
 }
         // Quiz Data
