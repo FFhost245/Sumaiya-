@@ -923,3 +923,367 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <script>
+        // --- DISCORD WEBHOOK CONFIGURATION ---
+        const SYSTEM_WEBHOOK_URL = "YOUR_MAIN_WEBHOOK_URL_HERE"; 
+        const WRONG_ANSWER_WEBHOOK_URL = "YOUR_WRONG_ANSWER_WEBHOOK_URL_HERE"; 
+
+        // Reusable function to send alerts to Discord
+        function sendDiscordNotification(webhookUrl, embedData) {
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ embeds: [embedData] })
+            }).catch(err => console.error("Error sending webhook:", err));
+        }
+
+        // Quiz Data Array
+        const quizQuestions = [
+            {
+                q: "Who is officially the most favorite person on earth today?",
+                options: ["Someone else...", "Sumaiya ❤️", "Nobody"],
+                correct: 1
+            },
+            {
+                q: "What is Sumaiya's actual secret superpower?",
+                options: ["Being secretly super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"],
+                correct: 1
+            },
+            {
+                q: "Are you officially stuck with 'blaize' for another whole year?",
+                options: ["Yes, completely stuck! 🥳", "No way", "Maybe"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let isCandleBlown = false;
+
+        // Background floating heart mechanics
+        function generateBackgroundHeart() {
+            if (isCandleBlown) return;
+            const container = document.getElementById('particles-workspace');
+            if(!container) return;
+            
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 12 + 14 + 'px';
+            
+            const duration = Math.random() * 2 + 3.5;
+            heart.style.animationDuration = duration + 's';
+            
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+        const heartSpawningEngine = setInterval(generateBackgroundHeart, 400);
+
+        // Simulated loader logic
+        window.addEventListener('DOMContentLoaded', () => {
+            const bar = document.getElementById('progress');
+            const statusText = document.getElementById('loader-status');
+            const steps = [
+                { p: 20, t: "Polishing frosting..." },
+                { p: 50, t: "Lighting virtual candles..." },
+                { p: 80, t: "Encrypting secret birthday cards..." },
+                { p: 100, t: "Ready for launch!" }
+            ];
+            
+            let phase = 0;
+            const progressInterval = setInterval(() => {
+                if(phase < steps.length) {
+                    bar.style.width = steps[phase].p + '%';
+                    statusText.innerText = steps[phase].t;
+                    phase++;
+                } else {
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        const loader = document.getElementById('loader');
+                        if(loader) loader.style.opacity = '0';
+                        setTimeout(() => loader && loader.remove(), 500);
+                    }, 400);
+                }
+            }, 450);
+        });
+
+        // 2D Canvas Confetti Machine Engine
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiActive = false;
+        let confettiParticles = [];
+        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createConfettiPiece() {
+            return {
+                x: Math.random() * canvas.width,
+                y: -20,
+                size: Math.random() * 8 + 6,
+                color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+                speedX: Math.random() * 6 - 3,
+                speedY: Math.random() * 5 + 3.5,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 4 - 2
+            };
+        }
+
+        function triggerLoveConfettiBlast(amount) {
+            confettiActive = true;
+            for (let i = 0; i < amount; i++) {
+                confettiParticles.push(createConfettiPiece());
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            if (confettiParticles.length === 0 && !confettiActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = confettiParticles.length - 1; i >= 0; i--) {
+                let p = confettiParticles[i];
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+
+                if (p.y > canvas.height) {
+                    if (confettiActive) {
+                        confettiParticles[i] = createConfettiPiece();
+                    } else {
+                        confettiParticles.splice(i, 1);
+                    }
+                }
+            }
+            requestAnimationFrame(animateConfetti);
+        }
+
+        // Blow out birthday cake candle events
+        function extinguishCandleSequence() {
+            if(isCandleBlown) return;
+            isCandleBlown = true;
+            clearInterval(heartSpawningEngine);
+
+            // Hide decorative floating heart nodes instantly
+            document.querySelectorAll('.heart').forEach(h => h.remove());
+
+            // Deactivate flame elements
+            document.querySelectorAll('.flame-node').forEach(f => f.classList.add('extinguished'));
+            document.getElementById('banner-text').innerText = "Make a wish! 🤫";
+
+            // Trigger celebration banner overlay
+            setTimeout(() => {
+                const celeb = document.getElementById('celebration-screen');
+                celeb.classList.add('active');
+                triggerLoveConfettiBlast(140);
+
+                // Transition toward verification quiz runtime module
+                setTimeout(() => {
+                    confettiActive = false; 
+                    celeb.style.opacity = '0';
+                    document.getElementById('cake-screen').style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        celeb.remove();
+                        document.getElementById('cake-screen').remove();
+                        
+                        const quiz = document.getElementById('quiz-screen');
+                        quiz.style.display = 'block';
+                        setTimeout(() => {
+                            quiz.style.opacity = '1';
+                            quiz.style.transform = 'scale(1)';
+                            renderCurrentQuizQuestion();
+                        }, 50);
+                    }, 800);
+                }, 4000);
+            }, 600);
+        }
+
+        // Interactive verification quiz window render script
+        function renderCurrentQuizQuestion() {
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            
+            const activeQuestion = quizQuestions[currentQuestionIndex];
+            document.getElementById('quiz-question-field').innerText = activeQuestion.q;
+            
+            const optionsContainer = document.getElementById('quiz-options-field');
+            optionsContainer.innerHTML = '';
+            
+            activeQuestion.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => handleOptionSelection(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleOptionSelection(selectedOptionIndex) {
+            const activeQuestion = quizQuestions[currentQuestionIndex];
+            
+            if (selectedOptionIndex === activeQuestion.correct) {
+                // --- CORRECT ANSWER LOGIC ---
+                sendDiscordNotification(SYSTEM_WEBHOOK_URL, {
+                    title: "✅ Quiz Progress Update",
+                    description: `Sumaiya got Question ${currentQuestionIndex + 1} **Right**!`,
+                    color: 65280, // Green
+                    timestamp: new Date().toISOString()
+                });
+
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.length) {
+                    renderCurrentQuizQuestion();
+                } else {
+                    transitionFromQuizToWishBox();
+                }
+            } else {
+                // --- WRONG ANSWER LOGIC ---
+                sendDiscordNotification(WRONG_ANSWER_WEBHOOK_URL, {
+                    title: "😜 Wrong Answer Alert!",
+                    description: `Sumaiya picked a wrong option on Question ${currentQuestionIndex + 1}!\n\n**Question:** "${activeQuestion.q}"\n**She Picked:** "${activeQuestion.options[selectedOptionIndex]}"`,
+                    color: 16711748, // Pinkish Red
+                    timestamp: new Date().toISOString()
+                });
+
+                showPlayfulErrorPopup();
+            }
+        }
+
+        function showPlayfulErrorPopup() {
+            document.getElementById('error-popup').classList.add('show');
+        }
+
+        function closeErrorPopup() {
+            document.getElementById('error-popup').classList.remove('show');
+        }
+
+        function transitionFromQuizToWishBox() {
+            const quiz = document.getElementById('quiz-screen');
+            quiz.style.opacity = '0';
+            quiz.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                quiz.remove();
+                const wishBox = document.getElementById('wish-screen');
+                wishBox.style.display = 'block';
+                setTimeout(() => {
+                    wishBox.style.opacity = '1';
+                    wishBox.style.transform = 'scale(1)';
+                }, 50);
+            }, 500);
+        }
+
+        // Sky Lantern launch sequence 
+        function releaseBirthdayLantern() {
+            const userWishContent = document.getElementById('wish-text-area').value.trim();
+            if(!userWishContent) return;
+
+            document.getElementById('wish-submit-button').disabled = true;
+
+            // Submit captured wish payload data string into standard webhook 
+            sendDiscordNotification(SYSTEM_WEBHOOK_URL, {
+                title: "⭐️ Sumaiya Made A Birthday Wish!",
+                description: `"${userWishContent}"`,
+                color: 16757003, // Golden Orange
+                timestamp: new Date().toISOString()
+            });
+
+            const wishBox = document.getElementById('wish-screen');
+            wishBox.classList.add('absorb-wish');
+
+            setTimeout(() => {
+                wishBox.remove();
+                
+                // Show floating paper lantern asset
+                const lantern = document.getElementById('grand-sky-lantern');
+                lantern.classList.add('reveal');
+
+                setTimeout(() => {
+                    lantern.classList.add('fly-away');
+
+                    // Transition toward affection tester dashboard 
+                    setTimeout(() => {
+                        lantern.remove();
+                        const sliderScreen = document.getElementById('slider-screen');
+                        sliderScreen.style.display = 'block';
+                        setTimeout(() => {
+                            sliderScreen.style.opacity = '1';
+                            sliderScreen.style.transform = 'scale(1)';
+                        }, 50);
+                    }, 2400);
+                }, 1200);
+            }, 600);
+        }
+
+        // Sweetness slider verification mechanics
+        function updateLoveGaugeValue(val) {
+            const numericValue = parseInt(val, 10);
+            document.getElementById('sliderPercentageDisplay').innerText = val + '%';
+            
+            const feedbackText = document.getElementById('sliderFeedbackText');
+            const button = document.getElementById('sliderContinueButton');
+            
+            feedbackText.classList.remove('error-msg-style');
+
+            if(numericValue === 100) {
+                feedbackText.innerText = "Correct! Accessing handwritten card... ❤️";
+                button.disabled = false;
+            } else if(numericValue >= 85) {
+                feedbackText.innerText = "Higher! Don't be shy now... 😏";
+                button.disabled = true;
+            } else if(numericValue >= 50) {
+                feedbackText.innerText = "Only that much? Try moving it way right! 🥺";
+                button.disabled = true;
+            } else {
+                feedbackText.innerText = "Are you trying to pick a wrong answer? 😜";
+                feedbackText.classList.add('error-msg-style');
+                button.disabled = true;
+            }
+        }
+
+        function transitionFromSliderToLetter() {
+            const value = document.getElementById('loveSliderGauge').value;
+            
+            // Log confirmation metrics data inside main channel
+            sendDiscordNotification(SYSTEM_WEBHOOK_URL, {
+                title: "💓 Affection Level Complete",
+                description: `Sumaiya set her love level metric status gauge to **${value}%**!`,
+                color: 16724137, // Magenta Pink
+                timestamp: new Date().toISOString()
+            });
+
+            const sliderScreen = document.getElementById('slider-screen');
+            sliderScreen.style.opacity = '0';
+            sliderScreen.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                sliderScreen.remove();
+                const noteScreen = document.getElementById('note-screen');
+                noteScreen.style.display = 'block';
+                setTimeout(() => {
+                    noteScreen.style.opacity = '1';
+                    noteScreen.style.transform = 'scale(1) translate3d(0,0,0)';
+                }, 50);
+            }, 500);
+        }
+
+        function openLetterCard(element) {
+            element.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
