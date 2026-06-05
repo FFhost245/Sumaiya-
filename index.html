@@ -1,4 +1,4 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -866,4 +866,373 @@
             </div>
         </div>
 
-        <div id="quiz-screen
+        <div id="quiz-screen">
+            <div class="quiz-header">Verification Quiz 🔒</div>
+            <div class="quiz-progress" id="quiz-progress-text">Question 1 of 3</div>
+            <div class="question-text" id="quiz-question-field">Loading question...</div>
+            <div class="options-container" id="quiz-options-field">
+                </div>
+        </div>
+
+        <div id="wish-screen">
+            <div class="wish-title">Make a Birthday Wish 🌟</div>
+            <div class="wish-subtitle">Type your secret 15th birthday wish below, then send it up to the stars!</div>
+            <textarea id="wish-text-area" class="wish-input" placeholder="I wish for..."></textarea>
+            <button id="wish-submit-button" class="wish-submit-btn" onclick="releaseBirthdayLantern()">Launch Wish Lantern 🚀</button>
+        </div>
+
+        <div id="slider-screen">
+            <div class="quiz-header">Affection Level Check 💓</div>
+            <div class="slider-title" id="slider-prompt">How much do you love blaize today? 😏</div>
+            
+            <div class="love-gauge-container">
+                <input type="range" min="0" max="100" value="50" class="love-slider" id="loveSliderGauge" oninput="updateLoveGaugeValue(this.value)">
+                <div class="slider-percentage" id="sliderPercentageDisplay">50%</div>
+            </div>
+            
+            <div class="slider-feedback" id="sliderFeedbackText">Move slider to state your answer!</div>
+            <button id="sliderContinueButton" class="slider-continue-btn" disabled onclick="transitionFromSliderToLetter()">Confirm Amount ✨</button>
+        </div>
+
+        <div id="grand-sky-lantern" class="center-lantern-container">
+            <div class="lantern-top-cap"></div>
+            <div class="lantern-main-body">
+                <div class="lantern-inner-fire"></div>
+            </div>
+            <div class="lantern-bottom-cap"></div>
+            <div class="lantern-tassel"></div>
+        </div>
+
+        <div id="note-screen">
+            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
+            <div class="card-container" onclick="openLetterCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="envelope-icon">✉️</div>
+                        <h3>For Sumaiya Only</h3>
+                    </div>
+                    <div class="card-back">
+                        <div class="letter-salutation">Dear Sumaiya, ❤️</div>
+                        <p class="letter-body">
+                            Happy 15th Birthday to the most amazing and absolute favorite person in my world! 🥳 You're officially stuck with me for another beautiful year of chaotic laughs, crazy inside jokes, and unforgettable sweet memories. 
+                            <br><br>
+                            I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
+                        </p>
+                        <div class="letter-signoff">Forever yours, blaize</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data
+        const quizQuestions = [
+            {
+                q: "Who is officially the most favorite person on earth today?",
+                options: ["Someone else...", "Sumaiya ❤️", "Nobody"],
+                correct: 1
+            },
+            {
+                q: "What is Sumaiya's actual secret superpower?",
+                options: ["Being secretly super athletic", "Being the cutest, most adorable person ever... ❤️", "Reading minds"],
+                correct: 1
+            },
+            {
+                q: "Are you officially stuck with 'blaize' for another whole year?",
+                options: ["Yes, completely stuck! 🥳", "No way", "Maybe"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiActive = false;
+        let confettiParticles = [];
+        const confettiColors = ['#ff4081', '#ff80ab', '#9c27b0', '#b388ff', '#ffff00', '#00e5ff'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createConfettiPiece() {
+            return {
+                x: Math.random() * canvas.width,
+                y: -20,
+                size: Math.random() * 8 + 6,
+                color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+                speedX: Math.random() * 6 - 3,
+                speedY: Math.random() * 5 + 3.5,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 4 - 2
+            };
+        }
+
+        function triggerLoveConfettiBlast(amount) {
+            confettiActive = true;
+            for (let i = 0; i < amount; i++) {
+                confettiParticles.push(createConfettiPiece());
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            if (confettiParticles.length === 0 && !confettiActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = confettiParticles.length - 1; i >= 0; i--) {
+                let p = confettiParticles[i];
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+
+                if (p.y > canvas.height) {
+                    if (confettiActive) {
+                        confettiParticles[i] = createConfettiPiece();
+                    } else {
+                        confettiParticles.splice(i, 1);
+                    }
+                }
+            }
+            requestAnimationFrame(animateConfetti);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('progress');
+            const statusText = document.getElementById('loader-status');
+            const loader = document.getElementById('loader');
+            
+            const logs = [
+                { p: 15, t: "Syncing connection matrix..." },
+                { p: 35, t: "Calibrating charm frequencies..." },
+                { p: 60, t: "Overclocking systems with love..." },
+                { p: 85, t: "Wrapping digital card packages..." },
+                { p: 100, t: "Encryption bypass ready!" }
+            ];
+
+            let currentLog = 0;
+
+            function runLoader() {
+                if (currentLog < logs.length) {
+                    progress.style.width = logs[currentLog].p + "%";
+                    statusText.innerText = logs[currentLog].t;
+                    setTimeout(() => {
+                        currentLog++;
+                        runLoader();
+                    }, logs[currentLog].p === 100 ? 600 : 700);
+                } else {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        startAmbientHearts();
+                    }, 500);
+                }
+            }
+            setTimeout(runLoader, 400);
+        });
+
+        function startAmbientHearts() {
+            setInterval(() => {
+                if (document.getElementById('cake-screen').style.display !== 'none' || confettiActive) {
+                    spawnHeartParticle();
+                }
+            }, 450);
+        }
+
+        function spawnHeartParticle() {
+            const workspace = document.getElementById('particles-workspace');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            const size = Math.random() * 12 + 14;
+            heart.style.fontSize = size + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3.5) + 's';
+            workspace.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5500);
+        }
+
+        function extinguishCandleSequence() {
+            const flames = document.querySelectorAll('.flame-node');
+            flames.forEach(f => f.classList.add('extinguished'));
+            document.getElementById('banner-text').innerText = "Make your wish! ✨";
+            
+            triggerLoveConfettiBlast(75);
+
+            setTimeout(() => {
+                const celebScreen = document.getElementById('celebration-screen');
+                celebScreen.classList.add('active');
+                
+                setTimeout(() => {
+                    confettiActive = false;
+                    celebScreen.style.opacity = '0';
+                    document.getElementById('cake-screen').style.display = 'none';
+                    
+                    setTimeout(() => {
+                        celebScreen.style.display = 'none';
+                        showQuizScreen();
+                    }, 1200);
+                }, 3500);
+
+            }, 800);
+        }
+
+        function showQuizScreen() {
+            const quiz = document.getElementById('quiz-screen');
+            quiz.style.display = 'block';
+            setTimeout(() => {
+                quiz.style.opacity = '1';
+                quiz.style.transform = 'scale(1)';
+                renderQuizQuestion();
+            }, 50);
+        }
+
+        function renderQuizQuestion() {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-question-field').innerText = currentQuestion.q;
+            
+            const optionsBox = document.getElementById('quiz-options-field');
+            optionsBox.innerHTML = '';
+
+            currentQuestion.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => verifyQuizAnswer(idx);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function verifyQuizAnswer(selectedIdx) {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            if (selectedIdx === currentQuestion.correct) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.length) {
+                    renderQuizQuestion();
+                } else {
+                    transitionFromQuizToWish();
+                }
+            } else {
+                document.getElementById('error-popup').classList.add('show');
+            }
+        }
+
+        function closeErrorPopup() {
+            document.getElementById('error-popup').classList.remove('show');
+        }
+
+        function transitionFromQuizToWish() {
+            const quiz = document.getElementById('quiz-screen');
+            quiz.style.opacity = '0';
+            quiz.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                quiz.style.display = 'none';
+                const wish = document.getElementById('wish-screen');
+                wish.style.display = 'block';
+                setTimeout(() => {
+                    wish.style.opacity = '1';
+                    wish.style.transform = 'scale(1)';
+                }, 50);
+            }, 500);
+        }
+
+        function releaseBirthdayLantern() {
+            const wishInput = document.getElementById('wish-text-area');
+            if (!wishInput.value.trim()) return;
+
+            document.getElementById('wish-submit-button').disabled = true;
+            const wishScreen = document.getElementById('wish-screen');
+            wishScreen.classList.add('absorb-wish');
+
+            const lantern = document.getElementById('grand-sky-lantern');
+            
+            setTimeout(() => {
+                lantern.classList.add('reveal');
+                
+                setTimeout(() => {
+                    lantern.classList.add('fly-away');
+                    
+                    setTimeout(() => {
+                        wishScreen.style.display = 'none';
+                        showSliderScreen();
+                    }, 2400);
+
+                }, 1200);
+            }, 600);
+        }
+
+        function showSliderScreen() {
+            const sliderScreen = document.getElementById('slider-screen');
+            sliderScreen.style.display = 'block';
+            setTimeout(() => {
+                sliderScreen.style.opacity = '1';
+                sliderScreen.style.transform = 'scale(1)';
+            }, 50);
+        }
+
+        function updateLoveGaugeValue(val) {
+            const num = parseInt(val);
+            const display = document.getElementById('sliderPercentageDisplay');
+            const feedback = document.getElementById('sliderFeedbackText');
+            const btn = document.getElementById('sliderContinueButton');
+
+            display.innerText = num + "%";
+            feedback.classList.remove('error-msg-style');
+
+            if (num < 40) {
+                feedback.innerText = "Error: Too low! Unacceptable 😤";
+                feedback.classList.add('error-msg-style');
+                btn.disabled = true;
+            } else if (num >= 40 && num < 75) {
+                feedback.innerText = "Hmm, are you sure that's enough? 👀";
+                btn.disabled = false;
+            } else if (num >= 75 && num < 100) {
+                feedback.innerText = "Aww, getting warmer! ❤️🥰";
+                btn.disabled = false;
+            } else if (num === 100) {
+                display.innerText = "1000000%";
+                feedback.innerText = "Perfect choice! Absolute maximum! 👑💖";
+                btn.disabled = false;
+                triggerLoveConfettiBlast(20);
+            }
+        }
+
+        function transitionFromSliderToLetter() {
+            const sliderScreen = document.getElementById('slider-screen');
+            sliderScreen.style.opacity = '0';
+            sliderScreen.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                sliderScreen.style.display = 'none';
+                confettiActive = true;
+                triggerLoveConfettiBlast(40);
+                
+                const noteScreen = document.getElementById('note-screen');
+                noteScreen.style.display = 'block';
+                setTimeout(() => {
+                    noteScreen.style.opacity = '1';
+                    noteScreen.style.transform = 'scale(1) translate3d(0,0,0)';
+                }, 50);
+            }, 500);
+        }
+
+        function openLetterCard(element) {
+            element.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
