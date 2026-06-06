@@ -728,7 +728,17 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-    
+        /* --- LETTER SCREEN --- */
+        #note-screen {
+            width: 100%;
+            max-width: 360px;
+            display: none;
+            opacity: 0;
+            transform: scale(0.9) translate3d(0, 30px, 0);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            z-index: 40;
+        }
 
         .card-container {
             perspective: 1000px;
@@ -806,33 +816,6 @@
             color: #9c27b0;
             text-align: right;
         }
-#note-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
-    flex-direction: column;
-    justify-content: center; /* <-- CENTER IT */
-    align-items: center;
-
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 100;
-}
-#animated-letter {
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    position: absolute;
-}
     </style>
 </head>
 <body>
@@ -927,74 +910,31 @@
             <div class="lantern-bottom-cap"></div>
             <div class="lantern-tassel"></div>
         </div>
-<!-- Letter Screen (FULL BACKGROUND VERSION) -->
-<div id="note-screen">
-    <div id="animated-letter"></div>
-</div>
+
+        <!-- Letter Box Screen -->
+        <div id="note-screen">
+            <h2 style="color: #ff80ab; font-size: 1.4rem; margin-bottom: 15px;">Access Granted! ✨</h2>
+            <div class="card-container" onclick="openLetterCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="envelope-icon">✉️</div>
+                        <h3>For Sumaiya Only</h3>
+                    </div>
+                    <div class="card-back">
+                        <div class="letter-salutation">Dear Sumaiya, ❤️</div>
+                        <p class="letter-body">
+                            Happy 15th Birthday to the most amazing and absolute favorite person in my world! 🥳 You're officially stuck with me for another beautiful year of chaotic laughs, crazy inside jokes, and unforgettable sweet memories. 
+                            <br><br>
+                            I hope your day is filled with loads of fun, endless slices of cake, and absolutely zero responsibilities. You mean so much more to me than words can say! ✨💖
+                        </p>
+                        <div class="letter-signoff">Forever yours, blaize</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const letterLines = [
-    "Happy 15th Birthday to the most amazing person in my world! 🥳",
-    "You're officially stuck with me for another beautiful year...",
-    "of chaotic laughs, crazy inside jokes, and unforgettable memories ❤️",
-    "",
-    "I hope your day is filled with endless cake 🍰",
-    "zero stress, and full happiness ✨",
-    "",
-    "You mean more than words can explain 💖",
-    "and I’m really lucky to know you.",
-    "",
-    "Forever yours, blaize"
-];
-
-function startLetterAnimation() {
-    const container = document.getElementById("animated-letter");
-    container.innerHTML = "";
-
-    const lines = [
-        "Dear Sumaiya ❤️",
-        ...letterLines
-    ];
-
-    let i = 0;
-
-    function typeLine(text, callback) {
-        const line = document.createElement("div");
-        line.style.fontSize = "1.4rem";
-        line.style.fontWeight = "600";
-        line.style.margin = "10px 0";
-        line.style.textAlign = "center";
-        line.style.color = "#ff80ab";
-        line.style.textShadow = "0 0 10px #ff4081, 0 0 20px #9c27b0";
-
-        container.innerHTML = ""; // 👈 removes previous line
-        container.appendChild(line);
-
-        let j = 0;
-
-        function typeChar() {
-            if (j < text.length) {
-                line.textContent += text[j];
-                j++;
-                setTimeout(typeChar, 120);
-            } else {
-                setTimeout(callback, 1200); // wait before next line
-            }
-        }
-
-        typeChar();
-    }
-
-    function next() {
-        if (i < lines.length) {
-            typeLine(lines[i], () => {
-                i++;
-                next();
-            });
-        }
-    }
-
-    next();
-}
         // Quiz Data
         const quizQuestions = [
             {
@@ -1350,21 +1290,19 @@ function sendDiscordNotification(webhookUrl, embedData) {
             }, 500);
         }
 
-   function revealFinalLetter() {
-    const noteView = document.getElementById('note-screen');
+        function revealFinalLetter() {
+            const noteView = document.getElementById('note-screen');
+            noteView.style.display = 'block';
+            setTimeout(() => {
+                noteView.style.opacity = '1';
+                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
+            }, 50);
+        }
 
-    noteView.style.display = 'flex';
+        function openLetterCard(element) {
+            element.classList.toggle('open');
+        }
 
-    // force browser reflow (IMPORTANT FIX)
-    void noteView.offsetWidth;
-
-    noteView.style.opacity = '1';
-
-    setTimeout(() => {
-        startLetterAnimation();
-    }, 600);
-}
-    
         function generateSparkleMatrix() {
             const container = document.getElementById('particles-workspace');
             setInterval(() => {
@@ -1376,7 +1314,6 @@ function sendDiscordNotification(webhookUrl, embedData) {
                 container.appendChild(heart);
                 setTimeout(() => { heart.remove(); }, 4500);
             }, 600);
-
         }
     </script>
 </body>
