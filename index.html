@@ -814,16 +814,15 @@
     height: 100%;
     display: none;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
-    /* SAME AS QUIZ */
     background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
+
+    padding-top: 80px; /* pushes content slightly up from center */
 }
 #animated-letter {
     width: 90%;
@@ -979,7 +978,7 @@ function startLetterAnimation() {
             if (j < text.length) {
                 line.textContent += text[j];
                 j++;
-                setTimeout(typeChar, 80);
+                setTimeout(typeChar, 100);
             } else {
                 setTimeout(callback, 1200); // wait before next line
             }
