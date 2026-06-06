@@ -806,7 +806,7 @@
             color: #9c27b0;
             text-align: right;
         }
-        #note-screen {
+   #note-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -818,7 +818,7 @@
     justify-content: center;
     align-items: center;
 
-    z-index: 100;
+    z-index: 9999; /* 🔥 ADD THIS */
     opacity: 0;
     transition: opacity 1s ease;
 }
@@ -1367,14 +1367,19 @@ function sendDiscordNotification(webhookUrl, embedData) {
             }, 500);
         }
 
-     function revealFinalLetter() {
+   function revealFinalLetter() {
     const noteView = document.getElementById('note-screen');
+
     noteView.style.display = 'flex';
 
+    // force browser reflow (IMPORTANT FIX)
+    void noteView.offsetWidth;
+
+    noteView.style.opacity = '1';
+
     setTimeout(() => {
-        noteView.style.opacity = '1';
-        startLetterAnimation(); // 👈 This makes the letter animate automatically
-    }, 50);
+        startLetterAnimation();
+    }, 600);
 }
     
         function generateSparkleMatrix() {
