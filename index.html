@@ -1367,19 +1367,16 @@ function sendDiscordNotification(webhookUrl, embedData) {
             }, 500);
         }
 
-        function revealFinalLetter() {
-            const noteView = document.getElementById('note-screen');
-            noteView.style.display = 'block';
-            setTimeout(() => {
-                noteView.style.opacity = '1';
-                noteView.style.transform = 'scale(1) translate3d(0, 0, 0)';
-            }, 50);
-        }
+     function revealFinalLetter() {
+    const noteView = document.getElementById('note-screen');
+    noteView.style.display = 'flex';
 
-      function openLetterCard(element) {
-    element.classList.toggle('open');
-    startLetterAnimation();
+    setTimeout(() => {
+        noteView.style.opacity = '1';
+        startLetterAnimation(); // 👈 This makes the letter animate automatically
+    }, 50);
 }
+    
         function generateSparkleMatrix() {
             const container = document.getElementById('particles-workspace');
             setInterval(() => {
