@@ -806,19 +806,19 @@
             color: #9c27b0;
             text-align: right;
         }
- #note-screen {
+#note-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    background: radial-gradient(circle at center, #1a002a, #000);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
 }
 #animated-letter {
@@ -959,7 +959,7 @@ function startLetterAnimation() {
 
     function typeLine(text, callback) {
         const line = document.createElement("div");
-        line.style.fontSize = "1.2rem";
+        line.style.fontSize = "1.4rem";
         line.style.fontWeight = "600";
         line.style.margin = "10px 0";
         line.style.textAlign = "center";
@@ -975,7 +975,7 @@ function startLetterAnimation() {
             if (j < text.length) {
                 line.textContent += text[j];
                 j++;
-                setTimeout(typeChar, 50);
+                setTimeout(typeChar, 80);
             } else {
                 setTimeout(callback, 1200); // wait before next line
             }
